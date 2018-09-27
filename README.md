@@ -1,10 +1,11 @@
 # bboss elasticsearch 数据导入工具demo
+使用本demo所带的应用程序运行容器环境，可以快速编写，打包发布可运行的数据导入工具
 
 # 构建部署
 ## 准备工作
 通过gradle构建发布版本：
 https://gradle.org/next-steps/?version=4.10.2&format=all
-下载后解压，gradle bin目录配置到环境变量path，将安装目录设置GRADLE_HOME环境变量
+下载后解压，将gradle bin目录添加到path环境变量，将gradle安装目录设置为GRADLE_HOME环境变量
 
 ## 下载源码工程-基于gradle
 https://github.com/bbossgroups/db2es-booter
