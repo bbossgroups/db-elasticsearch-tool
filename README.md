@@ -5,7 +5,7 @@
 ## 准备工作
 通过gradle构建发布版本：
 https://gradle.org/next-steps/?version=4.10.2&format=all
-下载后解压，将gradle bin目录添加到path环境变量，将gradle安装目录设置为GRADLE_HOME环境变量
+下载gradle后解压，将gradle bin目录添加到path环境变量，将gradle安装目录设置为GRADLE_HOME环境变量
 
 ## 下载源码工程-基于gradle
 https://github.com/bbossgroups/db2es-booter
