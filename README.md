@@ -1,55 +1,25 @@
-# bboss elastic demo，包含以下示例
-拼音搜索示例
-
-分页查询示例
-
-地理位置检索示例
-
-聚合统计查询示例
-
-普通es 增删改、批量增删改、全文检索orm示例
-
-父子关系检索示例
-
-关键词高亮显示示例
-
-关键词联想和补全示例（term suggest，phrase suggest，complete suggest）
-
-# 使用参考文档
-## 快速集成和应用 
-非spring boot项目：
-https://my.oschina.net/bboss/blog/1801273 
-
-spring boot项目：
-https://my.oschina.net/bboss/blog/1835601
-
-详细配置说明参考文档：
-https://my.oschina.net/bboss/blog/1556866
+# bboss elasticsearch 数据导入工具demo
 
 # 构建部署
-## 源码下载
-https://github.com/bbossgroups/elasticsearchdemo
+## 准备工作
+通过gradle构建发布版本：
+https://gradle.org/next-steps/?version=4.10.2&format=all
+下载后解压，gradle bin目录配置到环境变量path，将安装目录设置GRADLE_HOME环境变量
 
-## 通过gradle构建发布版本
-前提：安装gradle
+## 下载源码工程-基于gradle
+https://github.com/bbossgroups/db2es-booter
 
+下载下来后，导入idea或者eclipse，根据自己的需求，修改导入程序逻辑
+
+org.frameworkset.elasticsearch.imp.Dbdemo
+
+修改es和数据库配置-application.properties
+
+在源码根目录下运行以下gradle指令打包发布版本
 gradle clean releaseVersion
 
-## 运行
-gradle构建成功后，在build/distributions目录下会生成可以运行的zip包，解压后，参考《bboss elasticsearch开发库使用介绍》修改elasticsearch的相关配置，然后找到demo的运行指令，就可以启动和运行demo：
-
-
-打开配置文件conf/elasticsearch.properties，修改es地址，es账号和口令：
-
-elasticsearch.rest.hostNames=127.0.0.1:9200
-
-如果启动了elasticsearch认证，修改es账号和口令：
-
-elasticUser=elastic
-
-elasticPassword=changeme
-
-运行demo
+## 运行作业
+gradle构建成功后，在build/distributions目录下会生成可以运行的zip包，解压运行导入程序
 
 linux：
 
@@ -58,6 +28,9 @@ chmod +x startup.sh
 ./startup.sh
 
 windows: startup.bat
+
+# 数据库数据导入es使用参考文档
+https://my.oschina.net/bboss/blog/1832212
 
 ## elasticsearch技术交流群:166471282 
      
