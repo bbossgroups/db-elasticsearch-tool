@@ -13,7 +13,7 @@ https://github.com/bbossgroups/db2es-booter
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
-修改es和数据库配置-application.properties
+修改es和数据库配置-db2es-booter\src\test\resources\application.properties
 
 在源码根目录下运行以下gradle指令打包发布版本
 gradle clean releaseVersion
