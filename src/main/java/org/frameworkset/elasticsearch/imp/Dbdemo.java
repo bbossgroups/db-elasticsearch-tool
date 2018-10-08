@@ -32,7 +32,7 @@ import org.frameworkset.runtime.CommonLauncher;
 public class Dbdemo {
 	public static void main(String args[]){
 		Dbdemo dbdemo = new Dbdemo();
-		boolean dropIndice = CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
+		boolean dropIndice = false;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 		dbdemo.scheduleImportData(  dropIndice);
 	}
 
