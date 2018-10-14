@@ -14,15 +14,14 @@ package org.frameworkset.elasticsearch.imp;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.elasticsearch.client.DataStream;
 import org.frameworkset.elasticsearch.client.ImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
-import org.frameworkset.runtime.CommonLauncher;
 
 /**
- * <p>Description: </p>
+ * <p>Description: 同步处理程序，如需调试同步功能，
+ * 请运行测试用例DbdemoTest中调试</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2018/9/27 20:38
@@ -66,7 +65,7 @@ public class Dbdemo {
 				.setIndexType("dbdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，例如:doc_id -> docId
-				.setBatchSize(50);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
+				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
 //					 .setScheduleDate(date) //指定任务开始执行时间：日期
@@ -132,7 +131,7 @@ public class Dbdemo {
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
 		importBuilder.setEsIdField("log_id");//设置文档主键，不设置，则自动产生文档id
-		importBuilder.setDebugResponse(true);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在需要的时候才，log日志级别同时要设置为INFO
+		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才，log日志级别同时要设置为INFO
 //		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 
 		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false

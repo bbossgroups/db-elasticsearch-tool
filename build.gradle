@@ -131,10 +131,14 @@ configure(allprojects) { project ->
 				[group: 'com.bbossgroups.plugins', name: 'bboss-elasticsearch-rest-jdbc', version: "${bboss_es_version}", transitive: true],
 				//[group: 'org.elasticsearch.plugin.jdbc', name: 'jdbc', version: "6.3.0", transitive: true]
 		)
+//		compile 'org.apache-extras.beanshell:bsh:2.0b6'
 		compile 'org.xerial:sqlite-jdbc:3.23.1'
 		compile 'mysql:mysql-connector-java:5.1.40'
 		runtime(
 				[group: 'com.bbossgroups', name: 'bboss-rt', version: "${bboss_version}", transitive: false],
+		)
+		compile (
+				fileTree(dir: 'lib', include: '*.jar')
 		)
 	}
 
