@@ -35,6 +35,13 @@ chmod +x restart.sh
 
 windows: restart.bat
 
+## 作业jvm配置
+修改jvm.options，设置内存大小和其他jvm参数
+
+-Xms1g
+
+-Xmx1g
+
 ## 在工程中添加多个表同步作业
 默认的作业任务是Dbdemo，同步表td_sm_log的数据到索引dbdemo/dbdemo中
 
