@@ -29,11 +29,33 @@ gradle构建成功后，在build/distributions目录下会生成可以运行的z
 
 linux：
 
-chmod +x startup.sh
+chmod +x restart.sh
 
-./startup.sh
+./restart.sh
 
-windows: startup.bat
+windows: restart.bat
+
+## 在工程中添加多个表同步作业
+默认的作业任务是Dbdemo，同步表td_sm_log的数据到索引dbdemo/dbdemo中
+
+现在我们在工程中添加另外一张表td_cms_document的同步到索引cms_document/cms_document的作业步骤：
+
+1.首先，新建一个带main方法的类org.frameworkset.elasticsearch.imp.CMSDocumentImport,实现同步的逻辑
+
+2.然后，在runfiles目录下新建CMSDocumentImport作业主程序和作业进程配置文件：runfiles/config-cmsdocmenttable.properties，内容如下：
+
+mainclass=org.frameworkset.elasticsearch.imp.CMSDocumentImport
+
+pidfile=CMSDocumentImport.pid  
+
+
+3.最后在runfiles目录下新建作业启动sh文件（这里只新建linux/unix指令，windows的类似）：runfiles/restart-cmsdocumenttable.sh
+
+内容与默认的作业任务是Dbdemo内容一样，只是在java命令后面多加了一个参数，用来指定作业配置文件：--conf=config-cmsdocmenttable.properties
+
+nohup java \$RT_JAVA_OPTS -jar ${project}-${bboss_version}.jar restart --conf=config-cmsdocmenttable.properties --shutdownLevel=9 > ${project}.log &
+
+其他stop shell指令也类似建立即可
 
 # 数据库数据导入es使用参考文档
 https://my.oschina.net/bboss/blog/1832212
