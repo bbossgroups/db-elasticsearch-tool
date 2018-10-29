@@ -16,6 +16,8 @@ https://github.com/bbossgroups/db2es-booter
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
+如果需要测试调试，就在test目录下面编写src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
+
 修改es和数据库配置-db2es-booter\src\test\resources\application.properties
 
 工程已经内置mysql jdbc驱动，如果有依赖的第三方jdbc包（比如oracle驱动），可以将第三方jdbc依赖包放入db2es-booter\lib目录下
@@ -48,6 +50,8 @@ windows: restart.bat
 现在我们在工程中添加另外一张表td_cms_document的同步到索引cms_document/cms_document的作业步骤：
 
 1.首先，新建一个带main方法的类org.frameworkset.elasticsearch.imp.CMSDocumentImport,实现同步的逻辑
+
+如果需要测试调试，就在test目录下面编写 src\test\java\org\frameworkset\elasticsearch\imp\CMSDocumentImportTest.java测试类,然后debug即可
 
 2.然后，在runfiles目录下新建CMSDocumentImport作业主程序和作业进程配置文件：runfiles/config-cmsdocmenttable.properties，内容如下：
 
