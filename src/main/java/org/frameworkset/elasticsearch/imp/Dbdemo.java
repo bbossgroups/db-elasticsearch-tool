@@ -67,7 +67,7 @@ public class Dbdemo {
 				.setIndexType("dbdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
-				.setUseLowcase(true)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
+				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
 
@@ -153,6 +153,7 @@ public class Dbdemo {
 //				customObject.setAuthor((String)context.getValue("author"));
 //				customObject.setTitle((String)context.getValue("title"));
 //				customObject.setSubtitle((String)context.getValue("subtitle"));
+//				customObject.setIds(new int[]{1,2,3});
 //				context.addFieldValue("docInfo",customObject);//如果还需要构建更多的内部对象，可以继续构建
 //
 //				//上述三个属性已经放置到docInfo中，如果无需再放置到索引文档中，可以忽略掉这些属性
