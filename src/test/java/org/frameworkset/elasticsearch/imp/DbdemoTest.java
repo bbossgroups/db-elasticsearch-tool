@@ -14,11 +14,6 @@ package org.frameworkset.elasticsearch.imp;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.ImportBuilder;
-import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
-
 /**
  * <p>Description: 测试代码</p>
  * <p></p>
@@ -29,6 +24,7 @@ import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
  */
 public class DbdemoTest {
 	public static void main(String args[]){
+
 		Dbdemo dbdemo = new Dbdemo();
 		boolean dropIndice = false;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 		dbdemo.scheduleImportData(  dropIndice);
