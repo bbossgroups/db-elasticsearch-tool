@@ -16,7 +16,9 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
+import org.frameworkset.elasticsearch.client.Context;
 import org.frameworkset.elasticsearch.client.DataStream;
+import org.frameworkset.elasticsearch.client.EsIdGenerator;
 import org.frameworkset.elasticsearch.client.ImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
@@ -178,7 +180,13 @@ public class Dbdemo {
 
 		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
-
+		importBuilder.setEsIdGenerator(new EsIdGenerator() { //默认根据setEsIdField方法设置的字段值作为文档id，如果默认没有配置EsIdField则由es自动生成文档id
+			//如果指定EsIdGenerator，则根据下面的方法生成文档id
+			@Override
+			public Object genId(Context context) throws Exception {
+				return null;//返回null，则由es自动生成文档id
+			}
+		});
 		/**
 		 * 执行数据库表数据导入es操作
 		 */
