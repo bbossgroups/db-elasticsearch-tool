@@ -15,11 +15,8 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import com.frameworkset.util.SimpleStringUtil;
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.Context;
 import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.EsIdGenerator;
 import org.frameworkset.elasticsearch.client.ImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
@@ -48,7 +45,8 @@ public class Dbdemo {
 		if(dropIndice) {
 			try {
 				//清除测试表,导入的时候回重建表，测试的时候加上为了看测试效果，实际线上环境不要删表
-				ElasticSearchHelper.getRestClientUtil().dropIndice("dbdemo");
+				String repsonse = ElasticSearchHelper.getRestClientUtil().dropIndice("dbdemo");
+				System.out.println(repsonse);
 			} catch (Exception e) {
 			}
 		}
@@ -69,7 +67,7 @@ public class Dbdemo {
 				.setIndex("dbdemo") //必填项
 				.setIndexType("dbdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
-				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
+				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
@@ -181,6 +179,7 @@ public class Dbdemo {
 
 		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+		/**
 		importBuilder.setEsIdGenerator(new EsIdGenerator() {
 			//如果指定EsIdGenerator，则根据下面的方法生成文档id，
 			// 否则根据setEsIdField方法设置的字段值作为文档id，
@@ -191,6 +190,7 @@ public class Dbdemo {
 				return SimpleStringUtil.getUUID();//返回null，则由es自动生成文档id
 			}
 		});
+		*/
 		/**
 		 * 执行数据库表数据导入es操作
 		 */

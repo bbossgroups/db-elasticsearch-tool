@@ -26,7 +26,7 @@ public class DbdemoTest {
 	public static void main(String args[]){
 
 		Dbdemo dbdemo = new Dbdemo();
-		boolean dropIndice = false;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
+		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 		dbdemo.scheduleImportData(  dropIndice);
 	}
 
