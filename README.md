@@ -1,6 +1,18 @@
 # bboss elasticsearch 数据导入工具demo
 使用本demo所带的应用程序运行容器环境，可以快速编写，打包发布可运行的数据导入工具
 
+支持的数据库：
+mysql,maridb，postgress,oracle ,sqlserver,db2等
+
+支持的Elasticsearch版本：
+1.x,2.x,5.x,6.x,+
+
+支持海量PB级数据同步导入功能
+
+使用参考文档
+
+https://my.oschina.net/bboss/blog/1832212
+
 # 构建部署
 ## 准备工作
 需要通过gradle构建发布版本，因此通过以下链接下面gradle：
