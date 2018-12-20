@@ -113,7 +113,7 @@ db2es工具管理提取数据的sql语句有两种方法：代码中直接编写
 
 在sql配置文件中可以配置多条sql语句
 
-## 3.作业参数配置
+# 作业参数配置
 
 在使用[db2es-booter](https://gitee.com/bbossgroups/db2es-booter)时，为了避免调试过程中不断打包发布数据同步工具，可以将部分控制参数配置到启动配置文件config.properties中,然后在代码中通过以下方法获取配置的参数：
 
