@@ -81,7 +81,7 @@ nohup java \$RT_JAVA_OPTS -jar ${project}-${bboss_version}.jar restart --conf=co
 其他stop shell指令也类似建立即可
 
 # 管理提取数据的sql语句
- 
+
 db2es工具管理提取数据的sql语句有两种方法：代码中直接编写sql语句，配置文件中采用sql语句  
 ## 1.代码中写sql
 
@@ -90,36 +90,54 @@ db2es工具管理提取数据的sql语句有两种方法：代码中直接编写
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setNumberLastValueColumn和setNumberLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-
+	
 		importBuilder.setSql("select * from td_sm_log where log_id > #[log_id]");`
 ## 2.在配置文件中管理sql
 设置sql语句配置文件路径和对应在配置文件中sql name
 `importBuilder.setSqlFilepath("sql.xml")
-			 .setSqlName("demoexportFull");	`	
- 
+​			 .setSqlName("demoexportFull");	`	
+
 配置文件sql.xml，编译到classes根目录即可：
 
 <?xml version="1.0" encoding='UTF-8'?>
 <properties>
-    <description>
-        <![CDATA[
-	配置数据导入的sql
+​    <description>
+​        <![CDATA[
+​	配置数据导入的sql
  ]]>
-    </description>
-    <property name="demoexport"><![CDATA[select * from td_sm_log where log_id > #[log_id]]]></property>
-    <property name="demoexportFull"><![CDATA[select * from td_sm_log ]]></property>
+​    </description>
+​    <property name="demoexport"><![CDATA[select * from td_sm_log where log_id > #[log_id]]]></property>
+​    <property name="demoexportFull"><![CDATA[select * from td_sm_log ]]></property>
 
 </properties>
 
 在sql配置文件中可以配置多条sql语句
 
+## 3.作业参数配置
+
+在使用[db2es-booter](https://gitee.com/bbossgroups/db2es-booter)时，为了避免调试过程中不断打包发布数据同步工具，可以将部分控制参数配置到启动配置文件config.properties中,然后在代码中通过以下方法获取配置的参数：
+
+```ini
+#工具主程序
+mainclass=org.frameworkset.elasticsearch.imp.Dbdemo
+
+# 参数配置
+# 在代码中获取方法：CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值false
+dropIndice=false
+```
+
+在代码中获取参数dropIndice方法：
+
+```java
+boolean dropIndice = CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值false
+```
 
 
-# 数据库数据导入es使用参考文档
+## 数据库数据导入es使用参考文档
 https://my.oschina.net/bboss/blog/1832212
 
 ## elasticsearch技术交流群:166471282 
-     
+
 ## elasticsearch微信公众号:bbossgroup   
 ![GitHub Logo](https://static.oschina.net/uploads/space/2017/0617/094201_QhWs_94045.jpg)
 
