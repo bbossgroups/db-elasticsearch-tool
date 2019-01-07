@@ -14,6 +14,9 @@ package org.frameworkset.elasticsearch.imp;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import org.frameworkset.elasticsearch.ElasticSearchHelper;
+
 /**
  * <p>Description: 测试代码</p>
  * <p></p>
@@ -26,9 +29,12 @@ public class DbdemoTest {
 	public static void main(String args[]){
 
 		Dbdemo dbdemo = new Dbdemo();
+		String repsonse = ElasticSearchHelper.getRestClientUtil().getIndice("dbdemo");
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 //		dbdemo.scheduleImportData(  dropIndice);//定时增量导入
-		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
+//		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
+		dbdemo.scheduleRefactorImportData(dropIndice);//定时全量导入，在context中排除remark1字段
+
 //		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
 //		dbdemo.scheduleDatePatternImportData(dropIndice);//定时增量导入，按日期分表yyyy.MM.dd
 	}
