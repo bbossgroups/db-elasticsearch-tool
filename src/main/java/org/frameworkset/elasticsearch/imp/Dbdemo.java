@@ -233,14 +233,16 @@ public class Dbdemo {
 		 * es相关配置
 		 */
 		importBuilder
-				.setIndex("dbdemo-{yyyy.MM.dd}-end") //必填项
+				.setIndex("dbdemo-{yyyy.MM.dd}") //必填项，通过{yyyy.MM.dd}设置按日期分索引表
 				.setIndexType("dbdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
-
+		importBuilder.setDateFormat("yyyy-MM-dd");//指定时间字段的时间格式，默认采用UTC时间格式，es中存储的UTC时间会比东八区（中国时区）时间少8小时，但是通过kibana或者bboss检索数据时会自动转换为东8区时间
+//		importBuilder.setTimeZone("Asia/Shanghai");//设置时区，可选
+//		importBuilder.setLocale(Locale.SIMPLIFIED_CHINESE.toString());//设置地区码，可选
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
 //					 .setScheduleDate(date) //指定任务开始执行时间：日期
