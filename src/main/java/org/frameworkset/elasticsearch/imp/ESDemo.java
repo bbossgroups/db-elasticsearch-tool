@@ -105,20 +105,19 @@ public class ESDemo {
 	public void exportData(){
 
 		ExportBuilder exportBuilder = new ExportBuilder();
-		exportBuilder.setBatchSize(5000)
-				     .setInsertBatchSize(5000)
-					 .setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				     .setSqlName("insertSQL")
-					 .setDslName("scrollQuery")
-					 .setScrollLiveTime("10m")
+		exportBuilder.setBatchSize(5000) //指定批量获取es数据size
+				     .setInsertBatchSize(5000)  //指定每批插入db的数据size
+					 .setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
+				     .setSqlName("insertSQL") //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+					 .setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
+					 .setScrollLiveTime("10m") //scroll查询的scrollid有效期
 //					 .setSliceQuery(true)
 //				     .setSliceSize(5)
-					 .setQueryUrl("dbdemo/_search")
-//				     .setPrintTaskLog(true)
-					 .setBatchHandler(new BatchHandler<Map>() {
+					 .setQueryUrl("dbdemo/_search") //查询索引表demo中的文档数据
+					 .setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
 							@Override
 							public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-								stmt.setString(1, (String) esrecord.get("logContent"));
+								stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
 							}
 						})
 //				//添加dsl中需要用到的参数及参数值
@@ -144,8 +143,8 @@ public class ESDemo {
 				.setSqlName("insertSQL")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
-					 .setSliceQuery(true)
-				     .setSliceSize(5)
+					 .setSliceQuery(true) //设置并行从es获取数据标识
+				     .setSliceSize(5) //设置并行slice个数
 				.setQueryUrl("dbdemo/_search")
 //				     .setPrintTaskLog(true)
 				.setBatchHandler(new BatchHandler<Map>() {
@@ -172,7 +171,7 @@ public class ESDemo {
 		exportBuilder.setBatchSize(5000)
 				.setInsertBatchSize(5000)
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				.setSql("insert into batchtest (name) values(?)")
+				.setSql("insert into batchtest (name) values(?)") //直接指定sql语句
 				.setDslName("scrollQuery")
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true)
