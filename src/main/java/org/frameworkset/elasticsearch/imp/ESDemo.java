@@ -41,8 +41,12 @@ import java.util.Map;
  * @version 1.0
  */
 public class ESDemo {
-	public static void main(String[] args)  {
+	/**
+	 * 采用原始方法导入数据
+	 */
+	public void directExport()  {
 
+		//启动数据源
 		SQLUtil.startPool("test",//数据源名称
 				"com.mysql.jdbc.Driver",//mysql驱动
 				"jdbc:mysql://localhost:3306/bboss?useCursorFetch=true",//mysql链接串
@@ -95,6 +99,9 @@ public class ESDemo {
 
 	}
 
+	/**
+	 * 串行导入
+	 */
 	public void exportData(){
 
 		ExportBuilder exportBuilder = new ExportBuilder();
@@ -113,12 +120,20 @@ public class ESDemo {
 							public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
 								stmt.setString(1, (String) esrecord.get("logContent"));
 							}
-						});
+						})
+//				//添加dsl中需要用到的参数及参数值
+//				.addParam("var1","v1")
+//				.addParam("var2","v2")
+//				.addParam("var3","v3")
+		;
 
 		DataStream dataStream = exportBuilder.builder();
 		dataStream.execute();
 	}
 
+	/**
+	 * 并行导入
+	 */
 
 	public void exportSliceData(){
 
@@ -138,12 +153,20 @@ public class ESDemo {
 					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
 						stmt.setString(1, (String) esrecord.get("logContent"));
 					}
-				});
+				})
+//				//添加dsl中需要用到的参数及参数值
+//				.addParam("var1","v1")
+//				.addParam("var2","v2")
+//				.addParam("var3","v3")
+				;
 
 		DataStream dataStream = exportBuilder.builder();
 		dataStream.execute();
 	}
 
+	/**
+	 * 在代码中写sql导入
+	 */
 	public void exportDataUseSQL(){
 		ExportBuilder exportBuilder = new ExportBuilder();
 		exportBuilder.setBatchSize(5000)
@@ -160,7 +183,12 @@ public class ESDemo {
 					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
 						stmt.setString(1, (String) esrecord.get("logContent"));
 					}
-				});
+				})
+//				//添加dsl中需要用到的参数及参数值
+//				.addParam("var1","v1")
+//				.addParam("var2","v2")
+//				.addParam("var3","v3")
+		;
 
 		DataStream dataStream = exportBuilder.builder();
 		dataStream.execute();

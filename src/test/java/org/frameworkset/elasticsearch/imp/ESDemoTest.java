@@ -28,8 +28,9 @@ import org.frameworkset.spi.BaseApplicationContext;
 public class ESDemoTest {
 	public static void main(String[] args){
 
-//		ESDemo.main(args);
+
 		ESDemo esDemo = new ESDemo();
+		//		esDemo.directExport();
 //		esDemo.exportData();
 		esDemo.exportSliceData();
 		//结束所以后台程序，退出，测试时打开
