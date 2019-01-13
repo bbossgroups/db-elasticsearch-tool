@@ -245,8 +245,8 @@ public class Dbdemo {
 		                                          // 通过设置dateformat来指定自己的日期格式，如果设置了自己的日期格式，那么在kibana里面或者bboss里面检索，会多出8小时，
 												  // 这时采用bboss查询相关数据的时候，需要在相关对象属性上面设置时间格式注解，例如：
 													// @JsonFormat(pattern = "yyyy-MM-dd")
-													//@Column(dataformat = "yyyy-MM-dd")
-													//protected Date agentStarttime;
+													// @Column(dataformat = "yyyy-MM-dd")
+													// protected Date agentStarttime;
 //		importBuilder.setTimeZone("Asia/Shanghai");//设置时区，可选
 //		importBuilder.setLocale(Locale.SIMPLIFIED_CHINESE.toString());//设置地区码，可选
 		//定时任务配置，

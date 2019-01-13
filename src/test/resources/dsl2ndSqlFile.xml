@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<properties>
+    <description>
+        <![CDATA[
+	配置数据导入的dsl
+ ]]>
+    </description>
+    <!--
+       简单的scroll query案例，复杂的条件修改query dsl即可
+       -->
+    <property name="scrollQuery">
+        <![CDATA[
+         {
+            "size":#[size],
+            "query": {"match_all": {}}
+        }
+        ]]>
+    </property>
+    <!--
+        简单的slice scroll query案例，复杂的条件修改query dsl即可
+    -->
+    <property name="scrollSliceQuery">
+        <![CDATA[
+         {
+           "slice": {
+                "id": #[sliceId], ## 必须使用sliceId作为变量名称
+                "max": #[sliceMax] ## 必须使用sliceMax作为变量名称
+            },
+            "size":#[size],
+            "query": {"match_all": {}}
+        }
+        ]]>
+    </property>
+
+    <!--
+        简单的slice scroll query案例，复杂的条件修改query dsl即可
+    -->
+    <property name="insertSQL">
+        <![CDATA[insert into batchtest (name) values(?)]]>
+    </property>
+</properties>
