@@ -187,9 +187,8 @@ public class DbdemoFromSQLFile {
 		 * 执行数据库表数据导入es操作
 		 */
 		DataStream dataStream = importBuilder.builder();
-		dataStream.db2es();//执行导入操作
+		dataStream.execute();//执行导入操作
 
-		System.out.println();
 
 
 	}
