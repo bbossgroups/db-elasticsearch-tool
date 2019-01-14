@@ -25,6 +25,7 @@ import org.frameworkset.elasticsearch.client.DataStream;
 import org.frameworkset.elasticsearch.client.ExportBuilder;
 import org.frameworkset.elasticsearch.entity.ESDatas;
 import org.frameworkset.elasticsearch.scroll.ScrollHandler;
+import org.frameworkset.spi.assemble.PropertiesContainer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -41,19 +42,55 @@ import java.util.Map;
  * @version 1.0
  */
 public class ESDemo {
+	protected void buildDBConfig(){
+
+		PropertiesContainer propertiesContainer = new PropertiesContainer();
+			propertiesContainer.addConfigPropertiesFile("application.properties");
+		String dbName  = propertiesContainer.getProperty("db.name");
+		String dbUser  = propertiesContainer.getProperty("db.user");
+		String dbPassword  = propertiesContainer.getProperty("db.password");
+		String dbDriver  = propertiesContainer.getProperty("db.driver");
+		String dbUrl  = propertiesContainer.getProperty("db.url");
+
+
+		String validateSQL  = propertiesContainer.getProperty("db.validateSQL");
+
+		String _showSql = propertiesContainer.getProperty("db.showsql");
+		boolean showSql = true;
+		if(_showSql != null && !_showSql.equals(""))
+			showSql  = Boolean.parseBoolean(_showSql);
+
+		String _jdbcFetchSize = propertiesContainer.getProperty("db.jdbcFetchSize");
+		Integer jdbcFetchSize = null;
+		if(_jdbcFetchSize != null && !_jdbcFetchSize.equals(""))
+			jdbcFetchSize  = Integer.parseInt(_jdbcFetchSize);
+
+		//启动数据源
+		SQLUtil.startPool(dbName,//数据源名称
+				dbDriver,//mysql驱动
+				dbUrl,//mysql链接串
+				dbUser,dbPassword,//数据库账号和口令
+				validateSQL, //数据库连接校验sql
+				jdbcFetchSize // jdbcFetchSize
+		);
+
+
+	}
 	/**
 	 * 采用原始方法导入数据
 	 */
 	public void directExport()  {
 
 		//启动数据源
+		/**
 		SQLUtil.startPool("test",//数据源名称
 				"com.mysql.jdbc.Driver",//mysql驱动
 				"jdbc:mysql://localhost:3306/bboss?useCursorFetch=true",//mysql链接串
 				"root","123456",//数据库账号和口令
 				"select 1 ", //数据库连接校验sql
 				10000 // jdbcFetchSize
-		);
+		);*/
+		buildDBConfig();
 		//scroll分页检索
 		final int batchSize = 5000;
 
