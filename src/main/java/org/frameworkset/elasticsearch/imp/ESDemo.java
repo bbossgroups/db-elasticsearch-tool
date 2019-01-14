@@ -45,7 +45,7 @@ public class ESDemo {
 	protected void buildDBConfig(){
 
 		PropertiesContainer propertiesContainer = new PropertiesContainer();
-			propertiesContainer.addConfigPropertiesFile("application.properties");
+		propertiesContainer.addConfigPropertiesFile("application.properties");
 		String dbName  = propertiesContainer.getProperty("db.name");
 		String dbUser  = propertiesContainer.getProperty("db.user");
 		String dbPassword  = propertiesContainer.getProperty("db.password");
@@ -55,10 +55,6 @@ public class ESDemo {
 
 		String validateSQL  = propertiesContainer.getProperty("db.validateSQL");
 
-		String _showSql = propertiesContainer.getProperty("db.showsql");
-		boolean showSql = true;
-		if(_showSql != null && !_showSql.equals(""))
-			showSql  = Boolean.parseBoolean(_showSql);
 
 		String _jdbcFetchSize = propertiesContainer.getProperty("db.jdbcFetchSize");
 		Integer jdbcFetchSize = null;
