@@ -25,6 +25,7 @@ import org.frameworkset.elasticsearch.client.DataStream;
 import org.frameworkset.elasticsearch.client.ExportBuilder;
 import org.frameworkset.elasticsearch.entity.ESDatas;
 import org.frameworkset.elasticsearch.scroll.ScrollHandler;
+import org.frameworkset.elasticsearch.serial.ESInnerHitSerialThreadLocal;
 import org.frameworkset.spi.assemble.PropertiesContainer;
 
 import java.sql.PreparedStatement;
@@ -194,6 +195,45 @@ public class ESDemo {
 
 		DataStream dataStream = exportBuilder.builder();
 		dataStream.execute();
+	}
+
+	/**
+	 * 并行导入
+	 */
+
+	public void exportSliceDataWithInnerhit(){
+
+		ExportBuilder exportBuilder = new ExportBuilder();
+		exportBuilder.setBatchSize(5000)
+				.setInsertBatchSize(5000)
+				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
+				.setSqlName("insertSQL")
+				.setDslName("scrollSliceQuery")
+				.setScrollLiveTime("10m")
+				.setSliceQuery(true) //设置并行从es获取数据标识
+				.setSliceSize(5) //设置并行slice个数
+				.setQueryUrl("dbdemo/_search")
+//				     .setPrintTaskLog(true)
+				.setBatchHandler(new BatchHandler<Map>() {
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));
+					}
+				})
+//				//添加dsl中需要用到的参数及参数值
+//				.addParam("var1","v1")
+//				.addParam("var2","v2")
+//				.addParam("var3","v3")
+		;
+
+		DataStream dataStream = exportBuilder.builder();
+		try {
+			ESInnerHitSerialThreadLocal.setESInnerTypeReferences(Object.class);
+			dataStream.execute();
+		}
+		finally {
+			ESInnerHitSerialThreadLocal.clean();
+		}
 	}
 
 	/**
