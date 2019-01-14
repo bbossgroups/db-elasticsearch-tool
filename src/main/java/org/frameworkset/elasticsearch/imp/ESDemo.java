@@ -42,7 +42,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class ESDemo {
-	protected void buildDBConfig(){
+	protected void buildDBConfigAndStartDatasource(){
 
 		PropertiesContainer propertiesContainer = new PropertiesContainer();
 		propertiesContainer.addConfigPropertiesFile("application.properties");
@@ -86,7 +86,7 @@ public class ESDemo {
 				"select 1 ", //数据库连接校验sql
 				10000 // jdbcFetchSize
 		);*/
-		buildDBConfig();
+		buildDBConfigAndStartDatasource();
 		//scroll分页检索
 		final int batchSize = 5000;
 
