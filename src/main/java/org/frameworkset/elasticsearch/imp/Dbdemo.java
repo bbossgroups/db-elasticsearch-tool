@@ -22,6 +22,8 @@ import org.frameworkset.elasticsearch.client.DataStream;
 import org.frameworkset.elasticsearch.client.ImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
+import java.util.Date;
+
 /**
  * <p>Description: 同步处理程序，如需调试同步功能，
  * 请运行测试用例DbdemoTest中调试</p>
@@ -496,8 +498,12 @@ public class Dbdemo {
 				customObject.setAuthor((String)context.getValue("author"));
 				customObject.setTitle((String)context.getValue("title"));
 				customObject.setSubtitle((String)context.getValue("subtitle"));
+
 				customObject.setIds(new int[]{1,2,3});
-				context.addFieldValue("author",customObject);//如果还需要构建更多的内部对象，可以继续构建
+				context.addFieldValue("author",customObject);
+				long testtimestamp = context.getLongValue("testtimestamp");//将long类型的时间戳转换为Date类型
+				context.addFieldValue("testtimestamp",new Date(testtimestamp));//将long类型的时间戳转换为Date类型
+
 //				context.addIgnoreFieldMapping("title");
 				//上述三个属性已经放置到docInfo中，如果无需再放置到索引文档中，可以忽略掉这些属性
 //				context.addIgnoreFieldMapping("author");
