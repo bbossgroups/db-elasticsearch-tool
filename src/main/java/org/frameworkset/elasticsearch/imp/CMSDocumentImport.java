@@ -44,7 +44,7 @@ public class CMSDocumentImport {
 		if(dropIndice) {
 			try {
 				//清除测试表,导入的时候回重建表，测试的时候加上为了看测试效果，实际线上环境不要删表
-				ElasticSearchHelper.getRestClientUtil().dropIndice("cms_document");
+				ElasticSearchHelper.getRestClientUtil().dropIndice("cms_document1");
 			} catch (Exception e) {
 			}
 		}
@@ -62,8 +62,8 @@ public class CMSDocumentImport {
 		 * es相关配置
 		 */
 		importBuilder
-				.setIndex("cms_document") //必填项
-				.setIndexType("cms_document") //必填项
+				.setIndex("cms_document1") //必填项
+				.setIndexType("cms_document1") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(true)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
