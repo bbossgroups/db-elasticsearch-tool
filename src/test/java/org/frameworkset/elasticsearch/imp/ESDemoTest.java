@@ -15,8 +15,6 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import org.frameworkset.spi.BaseApplicationContext;
-
 /**
  * <p>Description: 从es中查询数据导入数据库案例</p>
  * <p></p>
@@ -35,7 +33,7 @@ public class ESDemoTest {
 //		esDemo.exportSliceData();
 		esDemo.exportSliceDataWithInnerhit();
 		//结束所以后台程序，退出，测试时打开
-		BaseApplicationContext.shutdown();
+		//BaseApplicationContext.shutdown();
 	}
 
 }

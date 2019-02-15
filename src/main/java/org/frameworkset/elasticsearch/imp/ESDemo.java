@@ -43,6 +43,13 @@ import java.util.Map;
  * @version 1.0
  */
 public class ESDemo {
+	public static void main(String[] args){
+		ESDemo esDemo = new ESDemo();
+		//		esDemo.directExport();
+//		esDemo.exportData();
+//		esDemo.exportSliceData();
+		esDemo.exportSliceDataWithInnerhit();
+	}
 	protected void buildDBConfigAndStartDatasource(){
 
 		PropertiesContainer propertiesContainer = new PropertiesContainer();
