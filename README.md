@@ -38,7 +38,27 @@ https://github.com/bbossgroups/db2es-booter
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
-如果需要测试调试，就在test目录下面编写src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
+如果需要测试调试，就在test目录下面编写DbdemoTest测试类，然后运行调试类即可：
+
+src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
+
+```java
+public class DbdemoTest {
+	public static void main(String args[]){
+
+		long t = System.currentTimeMillis();
+		Dbdemo dbdemo = new Dbdemo();
+		String repsonse = ElasticSearchHelper.getRestClientUtil().getIndice("dbdemo");
+		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
+		dbdemo.scheduleImportData(  dropIndice);//定时增量导入
+//		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
+
+//		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
+//		dbdemo.scheduleDatePatternImportData(dropIndice);//定时增量导入，按日期分表yyyy.MM.dd
+	}
+
+}
+```
 
 修改es和数据库配置-db2es-booter\src\test\resources\application.properties
 
