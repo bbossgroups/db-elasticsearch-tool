@@ -38,7 +38,7 @@ https://github.com/bbossgroups/db2es-booter
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
-如果需要测试调试，就在test目录下面编写DbdemoTest测试类，然后运行调试类即可：
+如果需要测试和调试导入功能，需要在db2es-booter\src\test\java目录下面编写DbdemoTest测试类，然后运行调试类即可：
 
 src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
 
@@ -64,7 +64,13 @@ public class DbdemoTest {
 
 工程已经内置mysql jdbc驱动，如果有依赖的第三方jdbc包（比如oracle驱动），可以将第三方jdbc依赖包放入db2es-booter\lib目录下
 
-打包构建：进入命令行模式，在源码工程根目录db2es-booter下运行以下gradle指令打包发布版本
+写好DbdemoTest后就可以进行功能调试了。
+
+## 注意：
+
+千万不要直接运行Dbdemo的main方法，否则会报**找不到poolman.xml之类莫名其妙的问题**。
+
+测试调试通过后，就可以构建发布可运行的版本了：进入命令行模式，在源码工程根目录db2es-booter下运行以下gradle指令打包发布版本
 
 gradle clean releaseVersion
 
