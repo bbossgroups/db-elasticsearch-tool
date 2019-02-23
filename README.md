@@ -68,7 +68,7 @@ public class DbdemoTest {
 
 ## 注意：
 
-千万不要直接运行Dbdemo的main方法，否则会报**找不到poolman.xml之类莫名其妙的问题**。
+调试的时候，千万不要直接运行Dbdemo的main方法，否则会报**找不到poolman.xml之类莫名其妙的问题**。
 
 测试调试通过后，就可以构建发布可运行的版本了：进入命令行模式，在源码工程根目录db2es-booter下运行以下gradle指令打包发布版本
 
