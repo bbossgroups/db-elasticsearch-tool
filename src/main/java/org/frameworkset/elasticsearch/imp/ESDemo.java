@@ -24,6 +24,7 @@ import org.frameworkset.elasticsearch.client.ClientInterface;
 import org.frameworkset.elasticsearch.client.DataStream;
 import org.frameworkset.elasticsearch.client.ExportBuilder;
 import org.frameworkset.elasticsearch.entity.ESDatas;
+import org.frameworkset.elasticsearch.scroll.HandlerInfo;
 import org.frameworkset.elasticsearch.scroll.ScrollHandler;
 import org.frameworkset.elasticsearch.serial.ESInnerHitSerialThreadLocal;
 import org.frameworkset.spi.assemble.PropertiesContainer;
@@ -125,7 +126,7 @@ public class ESDemo {
 		final ConfigSQLExecutor configSQLExecutor = new ConfigSQLExecutor(dsl2ndSqlFile);
 		ClientInterface clientUtil = ElasticSearchHelper.getConfigRestClientUtil(dsl2ndSqlFile);
 		ESDatas<Map> response = clientUtil.scroll(url, dslName, scrollLiveTime, params, Map.class, new ScrollHandler<Map>() {
-			public void handle(ESDatas<Map> response) throws Exception {//自己处理每次scroll的结果
+			public void handle(ESDatas<Map> response, HandlerInfo handlerInfo) throws Exception {//自己处理每次scroll的结果
 				List<Map> datas = response.getDatas();
 				long totalSize = response.getTotalSize();
 				System.out.println("totalSize:"+totalSize+",datas.size:"+datas.size());
