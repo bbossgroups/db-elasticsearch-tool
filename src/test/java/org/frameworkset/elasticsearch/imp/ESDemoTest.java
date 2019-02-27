@@ -31,7 +31,8 @@ public class ESDemoTest {
 		//		esDemo.directExport();
 //		esDemo.exportData();
 //		esDemo.exportSliceData();
-		esDemo.exportSliceDataWithInnerhit();
+//		esDemo.exportSliceDataWithInnerhit();
+		esDemo.exportParallelData();
 		//结束所以后台程序，退出，测试时打开
 		//BaseApplicationContext.shutdown();
 	}

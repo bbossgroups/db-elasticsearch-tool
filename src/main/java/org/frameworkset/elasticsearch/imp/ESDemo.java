@@ -142,7 +142,7 @@ public class ESDemo {
 	}
 
 	/**
-	 * 串行导入
+	 * 采用工具串行导入
 	 */
 	public void exportData(){
 
@@ -173,7 +173,39 @@ public class ESDemo {
 	}
 
 	/**
-	 * 并行导入
+	 * 采用工具并行导入
+	 */
+	public void exportParallelData(){
+
+		ExportBuilder exportBuilder = new ExportBuilder();
+		exportBuilder.setBatchSize(5000) //指定批量获取es数据size
+				.setInsertBatchSize(5000)  //指定每批插入db的数据size
+				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
+				.setSqlName("insertSQL") //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+				.setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
+				.setScrollLiveTime("10m") //scroll查询的scrollid有效期
+				.setParallel(true)
+//					 .setSliceQuery(true)
+//				     .setSliceSize(5)
+				.setQueryUrl("dbdemo/_search") //查询索引表demo中的文档数据
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				})
+//				//添加dsl中需要用到的参数及参数值
+//				.addParam("var1","v1")
+//				.addParam("var2","v2")
+//				.addParam("var3","v3")
+		;
+
+		DataStream dataStream = exportBuilder.builder();
+		dataStream.execute();
+	}
+
+	/**
+	 * 采用工具slice并行导入
 	 */
 
 	public void exportSliceData(){
@@ -206,7 +238,7 @@ public class ESDemo {
 	}
 
 	/**
-	 * 并行导入
+	 * 采用工具slice并行导入
 	 */
 
 	public void exportSliceDataWithInnerhit(){
