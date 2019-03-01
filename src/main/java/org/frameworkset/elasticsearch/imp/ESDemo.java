@@ -22,7 +22,7 @@ import com.frameworkset.common.poolman.util.SQLUtil;
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.elasticsearch.client.ClientInterface;
 import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.ExportBuilder;
+import org.frameworkset.elasticsearch.client.ES2DBExportBuilder;
 import org.frameworkset.elasticsearch.entity.ESDatas;
 import org.frameworkset.elasticsearch.scroll.HandlerInfo;
 import org.frameworkset.elasticsearch.scroll.ScrollHandler;
@@ -146,7 +146,7 @@ public class ESDemo {
 	 */
 	public void exportData(){
 
-		ExportBuilder exportBuilder = new ExportBuilder();
+		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000) //指定批量获取es数据size
 				     .setInsertBatchSize(5000)  //指定每批插入db的数据size
 					 .setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
@@ -177,7 +177,7 @@ public class ESDemo {
 	 */
 	public void exportParallelData(){
 
-		ExportBuilder exportBuilder = new ExportBuilder();
+		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000) //指定批量获取es数据size
 				.setInsertBatchSize(5000)  //指定每批插入db的数据size
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
@@ -210,7 +210,7 @@ public class ESDemo {
 
 	public void exportSliceData(){
 
-		ExportBuilder exportBuilder = new ExportBuilder();
+		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000)
 				.setInsertBatchSize(5000)
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
@@ -243,7 +243,7 @@ public class ESDemo {
 
 	public void exportSliceDataWithInnerhit(){
 
-		ExportBuilder exportBuilder = new ExportBuilder();
+		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000)
 				.setInsertBatchSize(5000)
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
@@ -280,7 +280,7 @@ public class ESDemo {
 	 * 在代码中写sql导入
 	 */
 	public void exportDataUseSQL(){
-		ExportBuilder exportBuilder = new ExportBuilder();
+		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000)
 				.setInsertBatchSize(5000)
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")

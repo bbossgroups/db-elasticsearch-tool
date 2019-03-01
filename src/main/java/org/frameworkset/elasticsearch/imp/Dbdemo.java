@@ -16,11 +16,10 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.Context;
-import org.frameworkset.elasticsearch.client.DataRefactor;
-import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.ImportBuilder;
+import org.frameworkset.elasticsearch.client.*;
+import org.frameworkset.elasticsearch.client.schedule.CallInterceptor;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
+import org.frameworkset.elasticsearch.client.schedule.TaskContext;
 
 import java.util.Date;
 
@@ -44,7 +43,7 @@ public class Dbdemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -182,8 +181,8 @@ public class Dbdemo {
 //		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
 //		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+		importBuilder.setDebugResponse(true);//设置是否将每次处理的reponse打印到日志文件中，默认false
+		importBuilder.setDiscardBulkResponse(false);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 		/**
 		importBuilder.setEsIdGenerator(new EsIdGenerator() {
 			//如果指定EsIdGenerator，则根据下面的方法生成文档id，
@@ -211,7 +210,7 @@ public class Dbdemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleDatePatternImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -384,7 +383,7 @@ public class Dbdemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleRefactorImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -422,39 +421,39 @@ public class Dbdemo {
 				.setDeyLay(1000L) // 任务延迟执行deylay毫秒后执行
 				.setPeriod(10000L); //每隔period毫秒执行，如果不设置，只执行一次
 		//定时任务配置结束
-//
-//		//设置任务执行拦截器，可以添加多个
-//		importBuilder.addCallInterceptor(new CallInterceptor() {
-//			@Override
-//			public void preCall(TaskContext taskContext) {
-//				System.out.println("preCall");
-//			}
-//
-//			@Override
-//			public void afterCall(TaskContext taskContext) {
-//				System.out.println("afterCall");
-//			}
-//
-//			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
-//				System.out.println("throwException");
-//			}
-//		}).addCallInterceptor(new CallInterceptor() {
-//			@Override
-//			public void preCall(TaskContext taskContext) {
-//				System.out.println("preCall 1");
-//			}
-//
-//			@Override
-//			public void afterCall(TaskContext taskContext) {
-//				System.out.println("afterCall 1");
-//			}
-//
-//			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
-//				System.out.println("throwException 1");
-//			}
-//		});
+
+		//设置任务执行拦截器，可以添加多个
+		importBuilder.addCallInterceptor(new CallInterceptor() {
+			@Override
+			public void preCall(TaskContext taskContext) {
+				System.out.println("preCall");
+			}
+
+			@Override
+			public void afterCall(TaskContext taskContext) {
+				System.out.println("afterCall");
+			}
+
+			@Override
+			public void throwException(TaskContext taskContext, Exception e) {
+				System.out.println("throwException");
+			}
+		}).addCallInterceptor(new CallInterceptor() {
+			@Override
+			public void preCall(TaskContext taskContext) {
+				System.out.println("preCall 1");
+			}
+
+			@Override
+			public void afterCall(TaskContext taskContext) {
+				System.out.println("afterCall 1");
+			}
+
+			@Override
+			public void throwException(TaskContext taskContext, Exception e) {
+				System.out.println("throwException 1");
+			}
+		});
 //		//设置任务执行拦截器结束，可以添加多个
 		//增量配置开始
 //		importBuilder.setNumberLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
@@ -553,7 +552,7 @@ public class Dbdemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleFullImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -563,7 +562,29 @@ public class Dbdemo {
 			} catch (Exception e) {
 			}
 		}
+		//设置数据导入任务
+		importBuilder.setExportResultHandler(new ExportResultHandler() {
+			@Override
+			public void success(TaskCommand taskCommand, String result) {
+				System.out.println(result);
+			}
 
+			@Override
+			public void error(TaskCommand taskCommand, String result) {
+				//具体怎么处理失败数据可以自行决定,下面的示例显示重新导入失败数据的逻辑：
+				// 从result中分析出导入失败的记录，然后重新构建data，设置到taskCommand中，重新导入，
+				// 支持的导入次数由getMaxRetry方法返回的数字决定
+				// String failDatas = ...;
+				//taskCommand.setDatas(failDatas);
+				//taskCommand.execute();
+				System.out.println(result);
+			}
+
+			@Override
+			public int getMaxRetry() {
+				return -1;
+			}
+		});
 
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
@@ -720,7 +741,7 @@ public class Dbdemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleFullAutoUUIDImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {

@@ -16,8 +16,8 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
+import org.frameworkset.elasticsearch.client.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.ImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
 /**
@@ -39,7 +39,7 @@ public class CMSDocumentImport {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleImportData(boolean dropIndice){
-		ImportBuilder importBuilder = ImportBuilder.newInstance();
+		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
