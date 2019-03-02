@@ -562,24 +562,31 @@ public class Dbdemo {
 			} catch (Exception e) {
 			}
 		}
-		//设置数据导入任务
-		importBuilder.setExportResultHandler(new ExportResultHandler() {
+		//设置数据bulk导入任务结果处理回调函数，对每次bulk任务的结果进行成功和失败反馈，然后针对失败的bulk任务通过error方法进行相应处理
+		importBuilder.setExportResultHandler(new ExportResultHandler<String,String>() {
 			@Override
-			public void success(TaskCommand taskCommand, String result) {
-				System.out.println(result);
+			public void success(TaskCommand<String,String> taskCommand, String result) {
+				String datas = taskCommand.getDatas();//执行的批量数据
+				System.out.println(result);//打印成功结果
 			}
 
 			@Override
-			public void error(TaskCommand taskCommand, String result) {
+			public void error(TaskCommand<String,String> taskCommand, String result) {
 				//具体怎么处理失败数据可以自行决定,下面的示例显示重新导入失败数据的逻辑：
 				// 从result中分析出导入失败的记录，然后重新构建data，设置到taskCommand中，重新导入，
 				// 支持的导入次数由getMaxRetry方法返回的数字决定
 				// String failDatas = ...;
 				//taskCommand.setDatas(failDatas);
 				//taskCommand.execute();
-				System.out.println(result);
+				String datas = taskCommand.getDatas();//执行的批量数据
+				System.out.println(result);//打印成功结果
 			}
 
+			/**
+			 * 如果对于执行有错误的任务，可以进行修正后重新执行，通过本方法
+			 * 返回允许的最大重试次数
+			 * @return
+			 */
 			@Override
 			public int getMaxRetry() {
 				return -1;
