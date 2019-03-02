@@ -1,1 +1,1 @@
-java -jar ${project}-${bboss_version}.jar  stop
+java -jar ${project}-${bboss_version}.jar --conf=resources/application.properties  stop
