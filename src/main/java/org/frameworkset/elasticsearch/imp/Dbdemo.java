@@ -20,6 +20,7 @@ import org.frameworkset.elasticsearch.client.*;
 import org.frameworkset.elasticsearch.client.schedule.CallInterceptor;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 import org.frameworkset.elasticsearch.client.schedule.TaskContext;
+import org.frameworkset.runtime.CommonLauncher;
 
 import java.util.Date;
 
@@ -36,7 +37,7 @@ public class Dbdemo {
 	public static void main(String args[]){
 		Dbdemo dbdemo = new Dbdemo();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
-		dbdemo.scheduleImportData(  dropIndice);
+		dbdemo.scheduleFullImportData(  dropIndice);
 	}
 
 	/**
@@ -553,6 +554,10 @@ public class Dbdemo {
 	 */
 	public void scheduleFullImportData(boolean dropIndice){
 		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
+		dropIndice = CommonLauncher.getBooleanAttribute("dropIndice",true);//同时指定了默认值
+		int batchSize = CommonLauncher.getIntProperty("batchSize",10);//同时指定了默认值
+		int queueSize = CommonLauncher.getIntProperty("queueSize",50);//同时指定了默认值
+		int workThreads = CommonLauncher.getIntProperty("workThreads",10);//同时指定了默认值
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -567,7 +572,7 @@ public class Dbdemo {
 			@Override
 			public void success(TaskCommand<String,String> taskCommand, String result) {
 				String datas = taskCommand.getDatas();//执行的批量数据
-				System.out.println(result);//打印成功结果
+//				System.out.println(result);//打印成功结果
 			}
 
 			@Override
@@ -579,7 +584,7 @@ public class Dbdemo {
 				//taskCommand.setDatas(failDatas);
 				//taskCommand.execute();
 				String datas = taskCommand.getDatas();//执行的批量数据
-				System.out.println(result);//打印成功结果
+//				System.out.println(result);//打印成功结果
 			}
 
 			/**
@@ -611,8 +616,8 @@ public class Dbdemo {
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
-				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
-				.setBatchSize(2);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
+				.setPrintTaskLog(false) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
+				.setBatchSize(batchSize);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
 
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
@@ -711,8 +716,8 @@ public class Dbdemo {
 		 * 一次、作业创建一个内置的线程池，实现多线程并行数据导入elasticsearch功能，作业完毕后关闭线程池
 		 */
 		importBuilder.setParallel(true);//设置为多线程并行批量导入,false串行
-		importBuilder.setQueue(10);//设置批量导入线程池等待队列长度
-		importBuilder.setThreadCount(5);//设置批量导入线程池工作线程数量
+		importBuilder.setQueue(queueSize);//设置批量导入线程池等待队列长度
+		importBuilder.setThreadCount(workThreads);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
 		importBuilder.setEsIdField("log_id");//设置文档主键，不设置，则自动产生文档id
