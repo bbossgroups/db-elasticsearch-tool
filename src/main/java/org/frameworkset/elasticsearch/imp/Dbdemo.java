@@ -23,6 +23,7 @@ import org.frameworkset.elasticsearch.client.schedule.TaskContext;
 import org.frameworkset.runtime.CommonLauncher;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>Description: 同步处理程序，如需调试同步功能，
@@ -489,11 +490,18 @@ public class Dbdemo {
 //		testObject.setName("jackson");
 //		importBuilder.addFieldValue("testObject",testObject);
 		importBuilder.addFieldValue("author","作者");
+		final AtomicInteger s = new AtomicInteger(0);
 		/**
 		 * 重新设置es数据结构
 		 */
 		importBuilder.setDataRefactor(new DataRefactor() {
 			public void refactor(Context context) throws Exception  {
+				//可以根据条件定义是否丢弃当前记录
+				//context.setDrop(true);return;
+				if(s.incrementAndGet() % 2 == 0) {
+					context.setDrop(true);
+					return;
+				}
 				CustomObject customObject = new CustomObject();
 				customObject.setAuthor((String)context.getValue("author"));
 				customObject.setTitle((String)context.getValue("title"));
