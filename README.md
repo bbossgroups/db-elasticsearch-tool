@@ -19,9 +19,8 @@ mysql,maridb，postgress,oracle ,sqlserver,db2等
 
 支持海量PB级数据同步导入功能
 
-使用参考文档
+[使用参考文档](https://esdoc.bbossgroups.com/#/db-es-tool)
 
-https://my.oschina.net/bboss/blog/1832212
 
 # 构建部署
 ## 准备工作
