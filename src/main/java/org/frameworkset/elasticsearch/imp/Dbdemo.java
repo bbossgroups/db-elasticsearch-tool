@@ -502,6 +502,11 @@ public class Dbdemo {
 					context.setDrop(true);
 					return;
 				}
+				//空值处理，判断字段content的值是否为空
+				if(context.getValue("content") == null){
+					context.addFieldValue("content","");//将content设置为""
+				}
+
 				CustomObject customObject = new CustomObject();
 				customObject.setAuthor((String)context.getValue("author"));
 				customObject.setTitle((String)context.getValue("title"));
@@ -585,6 +590,7 @@ public class Dbdemo {
 
 			@Override
 			public void error(TaskCommand<String,String> taskCommand, String result) {
+				//任务执行完毕，但是结果中包含错误信息
 				//具体怎么处理失败数据可以自行决定,下面的示例显示重新导入失败数据的逻辑：
 				// 从result中分析出导入失败的记录，然后重新构建data，设置到taskCommand中，重新导入，
 				// 支持的导入次数由getMaxRetry方法返回的数字决定
@@ -593,6 +599,11 @@ public class Dbdemo {
 				//taskCommand.execute();
 				String datas = taskCommand.getDatas();//执行的批量数据
 //				System.out.println(result);//打印成功结果
+			}
+
+			@Override
+			public void exception(TaskCommand<String, String> taskCommand, Exception exception) {
+				//任务执行抛出异常，失败处理方法
 			}
 
 			/**
