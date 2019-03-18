@@ -522,6 +522,21 @@ public class Dbdemo {
 //				context.addIgnoreFieldMapping("author");
 				context.addIgnoreFieldMapping("title");
 				context.addIgnoreFieldMapping("subtitle");
+
+				/**
+				//关联查询数据,单值查询
+				Map headdata = SQLExecutor.queryObjectWithDBName(Map.class,context.getEsjdbc().getDbConfig().getDbName(),
+																"select * from head where billid = ? and othercondition= ?",
+																context.getIntegerValue("billid"),"otherconditionvalue");//多个条件用逗号分隔追加
+				//将headdata中的数据,调用addFieldValue方法将数据加入当前es文档，具体如何构建文档数据结构根据需求定
+				context.addFieldValue("headdata",headdata);
+				//关联查询数据,多值查询
+				List<Map> facedatas = SQLExecutor.queryListWithDBName(Map.class,context.getEsjdbc().getDbConfig().getDbName(),
+						"select * from facedata where billid = ?",
+						context.getIntegerValue("billid"));
+				//将facedatas中的数据,调用addFieldValue方法将数据加入当前es文档，具体如何构建文档数据结构根据需求定
+				context.addFieldValue("facedatas",facedatas);
+				 */
 			}
 		});
 		//映射和转换配置结束
@@ -568,9 +583,9 @@ public class Dbdemo {
 	public void fullImportData(boolean dropIndice){
 		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 		dropIndice = CommonLauncher.getBooleanAttribute("dropIndice",true);//同时指定了默认值
-		int batchSize = CommonLauncher.getIntProperty("batchSize",10);//同时指定了默认值
+		int batchSize = CommonLauncher.getIntProperty("batchSize",20);//同时指定了默认值
 		int queueSize = CommonLauncher.getIntProperty("queueSize",50);//同时指定了默认值
-		int workThreads = CommonLauncher.getIntProperty("workThreads",2);//同时指定了默认值
+		int workThreads = CommonLauncher.getIntProperty("workThreads",20);//同时指定了默认值
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -604,6 +619,7 @@ public class Dbdemo {
 			@Override
 			public void exception(TaskCommand<String, String> taskCommand, Exception exception) {
 				//任务执行抛出异常，失败处理方法
+				exception.printStackTrace();
 			}
 
 			/**
