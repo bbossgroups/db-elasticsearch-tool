@@ -58,7 +58,7 @@ public class DBTest {
 				validateSQL, //数据库连接校验sql
 				jdbcFetchSize // jdbcFetchSize
 		);
-		List<Map> datas = SQLExecutor.queryList(Map.class,"select * from td_cms_document");
+		List<Map> datas = SQLExecutor.queryList(Map.class,"select * from td_cms_document id = ?",0);
 		System.out.println();
 	}
 }
