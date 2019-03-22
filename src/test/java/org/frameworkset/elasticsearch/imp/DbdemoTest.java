@@ -36,6 +36,9 @@ public class DbdemoTest {
 
 //		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
 //		dbdemo.scheduleDatePatternImportData(dropIndice);//定时增量导入，按日期分表yyyy.MM.dd
+
+
+
 	}
 
 
