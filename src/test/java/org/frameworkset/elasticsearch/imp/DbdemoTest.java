@@ -30,8 +30,9 @@ public class DbdemoTest {
 		Dbdemo dbdemo = new Dbdemo();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 //		dbdemo.scheduleImportData(  dropIndice);//定时增量导入
+		dbdemo.externalScheduleImportData(dropIndice);//外部定时器定时增量导入
 //		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
-		dbdemo.fullImportData(dropIndice);//一次性全量导入
+//		dbdemo.fullImportData(dropIndice);//一次性全量导入
 //		dbdemo.scheduleRefactorImportData(dropIndice);//定时全量导入，在context中排除remark1字段
 
 //		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
