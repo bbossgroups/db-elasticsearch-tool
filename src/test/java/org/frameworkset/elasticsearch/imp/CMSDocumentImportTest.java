@@ -26,6 +26,6 @@ package org.frameworkset.elasticsearch.imp;
 public class CMSDocumentImportTest {
 	public static void main(String[] args){
 		CMSDocumentImport cmsDocumentImport = new CMSDocumentImport();
-		cmsDocumentImport.scheduleImportData(false);
+		cmsDocumentImport.scheduleImportData(true);
 	}
 }

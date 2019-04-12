@@ -44,7 +44,7 @@ public class CMSDocumentImport {
 		if(dropIndice) {
 			try {
 				//清除测试表,导入的时候回重建表，测试的时候加上为了看测试效果，实际线上环境不要删表
-				ElasticSearchHelper.getRestClientUtil().dropIndice("cms_document1");
+				ElasticSearchHelper.getRestClientUtil().dropIndice("dbclobdemo");
 			} catch (Exception e) {
 			}
 		}
@@ -62,10 +62,10 @@ public class CMSDocumentImport {
 		 * es相关配置
 		 */
 		importBuilder
-				.setIndex("cms_document1") //必填项
-				.setIndexType("cms_document1") //必填项
+				.setIndex("dbclobdemo") //必填项
+				.setIndexType("dbclobdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
-				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
+				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(true)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
@@ -173,7 +173,6 @@ public class CMSDocumentImport {
 		importBuilder.setEsIdField("document_id");//设置文档主键，不设置，则自动产生文档id
 //		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
 //		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
-
 		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 
