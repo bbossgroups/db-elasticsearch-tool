@@ -1,0 +1,1 @@
+java -jar ${project}-${bboss_version}.jar --conf=config-quartztask.properties  stop
