@@ -64,7 +64,7 @@ public class Dbdemo {
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
 
 		importBuilder.setSql("select * from td_sm_log where log_id > #[log_id]");
-		importBuilder.addIgnoreFieldMapping("remark1");
+//		importBuilder.addIgnoreFieldMapping("remark1");
 //		importBuilder.setSql("select * from td_sm_log ");
 		/**
 		 * es相关配置
@@ -76,7 +76,7 @@ public class Dbdemo {
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
-				.setBatchSize(5000);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
+				.setBatchSize(10);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
 
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
@@ -85,7 +85,7 @@ public class Dbdemo {
 				.setPeriod(10000L); //每隔period毫秒执行，如果不设置，只执行一次
 		//定时任务配置结束
 //
-//		//设置任务执行拦截器，可以添加多个
+//		//设置任务执行拦截器，可以添加多个，定时任务每次执行的拦截器
 //		importBuilder.addCallInterceptor(new CallInterceptor() {
 //			@Override
 //			public void preCall(TaskContext taskContext) {
@@ -121,7 +121,7 @@ public class Dbdemo {
 		//增量配置开始
 //		importBuilder.setNumberLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
 //		importBuilder.setNumberLastValueColumn("log_id");//手动指定日期增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
-		importBuilder.setFromFirst(true);//任务重启时，重新开始采集数据，true 重新开始，false不重新开始，适合于每次全量导入数据的情况，如果是全量导入，可以先删除原来的索引数据
+		importBuilder.setFromFirst(false);//任务重启时，重新开始采集数据，true 重新开始，false不重新开始，适合于每次全量导入数据的情况，如果是全量导入，可以先删除原来的索引数据
 		importBuilder.setLastValueStorePath("logtable_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
 		importBuilder.setLastValueType(ImportIncreamentConfig.NUMBER_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
@@ -174,7 +174,7 @@ public class Dbdemo {
 		/**
 		 * 一次、作业创建一个内置的线程池，实现多线程并行数据导入elasticsearch功能，作业完毕后关闭线程池
 		 */
-		importBuilder.setParallel(false);//设置为多线程并行批量导入,false串行
+		importBuilder.setParallel(true);//设置为多线程并行批量导入,false串行
 		importBuilder.setQueue(10);//设置批量导入线程池等待队列长度
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
@@ -183,7 +183,7 @@ public class Dbdemo {
 //		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
 //		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 
-		importBuilder.setDebugResponse(true);//设置是否将每次处理的reponse打印到日志文件中，默认false
+		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		importBuilder.setDiscardBulkResponse(false);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 		/**
 		importBuilder.setEsIdGenerator(new EsIdGenerator() {

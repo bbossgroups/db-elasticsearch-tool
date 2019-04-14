@@ -21,7 +21,8 @@ import org.frameworkset.elasticsearch.client.schedule.ExternalScheduler;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
 /**
- * <p>Description: </p>
+ * <p>Description: 使用quartz等外部环境定时运行导入数据，需要设置：</p>
+ * importBuilder.setExternalTimer(true);
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2019/4/13 13:45
