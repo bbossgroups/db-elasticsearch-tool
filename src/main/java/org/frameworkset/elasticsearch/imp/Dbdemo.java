@@ -21,6 +21,7 @@ import org.frameworkset.elasticsearch.client.schedule.CallInterceptor;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 import org.frameworkset.elasticsearch.client.schedule.TaskContext;
 import org.frameworkset.runtime.CommonLauncher;
+import org.frameworkset.spi.geoip.IpInfo;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -849,10 +850,10 @@ public class Dbdemo {
 			public void refactor(Context context) throws Exception  {
 				//可以根据条件定义是否丢弃当前记录
 				//context.setDrop(true);return;
-				if(s.incrementAndGet() % 2 == 0) {
-					context.setDrop(true);
-					return;
-				}
+//				if(s.incrementAndGet() % 2 == 0) {
+//					context.setDrop(true);
+//					return;
+//				}
 				//空值处理，判断字段content的值是否为空
 				if(context.getValue("content") == null){
 					context.addFieldValue("content","");//将content设置为""
@@ -873,7 +874,12 @@ public class Dbdemo {
 //				context.addIgnoreFieldMapping("author");
 				context.addIgnoreFieldMapping("title");
 				context.addIgnoreFieldMapping("subtitle");
-
+				/**
+				 * 获取ip对应的运营商和区域信息
+				 */
+				IpInfo ipInfo = context.getIpInfo("remoteAddr");
+				context.addFieldValue("ipInfo",ipInfo);
+				context.addFieldValue("collectTime",new Date());
 				/**
 				//关联查询数据,单值查询
 				Map headdata = SQLExecutor.queryObjectWithDBName(Map.class,context.getEsjdbc().getDbConfig().getDbName(),
