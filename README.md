@@ -190,9 +190,7 @@ importBuilder.setQueue(queueSize);//设置批量导入线程池等待队列长�
 importBuilder.setThreadCount(workThreads);//设置批量导入线程池工作线程数量
 ```
 
-## 数据库数据导入es使用参考文档
-
-https://my.oschina.net/bboss/blog/1832212
+ 
 
 ## elasticsearch技术交流群:166471282 
 
