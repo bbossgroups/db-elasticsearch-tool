@@ -62,8 +62,9 @@
 	</property>
 
 	<property name="quartzImportTask" class="org.frameworkset.elasticsearch.imp.QuartzImportTask"
-
-			  init-method="init"/>
+			  destroy-method="destroy"
+			  init-method="init"
+	/>
 
 
 </properties>

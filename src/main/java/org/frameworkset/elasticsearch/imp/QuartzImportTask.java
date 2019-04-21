@@ -19,6 +19,7 @@ import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.elasticsearch.client.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ExternalScheduler;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
+import org.frameworkset.elasticsearch.client.schedule.quartz.AbstractDB2ESQuartzJobHandler;
 
 /**
  * <p>Description: 使用quartz等外部环境定时运行导入数据，需要设置：</p>
@@ -29,11 +30,10 @@ import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
  * @author biaoping.yin
  * @version 1.0
  */
-public class QuartzImportTask {
-	private ExternalScheduler externalScheduler;
+public class QuartzImportTask extends AbstractDB2ESQuartzJobHandler {
 	public void init(){
 		externalScheduler = new ExternalScheduler();
-		externalScheduler.dataStream(()->{
+		externalScheduler.dataStream((Object params)->{
 			DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
 			//增量定时任务不要删表，但是可以通过删表来做初始化操作
 //		if(dropIndice) {
@@ -196,8 +196,6 @@ public class QuartzImportTask {
 		});
 
 	}
-	public void execute(){
-		externalScheduler.execute();
-	}
+
 
 }
