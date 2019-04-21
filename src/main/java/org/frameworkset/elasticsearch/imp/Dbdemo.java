@@ -843,6 +843,7 @@ public class Dbdemo {
 //		importBuilder.addFieldValue("testObject",testObject);
 		importBuilder.addFieldValue("author","作者");
 		final AtomicInteger s = new AtomicInteger(0);
+
 		/**
 		 * 重新设置es数据结构
 		 */
@@ -866,13 +867,16 @@ public class Dbdemo {
 
 				customObject.setIds(new int[]{1,2,3});
 				context.addFieldValue("author",customObject);
+
 				long testtimestamp = context.getLongValue("testtimestamp");//将long类型的时间戳转换为Date类型
 				context.addFieldValue("testtimestamp",new Date(testtimestamp));//将long类型的时间戳转换为Date类型
 
 //				context.addIgnoreFieldMapping("title");
 				//上述三个属性已经放置到docInfo中，如果无需再放置到索引文档中，可以忽略掉这些属性
 //				context.addIgnoreFieldMapping("author");
-				context.addIgnoreFieldMapping("title");
+
+				//修改字段名称title为新名称newTitle，并且修改字段的值
+				context.newName2ndData("title","newTitle",(String)context.getValue("title")+" append new Value");
 				context.addIgnoreFieldMapping("subtitle");
 				/**
 				 * 获取ip对应的运营商和区域信息

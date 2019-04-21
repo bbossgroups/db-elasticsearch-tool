@@ -192,7 +192,7 @@ public class QuartzImportTask {
 			/**
 			 * 执行数据库表数据导入es操作
 			 */
-			return importBuilder.builder();
+			return importBuilder;
 		});
 
 	}
