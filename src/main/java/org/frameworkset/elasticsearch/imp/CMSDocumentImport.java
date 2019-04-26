@@ -48,7 +48,7 @@ public class CMSDocumentImport {
 			} catch (Exception e) {
 			}
 		}
-
+//		importBuilder.setDbAdaptor("org.frameworkset.elasticsearch.imp.DMAdaptor");
 
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
