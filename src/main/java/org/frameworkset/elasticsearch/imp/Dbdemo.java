@@ -588,7 +588,7 @@ public class Dbdemo {
 		 * es相关配置
 		 */
 		importBuilder
-				.setIndex("dbdemo-{yyyy.MM.dd}") //必填项，通过{yyyy.MM.dd}设置按日期分索引表
+				.setIndex("dbdemo-{dateformat=yyyy.MM.dd}") //必填项，通过{yyyy.MM.dd}设置按日期分索引表
 				.setIndexType("dbdemo") //必填项
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
