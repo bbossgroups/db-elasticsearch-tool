@@ -15,13 +15,11 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import com.frameworkset.common.poolman.SQLExecutor;
+import com.frameworkset.common.poolman.PreparedDBUtil;
 import com.frameworkset.common.poolman.util.SQLUtil;
 import org.frameworkset.spi.assemble.PropertiesContainer;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>Description: </p>
@@ -58,7 +56,56 @@ public class DBTest {
 				validateSQL, //数据库连接校验sql
 				jdbcFetchSize // jdbcFetchSize
 		);
-		List<Map> datas = SQLExecutor.queryList(Map.class,"select * from td_cms_document id = ?",0);
-		System.out.println();
+//		List<Map> datas = SQLExecutor.queryList(Map.class,"select * from td_cms_document id = ?",0);
+//		System.out.println();
+//		initData();
+		patchData();
+	}
+
+	public static void patchData() throws SQLException {
+		String sql = "INSERT INTO bigtable (col1, col2, col3) VALUES (?, ?, ?) ";
+//		SQLExecutor.deleteWithDBName("test","delete from bigtable");
+		PreparedDBUtil dbUtil = new PreparedDBUtil();
+		dbUtil.preparedInsert("test", sql);
+		StringBuilder builder = new StringBuilder();
+		for(long j = 99995001; j < 100000000l; j ++) {
+
+
+				dbUtil.setString(1, builder.append(j).toString());
+				builder.setLength(0);
+				dbUtil.setString(2, builder.append("sss").append(j).toString());
+			builder.setLength(0);
+				dbUtil.setString(3, builder.append("ddd").append(j).toString());
+			builder.setLength(0);
+				dbUtil.addPreparedBatch();
+
+		}
+		dbUtil.executePreparedBatch();
+
+	}
+	public static void initData() throws SQLException {
+		String sql = "INSERT INTO bigtable (col1, col2, col3) VALUES (?, ?, ?) ";
+//		SQLExecutor.deleteWithDBName("test","delete from bigtable");
+		PreparedDBUtil dbUtil = new PreparedDBUtil();
+		dbUtil.preparedInsert("test", sql);
+		StringBuilder builder = new StringBuilder();
+		for(long j = 0; j < 100000000l; j ++) {
+
+
+			dbUtil.setString(1, builder.append(j).toString());
+			builder.setLength(0);
+			dbUtil.setString(2, builder.append("sss").append(j).toString());
+			builder.setLength(0);
+			dbUtil.setString(3, builder.append("ddd").append(j).toString());
+			builder.setLength(0);
+			dbUtil.addPreparedBatch();
+			if(j > 0 && j % 5000 == 0) {
+				dbUtil.executePreparedBatch();
+				dbUtil = new PreparedDBUtil();
+				dbUtil.preparedInsert("test", sql);
+			}
+		}
+		dbUtil.executePreparedBatch();
+
 	}
 }
