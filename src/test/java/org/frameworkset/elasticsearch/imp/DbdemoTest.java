@@ -15,8 +15,6 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-
 /**
  * <p>Description: 测试代码</p>
  * <p></p>
@@ -27,7 +25,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public class DbdemoTest {
 	public static void main(String args[]){
-		PoolingHttpClientConnectionManager s;
+
 		long t = System.currentTimeMillis();
 		Dbdemo dbdemo = new Dbdemo();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
@@ -35,9 +33,10 @@ public class DbdemoTest {
 //		dbdemo.externalScheduleImportData(dropIndice);//外部定时器定时增量导入
 //		dbdemo.externalFullScheduleImportData(dropIndice);//外部定时器定时增量导入
 //		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
-//		dbdemo.fullImportData(dropIndice);//一次性全量导入
+		dbdemo.fullImportData(dropIndice);//一次性全量导入
+
 //		dbdemo.scheduleRefactorImportData(dropIndice);//定时全量导入，在context中排除remark1字段
-		dbdemo.fullAutoUUIDImportData(dropIndice);
+//		dbdemo.fullAutoUUIDImportData(dropIndice);
 //		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
 //		dbdemo.scheduleDatePatternImportData(dropIndice);//定时增量导入，按日期分表yyyy.MM.dd
 
