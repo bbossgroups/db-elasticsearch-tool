@@ -33,7 +33,7 @@
     </property>
 
     <!--
-        简单的slice scroll query案例，复杂的条件修改query dsl即可
+        插入数据sql
     -->
     <property name="insertSQL">
         <![CDATA[insert into batchtest (name) values(?)]]>

@@ -35,13 +35,13 @@ gradle安装配置参考文档：
 https://esdoc.bbossgroups.com/#/bboss-build
 
 ## 下载源码工程-基于gradle
-https://github.com/bbossgroups/db2es-booter
+<https://github.com/bbossgroups/db-elasticsearch-tool>
 
 从上面的地址下载源码工程，然后导入idea或者eclipse，根据自己的需求，修改导入程序逻辑
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
-如果需要测试和调试导入功能，需要在db2es-booter\src\test\java目录下面编写DbdemoTest测试类，然后运行调试类即可：
+如果需要测试和调试导入功能，需要在db-elasticsearch-tool\src\test\java目录下面编写DbdemoTest测试类，然后运行调试类即可：
 
 src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
 
@@ -63,9 +63,9 @@ public class DbdemoTest {
 }
 ```
 
-修改es和数据库配置-db2es-booter\src\test\resources\application.properties
+修改es和数据库配置-db-elasticsearch-tool\src\test\resources\application.properties
 
-工程已经内置mysql jdbc驱动，如果有依赖的第三方jdbc包（比如oracle驱动），可以将第三方jdbc依赖包放入db2es-booter\lib目录下
+db-elasticsearch-tool工程已经内置mysql jdbc驱动，如果有依赖的第三方jdbc包（比如oracle驱动），可以将第三方jdbc依赖包放入db-elasticsearch-tool\lib目录下
 
 写好DbdemoTest后就可以进行功能调试了。
 
@@ -73,7 +73,7 @@ public class DbdemoTest {
 
 调试的时候，千万不要直接运行Dbdemo的main方法，否则会报**找不到poolman.xml（bboss持久层数据源默认配置文件）之类莫名其妙的问题**。
 
-测试调试通过后，就可以构建发布可运行的版本了：进入命令行模式，在源码工程根目录db2es-booter下运行以下gradle指令打包发布版本
+测试调试通过后，就可以构建发布可运行的版本了：进入命令行模式，在源码工程根目录db-elasticsearch-tool下运行以下gradle指令打包发布版本
 
 gradle clean releaseVersion
 
@@ -154,7 +154,7 @@ db2es工具管理提取数据的sql语句有两种方法：代码中直接编写
 
 # 作业参数配置
 
-在使用[db2es-booter](https://github.com/bbossgroups/db2es-booter)时，为了避免调试过程中不断打包发布数据同步工具，可以将部分控制参数配置到启动配置文件resources/application.properties中,然后在代码中通过以下方法获取配置的参数：
+在使用[db-elasticsearch-tool](https://github.com/bbossgroups/db-elasticsearch-tool)时，为了避免调试过程中不断打包发布数据同步工具，可以将部分控制参数配置到启动配置文件resources/application.properties中,然后在代码中通过以下方法获取配置的参数：
 
 ```ini
 #工具主程序
