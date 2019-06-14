@@ -133,6 +133,9 @@ configure(allprojects) { project ->
 		)
 //		compile 'org.apache-extras.beanshell:bsh:2.0b6'
 		compile 'org.xerial:sqlite-jdbc:3.23.1'
+		//mysql 8.0依赖
+		//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+		//mysql 5.x依赖
 		compile 'mysql:mysql-connector-java:5.1.40'
 		compile (
 				[group: 'com.bbossgroups', name: 'bboss-rt', version: "${bboss_version}", transitive: false],

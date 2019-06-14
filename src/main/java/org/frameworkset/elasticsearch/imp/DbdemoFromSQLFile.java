@@ -61,7 +61,7 @@ public class DbdemoFromSQLFile {
 //		importBuilder.setSql("select * from td_sm_log ");
 		importBuilder.setSqlFilepath("sql.xml")
 				     .setSqlName("demoexportFull");
-
+		importBuilder.setJdbcFetchSize(-2147483648);
 
 		/**
 		 * es相关配置
