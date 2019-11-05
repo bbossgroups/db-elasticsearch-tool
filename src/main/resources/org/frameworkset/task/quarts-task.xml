@@ -55,7 +55,12 @@
 						cronb_time="${quartzImportTask.crontime}" used="true"
 						shouldRecover="false"
 						/>
-
+					<property name="quartzES2DBImportTask" jobid="QuartzES2DBImportTask"
+							  bean-name="QuartzES2DBImportTask"
+							  method="execute"
+							  cronb_time="${quartzImportTask.crontime}" used="false"
+							  shouldRecover="false"
+					/>
 				</list>
 			</property>
 		</list>
@@ -65,6 +70,11 @@
 			  destroy-method="destroy"
 			  init-method="init"
 	/>
+	<property name="QuartzES2DBImportTask" class="org.frameworkset.elasticsearch.imp.QuartzES2DBImportTask"
+			  destroy-method="destroy"
+			  init-method="init"
+	/>
+
 
 
 </properties>

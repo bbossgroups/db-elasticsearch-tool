@@ -16,8 +16,8 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.DataStream;
+import org.frameworkset.elasticsearch.client.db2es.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
 /**
@@ -30,7 +30,7 @@ import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
  */
 public class CMSDocumentImport {
 	public static void main(String args[]){
-		Dbdemo dbdemo = new Dbdemo();
+		CMSDocumentImport dbdemo = new CMSDocumentImport();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 		dbdemo.scheduleImportData(  dropIndice);
 	}

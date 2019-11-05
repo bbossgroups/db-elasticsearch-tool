@@ -41,12 +41,11 @@ https://esdoc.bbossgroups.com/#/bboss-build
 
 org.frameworkset.elasticsearch.imp.Dbdemo
 
-如果需要测试和调试导入功能，需要在db-elasticsearch-tool\src\test\java目录下面编写DbdemoTest测试类，然后运行调试类即可：
+如果需要测试和调试导入功能，运行Dbdemo的main方法即可即可：
 
-src/test/java/org/frameworkset/elasticsearch/imp/DbdemoTest.java
 
 ```java
-public class DbdemoTest {
+public class Dbdemo {
 	public static void main(String args[]){
 
 		long t = System.currentTimeMillis();
@@ -59,23 +58,20 @@ public class DbdemoTest {
 //		dbdemo.scheduleFullAutoUUIDImportData(dropIndice);//定时全量导入，自动生成UUID
 //		dbdemo.scheduleDatePatternImportData(dropIndice);//定时增量导入，按日期分表yyyy.MM.dd
 	}
-
+    .....
 }
 ```
 
-修改es和数据库配置-db-elasticsearch-tool\src\test\resources\application.properties
+修改es和数据库配置-db-elasticsearch-tool\src\main\resources\application.properties
 
 db-elasticsearch-tool工程已经内置mysql jdbc驱动，如果有依赖的第三方jdbc包（比如oracle驱动），可以将第三方jdbc依赖包放入db-elasticsearch-tool\lib目录下
 
-写好DbdemoTest后就可以进行功能调试了。
+修改完毕配置后，就可以进行功能调试了。
 
-## 注意：
-
-调试的时候，千万不要直接运行Dbdemo的main方法，否则会报**找不到poolman.xml（bboss持久层数据源默认配置文件）之类莫名其妙的问题**。
 
 测试调试通过后，就可以构建发布可运行的版本了：进入命令行模式，在源码工程根目录db-elasticsearch-tool下运行以下gradle指令打包发布版本
 
-gradle clean releaseVersion
+release.bat
 
 ## 运行作业
 gradle构建成功后，在build/distributions目录下会生成可以运行的zip包，解压运行导入程序

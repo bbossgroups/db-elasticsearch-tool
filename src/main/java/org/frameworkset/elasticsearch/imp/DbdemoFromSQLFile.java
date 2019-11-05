@@ -16,8 +16,8 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.DataStream;
+import org.frameworkset.elasticsearch.client.db2es.DB2ESImportBuilder;
 import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
 
 /**

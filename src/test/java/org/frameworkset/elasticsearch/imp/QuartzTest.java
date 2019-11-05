@@ -15,26 +15,18 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
+import org.frameworkset.task.TaskService;
+
 /**
- * <p>Description: 从es中查询数据导入数据库案例</p>
+ * <p>Description: </p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
- * @Date 2019/1/11 14:39
+ * @Date 2019/11/5 12:46
  * @author biaoping.yin
  * @version 1.0
  */
-public class ESDemoTest {
+public class QuartzTest {
 	public static void main(String[] args){
-
-
-		ES2DBDemo esDemo = new ES2DBDemo();
-		//		esDemo.directExport();
-//		esDemo.exportData();
-//		esDemo.exportSliceData();
-//		esDemo.exportSliceDataWithInnerhit();
-		esDemo.exportParallelData();
-		//结束所以后台程序，退出，测试时打开
-		//BaseApplicationContext.shutdown();
+		TaskService.getTaskService().startService();
 	}
-
 }
