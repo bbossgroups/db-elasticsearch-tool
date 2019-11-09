@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * <p>Description: 从es中查询数据导入数据库案例</p>
+ * <p>Description: 从es中查询数据导入数据库案例,基于数字类型增量同步，采用scroll检索</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2019/1/11 14:39

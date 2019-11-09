@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * <p>Description: 从es中查询数据导入数据库案例</p>
+ * <p>Description: 从es中查询数据导入数据库案例,基于数字类型增量同步，采用slicescroll检索</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2019/1/11 14:39
@@ -236,7 +236,7 @@ public class ES2DBSliceScrollDemo {
 		 });
 		 */
 		/**
-		 * 执行数据库表数据导入es操作
+		 * 执行es数据导入数据库表操作
 		 */
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作

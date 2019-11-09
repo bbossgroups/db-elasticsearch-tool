@@ -2,8 +2,8 @@
 <properties>
     <description>
         <![CDATA[
-	配置数据导入的dsl
- ]]>
+            配置数据导入的dsl和sql
+         ]]>
     </description>
     <!--
           条件片段
@@ -13,6 +13,7 @@
          "query": {
                 "bool": {
                     "filter": [
+                        ## 可以设置同步数据的过滤参数条件
                         #*
                         {
                             "term": {
@@ -30,6 +31,7 @@
                             }
                         },
                         *#
+                        ## 根据fullImport参数控制是否设置增量检索条件，true 全量检索 false增量检索
                         #if(!$fullImport)
                         {   ## 增量检索范围，可以是时间范围，也可以是数字范围，这里采用的是数字增量字段
                             "range": {
@@ -88,15 +90,15 @@
 
     <!--
     插入数据sql
--->
+    -->
     <property name="insertSQLnew">
         <![CDATA[INSERT INTO batchtest ( name, author, content, title, optime, oper, subtitle, collecttime,ipinfo)
                 VALUES ( #[operModule],  ## 来源dbdemo索引中的 operModule字段
                          #[author], ## 通过datarefactor增加的字段
-                         #[logContent], ## 来源dbdemo索引中的 operModule字段
+                         #[logContent], ## 来源dbdemo索引中的 logContent字段
                          #[title], ## 通过datarefactor增加的字段
-                         #[logOpertime], ## 来源dbdemo索引中的 operModule字段
-                         #[logOperuser],  ## 来源dbdemo索引中的 operModule字段
+                         #[logOpertime], ## 来源dbdemo索引中的 logOpertime字段
+                         #[logOperuser],  ## 来源dbdemo索引中的 logOperuser字段
                          #[subtitle], ## 通过datarefactor增加的字段
                          #[collecttime], ## 通过datarefactor增加的字段
                          #[ipinfo]) ## 通过datarefactor增加的地理位置信息字段

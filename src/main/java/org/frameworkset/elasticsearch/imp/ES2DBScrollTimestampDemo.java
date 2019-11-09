@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * <p>Description: 从es中查询数据导入数据库案例</p>
+ * <p>Description: 从es中查询数据导入数据库案例,基于时间戳增量同步，采用slicescroll检索</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2019/1/11 14:39
@@ -41,12 +41,6 @@ public class ES2DBScrollTimestampDemo {
 	public static void main(String[] args){
 		ES2DBScrollTimestampDemo esDemo = new ES2DBScrollTimestampDemo();
 		esDemo.scheduleScrollRefactorImportData();
-//		esDemo.directExport();
-//		esDemo.exportData();
-//		esDemo.exportSliceData();
-//		esDemo.exportSliceDataWithInnerhit();
-//		esDemo.exportDataUseSQL();
-//		esDemo.exportParallelData();
 		System.out.println("complete.");
 	}
 
@@ -225,26 +219,11 @@ public class ES2DBScrollTimestampDemo {
 		importBuilder.setPrintTaskLog(true);
 		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
-		/**
-		 importBuilder.setEsIdGenerator(new EsIdGenerator() {
-		 //如果指定EsIdGenerator，则根据下面的方法生成文档id，
-		 // 否则根据setEsIdField方法设置的字段值作为文档id，
-		 // 如果默认没有配置EsIdField和如果指定EsIdGenerator，则由es自动生成文档id
 
-		 @Override
-		 public Object genId(Context context) throws Exception {
-		 return SimpleStringUtil.getUUID();//返回null，则由es自动生成文档id
-		 }
-		 });
-		 */
 		/**
-		 * 执行数据库表数据导入es操作
+		 * 执行es数据导入数据库表操作
 		 */
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
-
-		System.out.println();
-
-
 	}
 }

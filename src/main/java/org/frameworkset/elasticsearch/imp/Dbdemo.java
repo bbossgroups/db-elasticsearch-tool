@@ -1051,7 +1051,6 @@ public class Dbdemo {
 //		importBuilder.addFieldValue("testObject",testObject);
 		importBuilder.addFieldValue("author","作者");
 		final AtomicInteger s = new AtomicInteger(0);
-
 		/**
 		 * 重新设置es数据结构
 		 */
@@ -1078,7 +1077,12 @@ public class Dbdemo {
 
 				long testtimestamp = context.getLongValue("testtimestamp");//将long类型的时间戳转换为Date类型
 				context.addFieldValue("testtimestamp",new Date(testtimestamp));//将long类型的时间戳转换为Date类型
-
+				/**
+				Date create_time = context.getDateValue("create_time");
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				context.addFieldValue("createTime",simpleDateFormat.format(create_time));
+				context.addIgnoreFieldMapping("create_time");
+				 */
 //				context.addIgnoreFieldMapping("title");
 				//上述三个属性已经放置到docInfo中，如果无需再放置到索引文档中，可以忽略掉这些属性
 //				context.addIgnoreFieldMapping("author");
