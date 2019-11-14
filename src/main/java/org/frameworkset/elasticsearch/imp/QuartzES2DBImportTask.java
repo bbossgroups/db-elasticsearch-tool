@@ -74,12 +74,7 @@ public class QuartzES2DBImportTask extends AbstractDB2ESQuartzJobHandler {
 					.addParam("var2","v2")
 					.addParam("var3","v3");
 
-			//定时任务配置，
-			importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
-//					 .setScheduleDate(date) //指定任务开始执行时间：日期
-					.setDeyLay(1000L) // 任务延迟执行deylay毫秒后执行
-					.setPeriod(10000L); //每隔period毫秒执行，如果不设置，只执行一次
-			//定时任务配置结束
+
 
 			importBuilder.setExportResultHandler(new ExportResultHandler() {
 				@Override
