@@ -56,7 +56,7 @@ public class ES2DBScrollDemo {
 		ES2DBExportBuilder importBuilder = new ES2DBExportBuilder();
 		importBuilder.setBatchSize(2).setFetchSize(10);
 
-
+		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
@@ -72,7 +72,6 @@ public class ES2DBScrollDemo {
 				.setScrollLiveTime("10m")
 //				.setSliceQuery(true)
 //				.setSliceSize(5)
-				.setSqlName("insertSQLnew")
 				.setQueryUrl("dbdemo/_search")
 
 //				//添加dsl中需要用到的参数及参数值

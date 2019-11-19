@@ -160,9 +160,9 @@ public class ES2DBDemo {
 	public void exportData(){
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
+		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
-				.setSqlName("insertSQL") //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 				.setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
 				.setScrollLiveTime("10m") //scroll查询的scrollid有效期
 //					 .setSliceQuery(true)
@@ -192,8 +192,8 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000).setParallel(true); //指定批量获取es数据size
+		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
-				.setSqlName("insertSQL") //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 				.setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
 				.setScrollLiveTime("10m") //scroll查询的scrollid有效期
 
@@ -225,8 +225,8 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000);	 //指定批量获取es数据size
+		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				.setSqlName("insertSQL")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
 					 .setSliceQuery(true) //设置并行从es获取数据标识
@@ -258,8 +258,8 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000);
+		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				.setSqlName("insertSQL")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true) //设置并行从es获取数据标识
@@ -295,8 +295,9 @@ public class ES2DBDemo {
 	public void exportDataUseSQL(){
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000);
+		exportBuilder.setSql("insert into batchtest (name) values(?)"); //直接指定sql语句
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				.setSql("insert into batchtest (name) values(?)") //直接指定sql语句
+
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true)
@@ -329,7 +330,7 @@ public class ES2DBDemo {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setNumberLastValueColumn和setNumberLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-
+		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		/**
 		 * es相关配置
 		 */
@@ -339,7 +340,6 @@ public class ES2DBDemo {
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true)
 				.setSliceSize(5)
-				.setSqlName("insertSQLnew")
 				.setQueryUrl("dbdemo/_search")
 
 //				//添加dsl中需要用到的参数及参数值
@@ -520,7 +520,7 @@ public class ES2DBDemo {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setNumberLastValueColumn和setNumberLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-
+		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		/**
 		 * es相关配置
 		 */
@@ -530,7 +530,6 @@ public class ES2DBDemo {
 				.setScrollLiveTime("10m")
 //				.setSliceQuery(true)
 //				.setSliceSize(5)
-				.setSqlName("insertSQLnew")
 				.setQueryUrl("dbdemo/_search")
 
 //				//添加dsl中需要用到的参数及参数值
