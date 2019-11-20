@@ -16,17 +16,17 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import com.frameworkset.util.SimpleStringUtil;
-import org.frameworkset.elasticsearch.client.DataRefactor;
-import org.frameworkset.elasticsearch.client.ExportResultHandler;
-import org.frameworkset.elasticsearch.client.context.Context;
-import org.frameworkset.elasticsearch.client.estodb.ES2DBExportBuilder;
-import org.frameworkset.elasticsearch.client.metrics.TaskMetrics;
-import org.frameworkset.elasticsearch.client.schedule.ExternalScheduler;
-import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
-import org.frameworkset.elasticsearch.client.schedule.quartz.AbstractDB2ESQuartzJobHandler;
-import org.frameworkset.elasticsearch.client.task.TaskCommand;
 import org.frameworkset.elasticsearch.serial.SerialUtil;
 import org.frameworkset.spi.geoip.IpInfo;
+import org.frameworkset.tran.DataRefactor;
+import org.frameworkset.tran.ExportResultHandler;
+import org.frameworkset.tran.context.Context;
+import org.frameworkset.tran.es.input.db.ES2DBExportBuilder;
+import org.frameworkset.tran.metrics.TaskMetrics;
+import org.frameworkset.tran.schedule.ExternalScheduler;
+import org.frameworkset.tran.schedule.ImportIncreamentConfig;
+import org.frameworkset.tran.schedule.quartz.AbstractDB2ESQuartzJobHandler;
+import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,21 +80,21 @@ public class QuartzES2DBImportTask extends AbstractDB2ESQuartzJobHandler {
 				public void success(TaskCommand taskCommand, Object result) {
 					System.out.println("success");
 					TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-					logger.info(SimpleStringUtil.object2json(taskMetrics));
+					logger.info(taskMetrics.toString());
 				}
 
 				@Override
 				public void error(TaskCommand taskCommand, Object result) {
 					System.out.println("error");
 					TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-					logger.info(SimpleStringUtil.object2json(taskMetrics));
+					logger.info(taskMetrics.toString());
 				}
 
 				@Override
 				public void exception(TaskCommand taskCommand, Exception exception) {
 					System.out.println("exception");
 					TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-					logger.info(SimpleStringUtil.object2json(taskMetrics));
+					logger.info(taskMetrics.toString());
 				}
 
 				@Override

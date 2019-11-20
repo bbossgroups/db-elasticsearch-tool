@@ -15,10 +15,10 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import org.frameworkset.elasticsearch.client.db2es.DB2ESImportBuilder;
-import org.frameworkset.elasticsearch.client.schedule.ExternalScheduler;
-import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
-import org.frameworkset.elasticsearch.client.schedule.quartz.AbstractDB2ESQuartzJobHandler;
+import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
+import org.frameworkset.tran.schedule.ExternalScheduler;
+import org.frameworkset.tran.schedule.ImportIncreamentConfig;
+import org.frameworkset.tran.schedule.quartz.AbstractDB2ESQuartzJobHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

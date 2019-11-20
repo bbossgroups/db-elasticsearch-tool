@@ -15,21 +15,20 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
-import com.frameworkset.util.SimpleStringUtil;
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.DataRefactor;
-import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.ExportResultHandler;
-import org.frameworkset.elasticsearch.client.context.Context;
-import org.frameworkset.elasticsearch.client.db2es.DB2ESImportBuilder;
-import org.frameworkset.elasticsearch.client.metrics.TaskMetrics;
-import org.frameworkset.elasticsearch.client.schedule.CallInterceptor;
-import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
-import org.frameworkset.elasticsearch.client.schedule.TaskContext;
-import org.frameworkset.elasticsearch.client.task.TaskCommand;
 import org.frameworkset.runtime.CommonLauncher;
 import org.frameworkset.spi.BaseApplicationContext;
 import org.frameworkset.spi.geoip.IpInfo;
+import org.frameworkset.tran.DataRefactor;
+import org.frameworkset.tran.DataStream;
+import org.frameworkset.tran.ExportResultHandler;
+import org.frameworkset.tran.context.Context;
+import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
+import org.frameworkset.tran.metrics.TaskMetrics;
+import org.frameworkset.tran.schedule.CallInterceptor;
+import org.frameworkset.tran.schedule.ImportIncreamentConfig;
+import org.frameworkset.tran.schedule.TaskContext;
+import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -211,19 +210,19 @@ public class Dbdemo {
 			@Override
 			public void success(TaskCommand<String,String> taskCommand, String result) {
 				TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-				logger.info(SimpleStringUtil.object2json(taskMetrics));
+				logger.info(taskMetrics.toString());
 			}
 
 			@Override
 			public void error(TaskCommand<String,String> taskCommand, String result) {
 				TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-				logger.info(SimpleStringUtil.object2json(taskMetrics));
+				logger.info(taskMetrics.toString());
 			}
 
 			@Override
 			public void exception(TaskCommand<String,String> taskCommand, Exception exception) {
 				TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
-				logger.info(SimpleStringUtil.object2json(taskMetrics));
+				logger.info(taskMetrics.toString());
 			}
 
 			@Override

@@ -16,9 +16,9 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
-import org.frameworkset.elasticsearch.client.DataStream;
-import org.frameworkset.elasticsearch.client.db2es.DB2ESImportBuilder;
-import org.frameworkset.elasticsearch.client.schedule.ImportIncreamentConfig;
+import org.frameworkset.tran.DataStream;
+import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
+import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 
 /**
  * <p>Description: 同步处理程序，如需调试同步功能，
