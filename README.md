@@ -1,4 +1,5 @@
-
+# 数据同步工具
+通过本工具可以非常方便地实现数据库和Elasticsearch之间的数据同步功能，数据库与数据库之间的数据同步功能
 Bboss is a good elasticsearch Java rest client. It operates and accesses elasticsearch in a way similar to mybatis.
 
 # BBoss Environmental requirements
