@@ -55,13 +55,9 @@ import java.util.Map;
 public class ES2DBDemo {
 	public static void main(String[] args){
 		ES2DBDemo esDemo = new ES2DBDemo();
-		esDemo.scheduleScrollRefactorImportData();
-//		esDemo.directExport();
-//		esDemo.exportData();
-//		esDemo.exportSliceData();
-//		esDemo.exportSliceDataWithInnerhit();
-//		esDemo.exportDataUseSQL();
-//		esDemo.exportParallelData();
+//		esDemo.scheduleScrollRefactorImportData();
+		esDemo.exportSliceDataWithInnerhit();
+
 		System.out.println("complete.");
 	}
 	protected void buildDBConfigAndStartDatasource(){
@@ -257,7 +253,7 @@ public class ES2DBDemo {
 	public void exportSliceDataWithInnerhit(){
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
-		exportBuilder.setBatchSize(5000).setFetchSize(5000);
+		exportBuilder.setBatchSize(100).setFetchSize(20);
 		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollSliceQuery")
