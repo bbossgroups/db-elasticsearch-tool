@@ -165,7 +165,45 @@ public class ES2DBScrollDemo {
 //					return;
 //				}
 
-
+				/**
+				 * 可以通过context.getMetaValue方法获取文档元数据信息，包括：
+				 * **文档_id*
+				 *private String id;
+				 *    **文档对应索引类型信息*
+				 *private String type;
+				 *    **文档对应索引字段信息*
+				 *private Map<String, List<Object>> fields;
+				 * **文档对应版本信息*
+				 *private long version;
+				 *  **文档对应的索引名称*
+				 *private String index;
+				 *  **文档对应的高亮检索信息*
+				 *private Map<String, List<Object>> highlight;
+				 *     **文档对应的排序信息*
+				 *private Object[] sort;
+				 *     **文档对应的评分信息*
+				 *private Double score;
+				 *     **文档对应的父id*
+				 *private Object parent;
+				 *     **文档对应的路由信息*
+				 *private String routing;
+				 *     **文档对应的是否命中信息*
+				 *private boolean found;
+				 *     **文档对应的nested检索信息*
+				 *private Map<String, Object> nested;
+				 *     **文档对应的innerhits信息*
+				 *private Map<String, Map<String, InnerSearchHits>> innerHits;
+				 *     **文档对应的索引分片号*
+				 *private String shard;
+				 *     **文档对应的elasticsearch集群节点名称*
+				 *private String node;
+				 *    **文档对应的打分规则信息*
+				 *private Explanation explanation;
+				 *
+				 *private long seqNo;//"_index": "trace-2017.09.01",
+				 *private long primaryTerm;//"_index": "trace-2017.09.01",
+				 */
+				String id = (String) context.getMetaValue("_id");
 				context.addFieldValue("author","duoduo");
 				context.addFieldValue("title","解放");
 				context.addFieldValue("subtitle","中国人民解放了");
