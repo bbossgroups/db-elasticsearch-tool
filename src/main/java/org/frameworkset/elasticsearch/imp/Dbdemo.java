@@ -71,7 +71,6 @@ public class Dbdemo {
 			}
 		}
 
-
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
@@ -269,6 +268,7 @@ public class Dbdemo {
 		/**
 		 * es相关配置
 		 */
+		importBuilder.setTargetElasticsearch("test");
 		importBuilder
 				.setIndex("dbdemo") //必填项
 				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
@@ -328,7 +328,7 @@ public class Dbdemo {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			Date date = format.parse("2000-01-01");
-			importBuilder.setLastValue(date);
+			importBuilder.setLastValue(date);//增量起始值配置
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -436,7 +436,7 @@ public class Dbdemo {
 		 */
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
-
+//		dataStream.destroy();//释放资源
 		System.out.println();
 
 
