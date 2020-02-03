@@ -166,7 +166,7 @@ public class ES2DBSliceScrollResultCallbackDemo {
 
 				context.addFieldValue("author","duoduo");
 				context.addFieldValue("title","解放");
-				context.addFieldValue("subtitle","中国人民解放了");
+				context.addFieldValue("subtitle","小康");
 				context.addFieldValue("collecttime",new Date());//
 
 //				context.addIgnoreFieldMapping("title");
