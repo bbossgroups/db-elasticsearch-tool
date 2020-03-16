@@ -35,8 +35,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * <p>Description: 同步处理程序，如需调试同步功能，
- * 请运行测试用例DbdemoTest中调试</p>
+ * <p>Description: 同步处理程序，如需调试同步功能，直接运行main方法即可</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2018/9/27 20:38
