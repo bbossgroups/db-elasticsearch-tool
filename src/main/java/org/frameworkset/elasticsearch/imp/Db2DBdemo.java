@@ -16,7 +16,6 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import com.frameworkset.util.SimpleStringUtil;
-import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.elasticsearch.serial.SerialUtil;
 import org.frameworkset.spi.geoip.IpInfo;
 import org.frameworkset.tran.DataRefactor;
@@ -59,15 +58,7 @@ public class Db2DBdemo {
 	 */
 	public void scheduleImportData(boolean dropIndice){
 		DB2DBExportBuilder importBuilder = DB2DBExportBuilder.newInstance();
-		//增量定时任务不要删表，但是可以通过删表来做初始化操作
-		if(dropIndice) {
-			try {
-				//清除测试表,导入的时候回重建表，测试的时候加上为了看测试效果，实际线上环境不要删表
-				String repsonse = ElasticSearchHelper.getRestClientUtil().dropIndice("dbdemo");
-				System.out.println(repsonse);
-			} catch (Exception e) {
-			}
-		}
+
 
 
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
