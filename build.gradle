@@ -134,7 +134,6 @@ configure(allprojects) { project ->
 			[group: 'org.apache.logging.log4j', name: 'log4j-api', version: "${log4j2_version}", transitive: false],
 	        [group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${log4j2_version}", transitive: false],        
 			[group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4j2_version}", transitive: true],
-				[group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4j2_version}", transitive: true]
 		)
 		compile(
 				[group: 'com.bbossgroups.plugins', name: 'bboss-elasticsearch-rest-jdbc', version: "${bboss_es_version}", transitive: true],

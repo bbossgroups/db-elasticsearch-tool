@@ -8,7 +8,7 @@ select max(log_id)+1 from td_sm_log
 select max(log_id) from td_sm_log
 select count(log_id) from td_sm_log
 select count(col1) from bigtable
-
+update td_sm_log set LOG_VISITORIAL='115.204.150.34'
 select * from td_sm_log
 delete from user  where host = "localhost" and user = "root"
 update user set host = "%" where host = "localhost" and user = "root";

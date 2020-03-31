@@ -46,17 +46,16 @@ public class Db2DBdemo {
 	private static Logger logger = LoggerFactory.getLogger(Db2DBdemo.class);
 	public static void main(String args[]){
 		Db2DBdemo dbdemo = new Db2DBdemo();
-		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 //		dbdemo.fullImportData(  dropIndice);
 //		dbdemo.scheduleImportData(dropIndice);
-		dbdemo.scheduleImportData(dropIndice);
+		dbdemo.scheduleImportData();
 //		dbdemo.scheduleImportData(dropIndice);
 	}
 
 	/**
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
-	public void scheduleImportData(boolean dropIndice){
+	public void scheduleImportData(){
 		DB2DBExportBuilder importBuilder = DB2DBExportBuilder.newInstance();
 
 
@@ -163,6 +162,8 @@ public class Db2DBdemo {
 //		importBuilder.addFieldValue("testObject",testObject);
 //
 		final AtomicInteger s = new AtomicInteger(0);
+		importBuilder.setGeoipDatabase("E:/workspace/hnai/terminal/geolite2/GeoLite2-City.mmdb");
+		importBuilder.setGeoipAsnDatabase("E:/workspace/hnai/terminal/geolite2/GeoLite2-ASN.mmdb");
 		/**
 		 * 重新设置数据结构
 		 */
