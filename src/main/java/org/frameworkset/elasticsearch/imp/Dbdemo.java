@@ -82,6 +82,8 @@ public class Dbdemo {
 		/**
 		 * es相关配置
 		 */
+//		importBuilder.setTargetElasticsearch("default,test");//同步数据到两个es集群
+		importBuilder.setTargetElasticsearch("test");
 		importBuilder
 				.setIndex("dbdemo") //必填项
 				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
@@ -267,6 +269,7 @@ public class Dbdemo {
 		/**
 		 * es相关配置
 		 */
+//		importBuilder.setTargetElasticsearch("default,test");//同步数据到两个es集群
 		importBuilder.setTargetElasticsearch("test");
 		importBuilder
 				.setIndex("dbdemo") //必填项
@@ -318,8 +321,8 @@ public class Dbdemo {
 //		});
 //		//设置任务执行拦截器结束，可以添加多个
 		//增量配置开始
-//		importBuilder.setLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
-		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
+//		importBuilder.setDateLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
+		importBuilder.setFromFirst(true);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
 		//setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
 		importBuilder.setLastValueStorePath("logtable_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
