@@ -98,6 +98,7 @@ public class Dbdemo {
 //					 .setScheduleDate(date) //指定任务开始执行时间：日期
 				.setDeyLay(1000L) // 任务延迟执行deylay毫秒后执行
 				.setPeriod(5000L); //每隔period毫秒执行，如果不设置，只执行一次
+
 		//定时任务配置结束
 //
 //		//设置任务执行拦截器，可以添加多个，定时任务每次执行的拦截器
