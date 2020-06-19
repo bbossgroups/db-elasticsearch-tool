@@ -267,7 +267,7 @@ public class ES2DBDemo {
 					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
 						stmt.setString(1, (String) esrecord.get("logContent"));
 					}
-				})
+				}).addParam("fullImport",true)
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -278,7 +278,7 @@ public class ES2DBDemo {
 		try {
 			ESInnerHitSerialThreadLocal.setESInnerTypeReferences(Object.class);
 			dataStream.execute();
-			dataStream.destroy();
+//			dataStream.destroy();
 		}
 		finally {
 			ESInnerHitSerialThreadLocal.clean();

@@ -613,7 +613,7 @@ public class Dbdemo {
 		dataStream.execute();//执行导入操作
 
 		//验证下一次导入操作，外部定时器执行
-		dataStream.execute();//执行导入操作
+//		dataStream.execute();//执行导入操作
 
 		System.out.println();
 

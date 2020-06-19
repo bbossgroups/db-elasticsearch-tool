@@ -68,7 +68,7 @@ public class ES2DBScrollTimestampDemo {
 //				.setSliceQuery(true)
 //				.setSliceSize(5)
 				.setQueryUrl("dbdemo/_search")
-
+				.addParam("fullImport",true)
 //				//添加dsl中需要用到的参数及参数值
 				.addParam("var1","v1")
 				.addParam("var2","v2")
@@ -122,7 +122,7 @@ public class ES2DBScrollTimestampDemo {
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
 		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
 		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
-		importBuilder.setLastValue(new Date());
+//		importBuilder.setLastValue(new Date());
 		//增量配置结束
 
 		//映射和转换配置开始
@@ -148,6 +148,10 @@ public class ES2DBScrollTimestampDemo {
 //		testObject.setName("jackson");
 //		importBuilder.addFieldValue("testObject",testObject);
 		importBuilder.addFieldValue("author","作者");
+		importBuilder.addFieldMapping("operModule","OPER_MODULE");
+		importBuilder.addFieldMapping("logContent","LOG_CONTENT");
+		importBuilder.addFieldMapping("logOperuser","LOG_OPERUSER");
+
 
 		/**
 		 * 重新设置es数据结构
@@ -184,7 +188,7 @@ public class ES2DBScrollTimestampDemo {
 					context.addFieldValue("ipinfo", "");
 				}
 				DateFormat dateFormat = SerialUtil.getDateFormateMeta().toDateFormat();
-				Date optime = context.getDateValue("logOpertime",dateFormat);
+				Date optime = context.getDateValue("LOG_OPERTIME",dateFormat);
 				context.addFieldValue("logOpertime",optime);
 				context.addFieldValue("collecttime",new Date());
 
