@@ -24,6 +24,7 @@ import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.ExportResultHandler;
 import org.frameworkset.tran.context.Context;
 import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
+import org.frameworkset.tran.es.ESField;
 import org.frameworkset.tran.metrics.TaskMetrics;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
@@ -1079,6 +1080,9 @@ public class Dbdemo {
 //		importBuilder.addFieldValue("testObject",testObject);
 		importBuilder.addFieldValue("author","作者");
 		final AtomicInteger s = new AtomicInteger(0);
+		org.frameworkset.tran.config.ClientOptions clientOptions = new org.frameworkset.tran.config.ClientOptions();
+		clientOptions.setRoutingField(new ESField("parentid"));
+		importBuilder.setClientOptions(clientOptions);
 		/**
 		 * 重新设置es数据结构
 		 */
@@ -1102,7 +1106,9 @@ public class Dbdemo {
 
 				customObject.setIds(new int[]{1,2,3});
 				context.addFieldValue("author",customObject);
-
+//				org.frameworkset.tran.config.ClientOptions clientOptions = new org.frameworkset.tran.config.ClientOptions();
+//				clientOptions.setRouting("1");
+//				context.setClientOptions(clientOptions);
 				long testtimestamp = context.getLongValue("testtimestamp");//将long类型的时间戳转换为Date类型
 				context.addFieldValue("testtimestamp",new Date(testtimestamp));//将long类型的时间戳转换为Date类型
 				/**
