@@ -1,67 +1,25 @@
 package org.frameworkset.elasticsearch.imp.quartz;
 
-import org.frameworkset.spi.BaseApplicationContext;
 import org.frameworkset.tran.ExportResultHandler;
 import org.frameworkset.tran.db.input.db.DB2DBExportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ExternalScheduler;
 import org.frameworkset.tran.schedule.TaskContext;
+import org.frameworkset.tran.schedule.quartz.BaseQuartzDatasynJob;
 import org.frameworkset.tran.task.TaskCommand;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 原生的数据同步quartz作业调度任务
  */
-public class ImportDataJob implements Job {
+public class ImportDataJob extends BaseQuartzDatasynJob {
 
-    private static Logger logger = LoggerFactory.getLogger(ImportDataJob.class);
-
-    private boolean inited ;
-
-    public ImportDataJob(){
-
-    }
-
-    @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        try {
-            lock.lock();
-            if(!inited){
-                try {
-                    init(context.getJobDetail().getJobDataMap());
-                }
-                finally {
-                    inited = true;
-                }
-            }
-            externalScheduler.execute(null);
-
-        }
-        finally {
-            lock.unlock();
-        }
-    }
-    protected ExternalScheduler externalScheduler;
-    private Lock lock = new ReentrantLock();
-
-    public void destroy(){
-        if(externalScheduler != null){
-            externalScheduler.destroy();
-        }
-    }
-
-    public void init(JobDataMap jobDataMap){
+    public void init(){
         externalScheduler = new ExternalScheduler();
         externalScheduler.dataStream((Object params)->{
+            JobExecutionContext context = (JobExecutionContext)params;
             DB2DBExportBuilder importBuilder = DB2DBExportBuilder.newInstance();
             String insertsql = "INSERT INTO cetc ( age, name, create_time, update_time)\n" +
                     "VALUES ( #[age],  ## 来源dbdemo索引中的 operModule字段\n" +
@@ -69,6 +27,7 @@ public class ImportDataJob implements Job {
                     "#[create_time], ## 来源dbdemo索引中的 logContent字段\n" +
                     "#[update_time]) ## 通过datarefactor增加的地理位置信息字段";
             // 获取作业参数
+            JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
             Object data = jobDataMap.get("aa");
             //指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
             // 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
@@ -193,12 +152,7 @@ public class ImportDataJob implements Job {
             return importBuilder;
         });
 
-        BaseApplicationContext.addShutdownHook(new Runnable() {
-            @Override
-            public void run() {
-                destroy();
-            }
-        });
+
 
     }
 
