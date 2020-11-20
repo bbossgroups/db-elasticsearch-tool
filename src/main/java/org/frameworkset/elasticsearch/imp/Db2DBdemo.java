@@ -43,8 +43,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.0
  */
 public class Db2DBdemo {
-	private static Logger logger = LoggerFactory.getLogger(Db2DBdemo.class);
-	public static void main(String args[]){
+	private static final Logger logger = LoggerFactory.getLogger(Db2DBdemo.class);
+	public static void main(String[] args){
 		Db2DBdemo dbdemo = new Db2DBdemo();
 //		dbdemo.fullImportData(  dropIndice);
 //		dbdemo.scheduleImportData(dropIndice);
@@ -164,6 +164,7 @@ public class Db2DBdemo {
 		final AtomicInteger s = new AtomicInteger(0);
 		importBuilder.setGeoipDatabase("E:/workspace/hnai/terminal/geolite2/GeoLite2-City.mmdb");
 		importBuilder.setGeoipAsnDatabase("E:/workspace/hnai/terminal/geolite2/GeoLite2-ASN.mmdb");
+		importBuilder.setGeoip2regionDatabase("E:/workspace/hnai/terminal/geolite2/ip2region.db");
 		/**
 		 * 重新设置数据结构
 		 */
