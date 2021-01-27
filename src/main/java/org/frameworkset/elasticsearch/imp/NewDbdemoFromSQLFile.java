@@ -17,7 +17,9 @@ package org.frameworkset.elasticsearch.imp;
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.tran.DataStream;
+import org.frameworkset.tran.config.ClientOptions;
 import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
+import org.frameworkset.tran.es.output.ESOutputConfig;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 
 /**
@@ -28,9 +30,9 @@ import org.frameworkset.tran.schedule.ImportIncreamentConfig;
  * @author biaoping.yin
  * @version 1.0
  */
-public class DbdemoFromSQLFile {
+public class NewDbdemoFromSQLFile {
 	public static void main(String args[]){
-		DbdemoFromSQLFile dbdemo = new DbdemoFromSQLFile();
+		NewDbdemoFromSQLFile dbdemo = new NewDbdemoFromSQLFile();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 		dbdemo.scheduleImportData(  dropIndice);
 	}
@@ -62,11 +64,25 @@ public class DbdemoFromSQLFile {
 				     .setSqlName("demoexportFull");
 		importBuilder.setJdbcFetchSize(-2147483648);
 		importBuilder.setColumnLableUpperCase(false);
+		ESOutputConfig esOutputConfig = new ESOutputConfig();
+		esOutputConfig.setTargetElasticsearch("default");
+		esOutputConfig.setTargetIndex("dbdemo1");
+		ClientOptions clientOptions = new ClientOptions();
+//		clientOptions.setPipeline("1");
+		clientOptions.setRefresh("true");
+//		routing
+//				(Optional, string) Target the specified primary shard.
+		clientOptions.setRouting("2");
+		clientOptions.setTimeout("50s");
+		clientOptions.setWaitForActiveShards(2);
+		esOutputConfig.setClientOptions(clientOptions);
+		importBuilder.setEsOutputConfig(esOutputConfig);
+
 		/**
 		 * es相关配置
 		 */
 		importBuilder
-				.setIndex("dbdemo1") //必填项
+//				.setIndex("dbdemo1") //必填项
 //				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId

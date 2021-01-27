@@ -20,6 +20,7 @@ import org.frameworkset.elasticsearch.serial.SerialUtil;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.context.Context;
+import org.frameworkset.tran.db.DBConfigBuilder;
 import org.frameworkset.tran.es.input.db.ES2DBExportBuilder;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
@@ -56,8 +57,31 @@ public class ES2DBScrollDemo {
 	public void scheduleScrollRefactorImportData(){
 		ES2DBExportBuilder importBuilder = new ES2DBExportBuilder();
 		importBuilder.setBatchSize(2).setFetchSize(10);
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setSqlFilepath("dsl2ndSqlFile.xml")
 
-		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQLnew")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				;
+		importBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
+//		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]

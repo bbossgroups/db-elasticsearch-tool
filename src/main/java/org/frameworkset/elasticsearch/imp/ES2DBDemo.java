@@ -31,6 +31,7 @@ import org.frameworkset.spi.assemble.PropertiesContainer;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.context.Context;
+import org.frameworkset.tran.db.DBConfigBuilder;
 import org.frameworkset.tran.es.input.db.ES2DBExportBuilder;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
@@ -156,7 +157,36 @@ public class ES2DBDemo {
 	public void exportData(){
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
-		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setSqlFilepath("dsl2ndSqlFile.xml")
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+		/**
+		 * 是否在批处理时，将insert、update、delete记录分组排序
+		 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+		 * false：按照原始顺序执行db操作，默认值false
+		 * @param optimize
+		 * @return
+		 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
+//		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
 		exportBuilder
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
 				.setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
@@ -164,12 +194,7 @@ public class ES2DBDemo {
 //					 .setSliceQuery(true)
 //				     .setSliceSize(5)
 				.setQueryUrl("dbdemo/_search") //查询索引表demo中的文档数据
-				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
-					@Override
-					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
-					}
-				})
+
 		//				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -188,7 +213,36 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000).setParallel(true); //指定批量获取es数据size
-		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+//		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setSqlFilepath("dsl2ndSqlFile.xml")
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")//配置dsl和sql语句的配置文件
 				.setDslName("scrollQuery") //指定从es查询索引文档数据的dsl语句名称，配置在dsl2ndSqlFile.xml中
 				.setScrollLiveTime("10m") //scroll查询的scrollid有效期
@@ -196,12 +250,7 @@ public class ES2DBDemo {
 //					 .setSliceQuery(true)
 //				     .setSliceSize(5)
 				.setQueryUrl("dbdemo/_search") //查询索引表demo中的文档数据
-				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
-					@Override
-					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
-					}
-				})
+
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -221,7 +270,36 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000);	 //指定批量获取es数据size
-		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+//		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setSqlFilepath("dsl2ndSqlFile.xml")
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
@@ -229,12 +307,7 @@ public class ES2DBDemo {
 				     .setSliceSize(5) //设置并行slice个数
 				.setQueryUrl("dbdemo/_search")
 //				     .setPrintTaskLog(true)
-				.setBatchHandler(new BatchHandler<Map>() {
-					@Override
-					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-						stmt.setString(1, (String) esrecord.get("logContent"));
-					}
-				})
+
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -254,7 +327,36 @@ public class ES2DBDemo {
 
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(100).setFetchSize(20);
-		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+//		exportBuilder.setSqlName("insertSQL"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setSqlFilepath("dsl2ndSqlFile.xml")
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
@@ -262,12 +364,7 @@ public class ES2DBDemo {
 				.setSliceSize(5) //设置并行slice个数
 				.setQueryUrl("dbdemo/_search")
 //				     .setPrintTaskLog(true)
-				.setBatchHandler(new BatchHandler<Map>() {
-					@Override
-					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-						stmt.setString(1, (String) esrecord.get("logContent"));
-					}
-				}).addParam("fullImport",true)
+				.addParam("fullImport",true)
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -291,7 +388,36 @@ public class ES2DBDemo {
 	public void exportDataUseSQL(){
 		ES2DBExportBuilder exportBuilder = new ES2DBExportBuilder();
 		exportBuilder.setBatchSize(5000).setFetchSize(5000);
-		exportBuilder.setSql("insert into batchtest (name) values(?)"); //直接指定sql语句
+//		exportBuilder.setSql("insert into batchtest (name) values(?)"); //直接指定sql语句
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				 .setInsertSql("insert into batchtest (name) values(?)")
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+//				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 
 				.setDslName("scrollSliceQuery")
@@ -299,12 +425,7 @@ public class ES2DBDemo {
 				.setSliceQuery(true)
 				.setSliceSize(5)
 				.setQueryUrl("dbdemo/_search")
-				.setBatchHandler(new BatchHandler<Map>() {
-					@Override
-					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
-						stmt.setString(1, (String) esrecord.get("logContent"));
-					}
-				})
+
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
@@ -326,7 +447,35 @@ public class ES2DBDemo {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+//		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQLnew")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		importBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		/**
 		 * es相关配置
 		 */
@@ -516,7 +665,36 @@ public class ES2DBDemo {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+//		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
+		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
+		dbConfigBuilder
+				.setInsertSqlName("insertSQLnew")
+				.setSqlFilepath("dsl2ndSqlFile.xml")
+				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setTargetDbUser("root")
+//				.setTargetDbPassword("123456")
+//				.setTargetValidateSQL("select 1")
+//				.setTargetUsePool(true)//是否使用连接池
+				.setInsertSqlName("insertSQLnew")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
+//				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
+//				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
+				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
+					@Override
+					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
+					}
+				});
+		importBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		/**
 		 * es相关配置
 		 */
