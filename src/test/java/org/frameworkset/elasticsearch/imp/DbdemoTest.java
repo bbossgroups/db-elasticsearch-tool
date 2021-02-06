@@ -33,7 +33,7 @@ public class DbdemoTest {
 //		dbdemo.externalScheduleImportData(dropIndice);//外部定时器定时增量导入
 //		dbdemo.externalFullScheduleImportData(dropIndice);//外部定时器定时增量导入
 //		dbdemo.scheduleFullImportData(dropIndice);//定时全量导入
-		dbdemo.fullImportData(dropIndice);//一次性全量导入
+		dbdemo.scheduleTimestampImportData(dropIndice);//一次性全量导入
 
 //		dbdemo.scheduleRefactorImportData(dropIndice);//定时全量导入，在context中排除remark1字段
 //		dbdemo.fullAutoUUIDImportData(dropIndice);

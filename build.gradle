@@ -140,7 +140,7 @@ configure(allprojects) { project ->
 				[group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version}", transitive: true],
 		)
 //		compile 'org.apache-extras.beanshell:bsh:2.0b6'
-		compile 'org.xerial:sqlite-jdbc:3.32.3.2'
+		compile 'org.xerial:sqlite-jdbc:3.34.0'
 		//mysql 8.0依赖
 		//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
 		//mysql 5.x依赖
