@@ -50,7 +50,7 @@ public class ES2DBScrollTimestampDemo {
 
 	public void scheduleScrollRefactorImportData(){
 		ES2DBExportBuilder importBuilder = new ES2DBExportBuilder();
-		importBuilder.setBatchSize(2).setFetchSize(10);
+		importBuilder.setBatchSize(100).setFetchSize(1000);
 
 
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
@@ -140,8 +140,8 @@ public class ES2DBScrollTimestampDemo {
 		});
 //		//设置任务执行拦截器结束，可以添加多个
 		//增量配置开始
-		importBuilder.setLastValueColumn("logOpertime");//手动指定日期增量查询字段变量名称
-		importBuilder.setFromFirst(true);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
+		importBuilder.setLastValueColumn("collecttime");//手动指定日期增量查询字段变量名称
+		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
 		//setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
 		importBuilder.setLastValueStorePath("es2dbdemo_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
@@ -194,7 +194,6 @@ public class ES2DBScrollTimestampDemo {
 				context.addFieldValue("author","duoduo");//将会覆盖全局设置的author变量
 				context.addFieldValue("title","解放");
 				context.addFieldValue("subtitle","小康");
-				context.addFieldValue("collecttime",new Date());//
 
 //				context.addIgnoreFieldMapping("title");
 				//上述三个属性已经放置到docInfo中，如果无需再放置到索引文档中，可以忽略掉这些属性
