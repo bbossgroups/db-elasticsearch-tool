@@ -97,7 +97,8 @@ public class ES2DBScrollTimestampDemo {
 //				//添加dsl中需要用到的参数及参数值
 				.addParam("var1","v1")
 				.addParam("var2","v2")
-				.addParam("var3","v3");
+				.addParam("var3","v3")
+				.setIncreamentEndOffset(5000);
 
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
