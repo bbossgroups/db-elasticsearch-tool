@@ -45,6 +45,12 @@
                                     "gt": #[logOpertime] ## 时间增量检索字段
                                 }
                                 #end
+                                #if($collecttime)
+                                "collecttime": {
+                                    "gt": #[collecttime],
+                                    "lte": #[collecttime__endTime]
+                                }
+                                #end
                             }
                         }
                         #end
