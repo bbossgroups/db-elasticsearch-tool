@@ -153,7 +153,7 @@ public class ES2DBScrollDemo {
 		importBuilder.setLastValueType(ImportIncreamentConfig.NUMBER_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
 		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
 		//增量配置结束
-
+		importBuilder.setIncreamentEndOffset(5000);
 		//映射和转换配置开始
 //		/**
 //		 * db-es mapping 表字段名称到es 文档字段的映射：比如document_id -> docId
