@@ -15,6 +15,9 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
+import org.frameworkset.elasticsearch.ElasticSearchHelper;
+import org.frameworkset.elasticsearch.client.ClientInterface;
+
 /**
  * <p>Description: 从es中查询数据导入数据库案例</p>
  * <p></p>
@@ -26,15 +29,18 @@ package org.frameworkset.elasticsearch.imp;
 public class ESDemoTest {
 	public static void main(String[] args){
 
+//
+//		ES2DBDemo esDemo = new ES2DBDemo();
+//		//		esDemo.directExport();
+////		esDemo.exportData();
+////		esDemo.exportSliceData();
+////		esDemo.exportSliceDataWithInnerhit();
+//		esDemo.exportParallelData();
+//		//结束所以后台程序，退出，测试时打开
+//		//BaseApplicationContext.shutdown();
 
-		ES2DBDemo esDemo = new ES2DBDemo();
-		//		esDemo.directExport();
-//		esDemo.exportData();
-//		esDemo.exportSliceData();
-//		esDemo.exportSliceDataWithInnerhit();
-		esDemo.exportParallelData();
-		//结束所以后台程序，退出，测试时打开
-		//BaseApplicationContext.shutdown();
+		ClientInterface clientInterface = ElasticSearchHelper.getRestClientUtil();
+		System.out.println(clientInterface.existIndice("不管"));
 	}
 
 }
