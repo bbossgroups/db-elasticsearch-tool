@@ -81,12 +81,12 @@ public class DbdemoWithSplitRecord {
 		importBuilder.addFieldMapping("LOG_CONTENT","message");
 		importBuilder.setSplitHandler(new SplitHandler() {
 			@Override
-			public List<KeyMap<String, Object>> splitField(TaskContext taskContext,
+			public List<KeyMap> splitField(TaskContext taskContext,
 														   Record record, Object o) {
-				List<KeyMap<String, Object>> splitDatas = new ArrayList<>();
+				List<KeyMap> splitDatas = new ArrayList<>();
 				//模拟将数据切割为10条记录
 				for(int i = 0 ; i < 10; i ++){
-					KeyMap<String, Object> d = new KeyMap<String, Object>();
+					KeyMap d = new KeyMap();
 					d.put("message",i+"-"+o);
 //					d.setKey(SimpleStringUtil.getUUID());//如果是往kafka推送数据，可以设置推送的key
 					splitDatas.add(d);
