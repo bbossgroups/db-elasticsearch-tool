@@ -146,7 +146,7 @@ configure(allprojects) { project ->
 		//mysql 5.x依赖
 		api 'mysql:mysql-connector-java:5.1.40'
 		api (
-				[group: 'com.bbossgroups', name: 'bboss-rt', version: "${bboss_version}", transitive: false],
+				[group: 'com.bbossgroups', name: 'bboss-bootstrap-rt', version: "${bboss_version}", transitive: true]
 		)
 		api (
 				fileTree(dir: 'lib', include: '*.jar')
