@@ -22,7 +22,9 @@ import org.frameworkset.tran.ExportResultHandler;
 import org.frameworkset.tran.context.Context;
 import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
+import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
+import org.frameworkset.tran.schedule.TaskContext;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,39 +99,40 @@ public class Dbdemo {
 		//定时任务配置结束
 //
 //		//设置任务执行拦截器，可以添加多个，定时任务每次执行的拦截器
-//		importBuilder.addCallInterceptor(new CallInterceptor() {
-//			@Override
-//			public void preCall(TaskContext taskContext) {
-//				System.out.println("preCall");
-//			}
-//
-//			@Override
-//			public void afterCall(TaskContext taskContext) {
-//				System.out.println("afterCall");
-//			}
-//
-//			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
-//				System.out.println("throwException");
-//			}
-//		}).addCallInterceptor(new CallInterceptor() {
-//			@Override
-//			public void preCall(TaskContext taskContext) {
-//				System.out.println("preCall 1");
-//			}
-//
-//			@Override
-//			public void afterCall(TaskContext taskContext) {
-//				System.out.println("afterCall 1");
-//			}
-//
-//			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
-//				System.out.println("throwException 1");
-//			}
-//		});
+		importBuilder.addCallInterceptor(new CallInterceptor() {
+			@Override
+			public void preCall(TaskContext taskContext) {
+				System.out.println("preCall");
+			}
+
+			@Override
+			public void afterCall(TaskContext taskContext) {
+				System.out.println("afterCall");
+			}
+
+			@Override
+			public void throwException(TaskContext taskContext, Exception e) {
+				System.out.println("throwException");
+			}
+		}).addCallInterceptor(new CallInterceptor() {
+			@Override
+			public void preCall(TaskContext taskContext) {
+				System.out.println("preCall 1");
+			}
+
+			@Override
+			public void afterCall(TaskContext taskContext) {
+				System.out.println("afterCall 1");
+			}
+
+			@Override
+			public void throwException(TaskContext taskContext, Exception e) {
+				System.out.println("throwException 1");
+			}
+		});
 //		//设置任务执行拦截器结束，可以添加多个
 		//增量配置开始
+//		importBuilder.setStatusDbname("test");//设置增量状态数据源名称
 		importBuilder.setLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
 		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
 //		setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
