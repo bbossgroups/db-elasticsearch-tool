@@ -49,7 +49,7 @@ public class ImportDataJob extends BaseQuartzDatasynJob {
                     .setPrintTaskLog(true); //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
             //项目中target数据源是配置是从application文件中加入的
             importBuilder.setTargetDbName("target")
-                    .setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+                    .setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
                     .setTargetDbUrl("jdbc:mysql://127.0.0.1:3306/qrtz?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
                     .setTargetDbUser("root")
                     .setTargetDbPassword("123456")
@@ -61,7 +61,7 @@ public class ImportDataJob extends BaseQuartzDatasynJob {
                     .setInsertSql(insertsql); //可选项,批量导入db的记录数，默认为-1，逐条处理，> 0时批量处理
             //源数据源是从jobdatamap中传参进来的
             importBuilder.setDbName("seconde")
-                    .setDbDriver("com.mysql.jdbc.Driver")
+                    .setDbDriver("com.mysql.cj.jdbc.Driver")
                     .setDbUrl("jdbc:mysql://127.0.0.1:3306/insertsql?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC")
                     .setDbUser("root")
                     .setDbPassword("123456")

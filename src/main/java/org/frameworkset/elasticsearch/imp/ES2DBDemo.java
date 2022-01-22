@@ -99,7 +99,7 @@ public class ES2DBDemo {
 		//启动数据源
 		/**
 		SQLUtil.startPool("test",//数据源名称
-				"com.mysql.jdbc.Driver",//mysql驱动
+				"com.mysql.cj.jdbc.Driver",//mysql驱动
 				"jdbc:mysql://localhost:3306/bboss?useCursorFetch=true",//mysql链接串
 				"root","123456",//数据库账号和口令
 				"select 1 ", //数据库连接校验sql
@@ -162,7 +162,7 @@ public class ES2DBDemo {
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -219,7 +219,7 @@ public class ES2DBDemo {
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -276,7 +276,7 @@ public class ES2DBDemo {
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -333,7 +333,7 @@ public class ES2DBDemo {
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -394,7 +394,7 @@ public class ES2DBDemo {
 				 .setInsertSql("insert into batchtest (name) values(?)")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -452,7 +452,7 @@ public class ES2DBDemo {
 		dbConfigBuilder
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
@@ -671,7 +671,7 @@ public class ES2DBDemo {
 				.setInsertSqlName("insertSQLnew")
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")

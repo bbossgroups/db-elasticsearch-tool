@@ -142,9 +142,9 @@ configure(allprojects) { project ->
 //		api 'org.apache-extras.beanshell:bsh:2.0b6'
 		api 'org.xerial:sqlite-jdbc:3.36.0.3'
 		//mysql 8.0依赖
-		//api group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+		//api group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 		//mysql 5.x依赖
-		api 'mysql:mysql-connector-java:5.1.40'
+		api 'mysql:mysql-connector-java:8.0.28'
 		api (
 				[group: 'com.bbossgroups', name: 'bboss-bootstrap-rt', version: "${bboss_version}", transitive: true]
 		)
