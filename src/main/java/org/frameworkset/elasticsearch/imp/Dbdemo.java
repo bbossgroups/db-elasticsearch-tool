@@ -48,6 +48,7 @@ public class Dbdemo {
 //		dbdemo.scheduleImportData(dropIndice);
 		dbdemo.scheduleTimestampImportData(dropIndice);
 //		dbdemo.scheduleImportData(dropIndice);
+//		args[1].charAt(0) == args[2].charAt(0);
 	}
 
 	/**
