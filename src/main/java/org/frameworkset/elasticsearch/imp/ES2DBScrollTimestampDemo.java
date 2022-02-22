@@ -93,7 +93,7 @@ public class ES2DBScrollTimestampDemo {
 //				.setSliceQuery(true)
 //				.setSliceSize(5)
 				.setQueryUrl("dbdemo/_search")
-				.addParam("fullImport",true)
+				.addParam("fullImport",false)
 //				//添加dsl中需要用到的参数及参数值
 				.addParam("var1","v1")
 				.addParam("var2","v2")
@@ -148,6 +148,9 @@ public class ES2DBScrollTimestampDemo {
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
 		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
 		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
+		//指定日期增量字段日期格式，当增量字段为日期类型且日期格式不是默认的yyyy-MM-dd'T'HH:mm:ss.SSS'Z'时，需要设置字段相对应的日期格式，例如：yyyy-MM-dd HH:mm:ss
+		//如果是默认utc格式yyyy-MM-dd'T'HH:mm:ss.SSS'Z'，则不需要手动设置指定
+//		importBuilder.setLastValueDateformat("yyyy-MM-dd HH:mm:ss");
 //		importBuilder.setLastValue(new Date());
 		//增量配置结束
 
