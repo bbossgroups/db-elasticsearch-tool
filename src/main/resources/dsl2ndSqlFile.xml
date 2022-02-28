@@ -31,8 +31,6 @@
                             }
                         },
                         *#
-                        ## 根据fullImport参数控制是否设置增量检索条件，true 全量检索 false增量检索
-                        #if(!$fullImport)
                         {   ## 增量检索范围，可以是时间范围，也可以是数字范围，这里采用的是数字增量字段
                             "range": {
                                 #if($logId)
@@ -53,7 +51,6 @@
                                 #end
                             }
                         }
-                        #end
                     ]
                 }
             }
@@ -108,6 +105,49 @@
                          #[subtitle], ## 通过datarefactor增加的字段
                          #[collecttime], ## 通过datarefactor增加的字段
                          #[ipinfo]) ## 通过datarefactor增加的地理位置信息字段
+]]>
+    </property>
+
+
+    <property name="insertSQLpostgresql">
+        <![CDATA[INSERT INTO batchtest1 (id, name, author, content, title, optime, oper, subtitle, collecttime,testInt,ipinfo)
+                VALUES ( #[id],#[operModule],  ## 来源dbdemo索引中的 operModule字段
+                         #[author], ## 通过datarefactor增加的字段
+                         #[logContent], ## 来源dbdemo索引中的 logContent字段
+                         #[title], ## 通过datarefactor增加的字段
+                         #[logOpertime], ## 来源dbdemo索引中的 logOpertime字段
+                         #[logOperuser],  ## 来源dbdemo索引中的 logOperuser字段
+                         #[subtitle], ## 通过datarefactor增加的字段
+                         #[collecttime], ## 通过datarefactor增加的字段
+                         #[testInt], ## 通过datarefactor增加的字段
+                         #[ipinfo]) ## 通过datarefactor增加的地理位置信息字段
+]]>
+    </property>
+
+    <!--
+插入数据postgressql
+
+#[operModule],  ## 来源dbdemo索引中的 operModule字段
+                         #[author], ## 通过datarefactor增加的字段
+                         #[logContent], ## 来源dbdemo索引中的 logContent字段
+                         #[title], ## 通过datarefactor增加的字段
+                         #[logOpertime], ## 来源dbdemo索引中的 logOpertime字段
+                         #[logOperuser],  ## 来源dbdemo索引中的 logOperuser字段
+                         #[subtitle], ## 通过datarefactor增加的字段
+                         #[collecttime], ## 通过datarefactor增加的字段
+                         #[ipinfo]) ## 通过datarefactor增加的地理位置信息字段
+-->
+    <property name="insertSQL">
+        <![CDATA[INSERT INTO batchtest ( name, author, content, title, optime, oper, subtitle, collecttime,ipinfo)
+                VALUES ( ?,
+                         ?,
+                         ?,
+                         ?,
+                         ?,
+                         ?,
+                         ?,
+                         ?,
+                         ?)
 ]]>
     </property>
 </properties>

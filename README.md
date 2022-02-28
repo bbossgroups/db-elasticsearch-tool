@@ -1,3 +1,39 @@
+# sql
+mysql :
+CREATE TABLE
+    batchtest
+    (
+        id bigint NOT NULL AUTO_INCREMENT,
+        name VARCHAR(4000),
+        author VARCHAR(1000),
+        content longtext,
+        title VARCHAR(1000),
+        optime DATETIME,
+        oper VARCHAR(1000),
+        subtitle VARCHAR(1000),
+        collecttime DATETIME,
+        ipinfo VARCHAR(2000),
+        PRIMARY KEY (id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
+postgresql:
+
+CREATE TABLE
+    batchtest
+    (
+        id bigint ,
+        name VARCHAR(4000),
+        author VARCHAR(1000),
+        content text,
+        title VARCHAR(1000),
+        optime timestamp,
+        oper VARCHAR(1000),
+        subtitle VARCHAR(1000),
+        collecttime timestamp,
+        ipinfo VARCHAR(2000),
+        PRIMARY KEY (id)
+    )
+    
 # 数据同步工具
 通过本工具可以非常方便地实现数据库和Elasticsearch之间的数据同步功能，数据库与数据库之间的数据同步功能
 Bboss is a good elasticsearch Java rest client. It operates and accesses elasticsearch in a way similar to mybatis.
