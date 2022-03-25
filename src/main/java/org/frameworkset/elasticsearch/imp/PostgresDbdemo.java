@@ -120,12 +120,12 @@ public class PostgresDbdemo {
 
 			@Override
 			public void afterCall(TaskContext taskContext) {
-				System.out.println("afterCall 1");
+				logger.info("afterCall ----------"+taskContext.getJobTaskMetrics().toString());
 			}
 
 			@Override
 			public void throwException(TaskContext taskContext, Exception e) {
-				System.out.println("throwException 1");
+				logger.info("afterCall ----------"+taskContext.getJobTaskMetrics().toString(),e);
 			}
 		});
 //		//设置任务执行拦截器结束，可以添加多个
@@ -161,6 +161,7 @@ public class PostgresDbdemo {
 			public void refactor(Context context) throws Exception  {
 //				Date date = context.getDateValue("LOG_OPERTIME");
 //				context.addFieldValue("collecttime",new Date());
+				logger.info("refactor");
 			}
 		});
 		//映射和转换配置结束
