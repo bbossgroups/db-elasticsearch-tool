@@ -87,6 +87,7 @@ public class ES2DBScrollTimestampDemo {
 		 * es相关配置
 		 */
 		importBuilder
+
 				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollQuery")
 				.setScrollLiveTime("10m")
@@ -99,6 +100,7 @@ public class ES2DBScrollTimestampDemo {
 				.addParam("var2","v2")
 				.addParam("var3","v3")
 				.setIncreamentEndOffset(5000);
+//				.setSourceElasticsearch("sourceES");//指定Elasticsearch数据源
 
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
