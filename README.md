@@ -36,13 +36,14 @@ CREATE TABLE
     
 # 数据同步工具
 通过本工具可以非常方便地实现数据库和Elasticsearch之间的数据同步功能，数据库与数据库之间的数据同步功能
-Bboss is a good elasticsearch Java rest client. It operates and accesses elasticsearch in a way similar to mybatis.
+
+
 
 # BBoss Environmental requirements
 
 JDK requirement: JDK 1.8+
 
-Elasticsearch version requirements: 1.x,2.X,5.X,6.X,+
+Elasticsearch version requirements: 1.x,2.X,5.X,6.X,7.x,8,x,+
 
 Spring booter 1.x,2.x,+
 # bboss elasticsearch 数据导入工具demo
@@ -52,7 +53,7 @@ Spring booter 1.x,2.x,+
 mysql,maridb，postgress,oracle ,sqlserver,db2等
 
 支持的Elasticsearch版本：
-1.x,2.x,5.x,6.x,+
+1.x,2.X,5.X,6.X,7.x,8,x,+
 
 支持海量PB级数据同步导入功能
 
