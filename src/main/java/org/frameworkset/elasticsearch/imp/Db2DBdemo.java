@@ -203,6 +203,11 @@ public class Db2DBdemo {
 				Date optime = context.getDateValue("LOG_OPERTIME",dateFormat);
 				context.addFieldValue("logOpertime",optime);
 				context.addFieldValue("collecttime",new Date());
+//				对数据进行格式化
+//				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//				Date optime = context.getDateValue("LOG_OPERTIME");
+//
+//				context.addFieldValue("logOpertime",dateFormat.format(optime));
 
 				/**
 				 //关联查询数据,单值查询
