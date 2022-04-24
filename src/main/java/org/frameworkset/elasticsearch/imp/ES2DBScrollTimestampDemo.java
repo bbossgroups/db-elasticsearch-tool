@@ -221,7 +221,7 @@ public class ES2DBScrollTimestampDemo {
 				Date optime = context.getDateValue("LOG_OPERTIME",dateFormat);
 				context.addFieldValue("logOpertime",optime);
 				context.addFieldValue("collecttime",new Date());
-
+				String docId = (String)context.getMetaValue("_id");
 				/**
 				 //关联查询数据,单值查询
 				 Map headdata = SQLExecutor.queryObjectWithDBName(Map.class,context.getEsjdbc().getDbConfig().getDbName(),
