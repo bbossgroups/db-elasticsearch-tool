@@ -229,6 +229,14 @@ public class DbClientOptionsDemo7 {
 					context.setIndex("contextdbdemo-{dateformat=yyyy.MM.dd}");
 				}
 
+				else if(r == 3){
+					ClientOptions clientOptions = new ClientOptions();
+					clientOptions.setRouting("ddd");
+					context.setClientOptions(clientOptions);
+
+					context.setIndex("contextdbdemo-{dateformat=yyyy.MM.dd}");
+				}
+
 			}
 		});
 		/**
