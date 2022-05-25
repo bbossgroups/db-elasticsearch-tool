@@ -53,11 +53,11 @@ import java.util.Map;
  * @author biaoping.yin
  * @version 1.0
  */
-public class ES2DBDemo {
+public class ES2DBDemo1 {
 	public static void main(String[] args){
-		ES2DBDemo esDemo = new ES2DBDemo();
+		ES2DBDemo1 esDemo = new ES2DBDemo1();
 //		esDemo.scheduleScrollRefactorImportData();
-		esDemo.exportData();
+		esDemo.exportSliceDataWithInnerhit();
 
 		System.out.println("complete.");
 	}
@@ -98,13 +98,13 @@ public class ES2DBDemo {
 
 		//启动数据源
 		/**
-		SQLUtil.startPool("test",//数据源名称
-				"com.mysql.cj.jdbc.Driver",//mysql驱动
-				"jdbc:mysql://localhost:3306/bboss?useCursorFetch=true",//mysql链接串
-				"root","123456",//数据库账号和口令
-				"select 1 ", //数据库连接校验sql
-				10000 // jdbcFetchSize
-		);*/
+		 SQLUtil.startPool("test",//数据源名称
+		 "com.mysql.cj.jdbc.Driver",//mysql驱动
+		 "jdbc:mysql://localhost:3306/bboss?useCursorFetch=true",//mysql链接串
+		 "root","123456",//数据库账号和口令
+		 "select 1 ", //数据库连接校验sql
+		 10000 // jdbcFetchSize
+		 );*/
 		buildDBConfigAndStartDatasource();
 		//scroll分页检索
 		final int batchSize = 5000;
@@ -171,13 +171,13 @@ public class ES2DBDemo {
 				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
-		/**
-		 * 是否在批处理时，将insert、update、delete记录分组排序
-		 * true：分组排序，先执行insert、在执行update、最后执行delete操作
-		 * false：按照原始顺序执行db操作，默认值false
-		 * @param optimize
-		 * @return
-		 */
+				/**
+				 * 是否在批处理时，将insert、update、delete记录分组排序
+				 * true：分组排序，先执行insert、在执行update、最后执行delete操作
+				 * false：按照原始顺序执行db操作，默认值false
+				 * @param optimize
+				 * @return
+				 */
 //				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
 				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
 					@Override
@@ -303,8 +303,8 @@ public class ES2DBDemo {
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
-					 .setSliceQuery(true) //设置并行从es获取数据标识
-				     .setSliceSize(5) //设置并行slice个数
+				.setSliceQuery(true) //设置并行从es获取数据标识
+				.setSliceSize(5) //设置并行slice个数
 				.setQueryUrl("dbdemo/_search")
 //				     .setPrintTaskLog(true)
 
@@ -312,7 +312,7 @@ public class ES2DBDemo {
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
 //				.addParam("var3","v3")
-				;
+		;
 
 		DataStream dataStream = exportBuilder.builder();
 		dataStream.execute();
@@ -332,14 +332,14 @@ public class ES2DBDemo {
 		dbConfigBuilder
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
-				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
 //				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
 //				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
 //				.setTargetDbUser("root")
 //				.setTargetDbPassword("123456")
 //				.setTargetValidateSQL("select 1")
 //				.setTargetUsePool(true)//是否使用连接池
-				.setInsertSqlName("insertSQL")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
+				.setInsertSqlName("insertSQLyml")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
 				/**
@@ -353,16 +353,17 @@ public class ES2DBDemo {
 				.setBatchHandler(new BatchHandler<Map>() { //重要每条文档记录交个这个回调函数处理
 					@Override
 					public void handler(PreparedStatement stmt, Map esrecord, int i) throws SQLException {
+						System.out.println("esrecord = " + esrecord);
 						stmt.setString(1, (String) esrecord.get("logContent"));//将当期文档的字段设置到db批处理语句中
 					}
 				});
 		exportBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
 		exportBuilder.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
-				.setDslName("scrollSliceQuery")
+				.setDslName("scrollSliceQuery_yml")
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true) //设置并行从es获取数据标识
 				.setSliceSize(5) //设置并行slice个数
-				.setQueryUrl("dbdemo/_search")
+				.setQueryUrl("telemetry_syjc_zxm1/_search")
 //				     .setPrintTaskLog(true)
 				.addParam("fullImport",true)
 //				//添加dsl中需要用到的参数及参数值
@@ -391,7 +392,7 @@ public class ES2DBDemo {
 //		exportBuilder.setSql("insert into batchtest (name) values(?)"); //直接指定sql语句
 		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
 		dbConfigBuilder
-				 .setInsertSql("insert into batchtest (name) values(?)")
+				.setInsertSql("insert into batchtest (name) values(?)")
 
 				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
 //				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包

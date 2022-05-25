@@ -60,7 +60,7 @@ public class Dbdemo {
 		if(dropIndice) {
 			try {
 				//清除测试表,导入的时候回重建表，测试的时候加上为了看测试效果，实际线上环境不要删表
-				String repsonse = ElasticSearchHelper.getRestClientUtil().dropIndice("dbdemo");
+				String repsonse = ElasticSearchHelper.getRestClientUtil().dropIndice("newdbdemo");
 				System.out.println(repsonse);
 			} catch (Exception e) {
 			}
