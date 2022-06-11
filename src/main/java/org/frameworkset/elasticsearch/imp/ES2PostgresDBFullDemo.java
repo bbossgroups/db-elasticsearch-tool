@@ -30,8 +30,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * <p>Description: 从es中查询数据导入数据库案例,基于时间戳增量同步，采用slicescroll检索
- * 同步处理程序，如需调试同步功能，直接运行main方法即可</p>
+ * <p>Description: 从es中查询数据全量导入Postgres数据库案例，如需调试同步功能，直接运行main方法即可</p>
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2019/1/11 14:39
