@@ -24,12 +24,13 @@ import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.TaskContext;
+import org.frameworkset.tran.schedule.timer.TimeUtil;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>Description: 同步处理程序，如需调试同步功能，直接运行main方法即可
+ * <p>Description: 同步处理程序，如需调试同步功能，直接运行main方法即可，定时按特定条件导入数据
  * <p></p>
  * <p>Copyright (c) 2018</p>
  * @Date 2018/9/27 20:38
@@ -71,7 +72,10 @@ public class PostgresDbdemo {
 		importBuilder.setSourceDbname("postgres");
 		importBuilder.setJdbcFetchSize(2000);
 //		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
-		importBuilder.setSql("select * from batchtest1 ");
+		importBuilder.setSql("select * from batchtest1 where optime >= #[start_optime] and optime < #[end_optime]");
+
+		importBuilder.addParam("start_optime", TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2018-03-21 00:27:21"))
+				.addParam("end_optime",TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2019-12-30 00:27:21"));
 //		importBuilder.addFieldMapping("LOG_CONTENT","message");
 //		importBuilder.addIgnoreFieldMapping("remark1");
 //		importBuilder.setSql("select * from td_sm_log ");

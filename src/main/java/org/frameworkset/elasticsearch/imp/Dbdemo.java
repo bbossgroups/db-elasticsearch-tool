@@ -70,8 +70,8 @@ public class Dbdemo {
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
-		// log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
-		// 但是需要设置setLastValueType告诉工具增量字段的类型
+		// 需要设置setLastValueColumn信息log_id，
+		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 
 //		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
 		importBuilder.setSql("select * from td_sm_log where log_id > #[log_id]");
@@ -84,7 +84,7 @@ public class Dbdemo {
 //		importBuilder.setTargetElasticsearch("default,test");//同步数据到两个es集群
 		importBuilder.setTargetElasticsearch("test");
 		importBuilder
-				.setIndex("newdbdemo") //必填项
+				.setIndex("dbdemo") //必填项
 //				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
 				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId

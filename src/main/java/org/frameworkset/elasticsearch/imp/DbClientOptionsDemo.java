@@ -72,8 +72,8 @@ public class DbClientOptionsDemo {
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
-		// log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
-		// 但是需要设置setLastValueType告诉工具增量字段的类型
+		// 需要设置setLastValueColumn信息log_id，
+		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 
 		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
 //		importBuilder.addIgnoreFieldMapping("remark1");
