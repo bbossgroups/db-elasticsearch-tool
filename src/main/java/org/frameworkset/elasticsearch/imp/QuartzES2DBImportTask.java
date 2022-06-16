@@ -26,7 +26,7 @@ import org.frameworkset.tran.es.input.db.ES2DBExportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
 import org.frameworkset.tran.schedule.ExternalScheduler;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
-import org.frameworkset.tran.schedule.quartz.AbstractDB2ESQuartzJobHandler;
+import org.frameworkset.tran.schedule.quartz.AbstractQuartzJobHandler;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ import java.util.Date;
  * @author biaoping.yin
  * @version 1.0
  */
-public class QuartzES2DBImportTask extends AbstractDB2ESQuartzJobHandler {
+public class QuartzES2DBImportTask extends AbstractQuartzJobHandler {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	public void init(){
 		externalScheduler = new ExternalScheduler();
