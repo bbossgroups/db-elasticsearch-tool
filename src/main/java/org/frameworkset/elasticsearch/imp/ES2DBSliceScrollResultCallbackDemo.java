@@ -21,10 +21,11 @@ import org.frameworkset.spi.geoip.IpInfo;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.ExportResultHandler;
+import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.context.Context;
-import org.frameworkset.tran.db.DBConfigBuilder;
-import org.frameworkset.tran.es.input.db.ES2DBExportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
+import org.frameworkset.tran.plugin.db.output.DBOutputConfig;
+import org.frameworkset.tran.plugin.es.input.ElasticsearchInputConfig;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class ES2DBSliceScrollResultCallbackDemo {
 
 
 	public void scheduleSlieRefactorImportData(){
-		ES2DBExportBuilder importBuilder = new ES2DBExportBuilder();
+		ImportBuilder importBuilder = new ImportBuilder();
 		importBuilder.setBatchSize(2).setFetchSize(10);
 
 
@@ -67,17 +68,17 @@ public class ES2DBSliceScrollResultCallbackDemo {
 		// 需要设置setLastValueColumn信息log_id，
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 //		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
-		DBConfigBuilder dbConfigBuilder = new DBConfigBuilder();
-		dbConfigBuilder
+		DBOutputConfig dbOutputConfig = new DBOutputConfig();
+		dbOutputConfig
 				.setSqlFilepath("dsl2ndSqlFile.xml")
 
-				.setTargetDbName("test")//指定目标数据库，在application.properties文件中配置
-//				.setTargetDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
-//				.setTargetDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
-//				.setTargetDbUser("root")
-//				.setTargetDbPassword("123456")
-//				.setTargetValidateSQL("select 1")
-//				.setTargetUsePool(true)//是否使用连接池
+				.setDbName("test")//指定目标数据库，在application.properties文件中配置
+//				.setDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
+//				.setDbUrl("jdbc:mysql://localhost:3306/bboss?useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setDbUser("root")
+//				.setDbPassword("123456")
+//				.setValidateSQL("select 1")
+//				.setUsePool(true)//是否使用连接池
 				.setInsertSqlName("insertSQLnew")//指定新增的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setUpdateSqlName("updateSql")//指定修改的sql语句名称，在配置文件中配置：sql-dbtran.xml
 //				.setDeleteSqlName("deleteSql")//指定删除的sql语句名称，在配置文件中配置：sql-dbtran.xml
@@ -90,17 +91,19 @@ public class ES2DBSliceScrollResultCallbackDemo {
 		 */
 //				.setOptimize(true);//指定查询源库的sql语句，在配置文件中配置：sql-dbtran.xml
 		;
-		importBuilder.setOutputDBConfig(dbConfigBuilder.buildDBImportConfig());
+		importBuilder.setOutputConfig(dbOutputConfig);
 		/**
 		 * es相关配置
 		 */
-		importBuilder
-				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
+		ElasticsearchInputConfig elasticsearchInputConfig = new ElasticsearchInputConfig();
+		elasticsearchInputConfig.setDslFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollSliceQuery")
 				.setScrollLiveTime("10m")
 				.setSliceQuery(true)
 				.setSliceSize(5)
-				.setQueryUrl("dbdemo/_search")
+				.setQueryUrl("dbdemo/_search");
+		importBuilder.setInputConfig(elasticsearchInputConfig)
+
 
 //				//添加dsl中需要用到的参数及参数值
 				.addParam("var1","v1")
@@ -240,11 +243,7 @@ public class ES2DBSliceScrollResultCallbackDemo {
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
-//		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
-//		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 		importBuilder.setPrintTaskLog(true);
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 
 		/**
 		 * 执行es数据导入数据库表操作
@@ -252,7 +251,6 @@ public class ES2DBSliceScrollResultCallbackDemo {
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
 
-		System.out.println();
 
 
 	}

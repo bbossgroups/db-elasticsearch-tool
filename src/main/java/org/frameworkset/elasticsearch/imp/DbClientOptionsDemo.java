@@ -20,9 +20,11 @@ import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.ExportResultHandler;
 import org.frameworkset.tran.config.ClientOptions;
+import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.context.Context;
-import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
 import org.frameworkset.tran.metrics.TaskMetrics;
+import org.frameworkset.tran.plugin.db.input.DBInputConfig;
+import org.frameworkset.tran.plugin.es.output.ElasticsearchOutputConfig;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
@@ -57,7 +59,7 @@ public class DbClientOptionsDemo {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleTimestampImportData(boolean dropIndice){
-		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
+		ImportBuilder importBuilder = ImportBuilder.newInstance();
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -74,18 +76,53 @@ public class DbClientOptionsDemo {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// 需要设置setLastValueColumn信息log_id，
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
-
-		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
+		DBInputConfig dbInputConfig = new DBInputConfig();
+		dbInputConfig.setDbName("test")
+				.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
+		importBuilder.setInputConfig(dbInputConfig);
 //		importBuilder.addIgnoreFieldMapping("remark1");
 //		importBuilder.setSql("select * from td_sm_log ");
 		/**
 		 * es相关配置
 		 */
-		importBuilder
-				.setIndex("dbdemo") //必填项
-				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
+		ElasticsearchOutputConfig elasticsearchOutputConfig = new ElasticsearchOutputConfig();
+		elasticsearchOutputConfig.setTargetElasticsearch("default")
+				.setIndex("dbdemo")
+//				.setIndexType("dbdemo") //es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType
+////			.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
+				.setEsIdField("log_id")//设置文档主键，不设置，则自动产生文档id
+				.setDebugResponse(false)//设置是否将每次处理的reponse打印到日志文件中，默认false
+				.setDiscardBulkResponse(false);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+		/**
+		 elasticsearchOutputConfig.setEsIdGenerator(new EsIdGenerator() {
+		 //如果指定EsIdGenerator，则根据下面的方法生成文档id，
+		 // 否则根据setEsIdField方法设置的字段值作为文档id，
+		 // 如果默认没有配置EsIdField和如果指定EsIdGenerator，则由es自动生成文档id
+
+		 @Override
+		 public Object genId(Context context) throws Exception {
+		 return SimpleStringUtil.getUUID();//返回null，则由es自动生成文档id
+		 }
+		 });
+		 */
+//				.setIndexType("dbdemo") ;//es 7以后的版本不需要设置indexType，es7以前的版本必需设置indexType;
 //				.setRefreshOption("refresh")//可选项，null表示不实时刷新，importBuilder.setRefreshOption("refresh");表示实时刷新
-				.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
+		/**
+		 * es相关配置
+		 */
+//		elasticsearchOutputConfig.setTargetElasticsearch("default,test");//同步数据到两个es集群
+		ClientOptions clientOptions = new ClientOptions();
+//		clientOptions.setPipeline("1");
+		clientOptions.setRefresh("true");
+//		routing
+//				(Optional, string) Target the specified primary shard.
+		clientOptions.setRouting("2");
+		clientOptions.setTimeout("50s");
+		clientOptions.setWaitForActiveShards(2);
+		elasticsearchOutputConfig.setClientOptions(clientOptions);
+
+		importBuilder.setOutputConfig(elasticsearchOutputConfig);
+		importBuilder.setUseJavaName(false) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
 				.setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
 				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				.setBatchSize(10);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
@@ -136,21 +173,7 @@ public class DbClientOptionsDemo {
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
-		importBuilder.setEsIdField("log_id");//设置文档主键，不设置，则自动产生文档id
-		ClientOptions clientOptions = new ClientOptions();
-//		clientOptions.setPipeline("1");
-		clientOptions.setRefresh("true");
-//		routing
-//				(Optional, string) Target the specified primary shard.
-		clientOptions.setRouting("2");
-		clientOptions.setTimeout("50s");
-		clientOptions.setWaitForActiveShards(2);
-		importBuilder.setClientOptions(clientOptions);
-//		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
-//		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(false);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 		final Random random = new Random();
 		importBuilder.setDataRefactor(new DataRefactor() {
 			@Override
@@ -244,7 +267,6 @@ public class DbClientOptionsDemo {
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
 
-		System.out.println();
 
 
 	}

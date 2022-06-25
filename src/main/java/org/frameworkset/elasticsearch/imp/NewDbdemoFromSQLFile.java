@@ -18,8 +18,9 @@ package org.frameworkset.elasticsearch.imp;
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.config.ClientOptions;
-import org.frameworkset.tran.db.input.es.DB2ESImportBuilder;
-import org.frameworkset.tran.es.output.ESOutputConfig;
+import org.frameworkset.tran.config.ImportBuilder;
+import org.frameworkset.tran.plugin.db.input.DBInputConfig;
+import org.frameworkset.tran.plugin.es.output.ElasticsearchOutputConfig;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 
 /**
@@ -41,7 +42,7 @@ public class NewDbdemoFromSQLFile {
 	 * elasticsearch地址和数据库地址都从外部配置文件application.properties中获取，加载数据源配置和es配置
 	 */
 	public void scheduleImportData(boolean dropIndice){
-		DB2ESImportBuilder importBuilder = DB2ESImportBuilder.newInstance();
+		ImportBuilder importBuilder = new ImportBuilder() ;
 		//增量定时任务不要删表，但是可以通过删表来做初始化操作
 		if(dropIndice) {
 			try {
@@ -57,16 +58,17 @@ public class NewDbdemoFromSQLFile {
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
 		// log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
-
+		DBInputConfig dbInputConfig = new DBInputConfig();
 //		importBuilder.setSql("select * from td_sm_log where log_id > #[log_id]");
 //		importBuilder.setSql("select * from td_sm_log ");
-		importBuilder.setSqlFilepath("sql.xml")
+		dbInputConfig.setSqlFilepath("sql.xml")
 				     .setSqlName("demoexportFull");
-		importBuilder.setJdbcFetchSize(-2147483648);
-		importBuilder.setColumnLableUpperCase(false);
-		ESOutputConfig esOutputConfig = new ESOutputConfig();
-		esOutputConfig.setTargetElasticsearch("default");
-		esOutputConfig.setTargetIndex("dbdemo1");
+		dbInputConfig.setJdbcFetchSize(-2147483648);
+		dbInputConfig.setColumnLableUpperCase(false);
+		importBuilder.setInputConfig(dbInputConfig);
+
+		ElasticsearchOutputConfig elasticsearchOutputConfig = new ElasticsearchOutputConfig();
+		elasticsearchOutputConfig.setTargetElasticsearch("default").setIndex("dbdemo1");
 		ClientOptions clientOptions = new ClientOptions();
 //		clientOptions.setPipeline("1");
 		clientOptions.setRefresh("true");
@@ -75,8 +77,13 @@ public class NewDbdemoFromSQLFile {
 		clientOptions.setRouting("2");
 		clientOptions.setTimeout("50s");
 		clientOptions.setWaitForActiveShards(2);
-		esOutputConfig.setClientOptions(clientOptions);
-		importBuilder.setEsOutputConfig(esOutputConfig);
+		elasticsearchOutputConfig.setClientOptions(clientOptions);
+		elasticsearchOutputConfig.setEsIdField("log_id");//设置文档主键，不设置，则自动产生文档id
+
+		elasticsearchOutputConfig.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
+		elasticsearchOutputConfig.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+
+		importBuilder.setOutputConfig(elasticsearchOutputConfig);
 
 		/**
 		 * es相关配置
@@ -191,12 +198,6 @@ public class NewDbdemoFromSQLFile {
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
-		importBuilder.setEsIdField("log_id");//设置文档主键，不设置，则自动产生文档id
-//		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
-//		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
-
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
 
 		/**
 		 * 执行数据库表数据导入es操作

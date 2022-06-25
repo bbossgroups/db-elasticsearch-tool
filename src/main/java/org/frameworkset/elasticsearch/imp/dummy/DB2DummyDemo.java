@@ -20,9 +20,10 @@ import org.frameworkset.elasticsearch.serial.SerialUtil;
 import org.frameworkset.tran.CommonRecord;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
+import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.context.Context;
-import org.frameworkset.tran.db.input.dummy.DB2DummyExportBuilder;
-import org.frameworkset.tran.ouput.dummy.DummyOupputConfig;
+import org.frameworkset.tran.plugin.db.input.DBInputConfig;
+import org.frameworkset.tran.plugin.dummy.output.DummyOutputConfig;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.schedule.TaskContext;
@@ -42,7 +43,7 @@ import java.util.Date;
  */
 public class DB2DummyDemo {
 	public static void main(String[] args){
-		DB2DummyExportBuilder importBuilder = new DB2DummyExportBuilder();
+		ImportBuilder importBuilder = new ImportBuilder();
 		importBuilder.setBatchSize(1000).setFetchSize(5000);
 
 
@@ -52,8 +53,8 @@ public class DB2DummyDemo {
 		// 需要设置setLastValueColumn信息log_id，
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 //		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
-		DummyOupputConfig dummyOupputConfig = new DummyOupputConfig();
-		dummyOupputConfig.setRecordGenerator(new RecordGenerator() {
+		DummyOutputConfig dummyOutputConfig = new DummyOutputConfig();
+		dummyOutputConfig.setRecordGenerator(new RecordGenerator() {
 			@Override
 			public void buildRecord(Context taskContext, CommonRecord record, Writer builder) throws Exception{
 				SimpleStringUtil.object2json(record.getDatas(),builder);
@@ -61,9 +62,11 @@ public class DB2DummyDemo {
 			}
 		}).setPrintRecord(true);
 
-		importBuilder.setDummyOupputConfig(dummyOupputConfig);
-		importBuilder.setSql("select * from td_sm_log where log_id > #[log_id]");
+		importBuilder.setOutputConfig(dummyOutputConfig);
 
+		DBInputConfig dbInputConfig = new DBInputConfig();
+		dbInputConfig.setSql("select * from td_sm_log where log_id > #[log_id]");
+		importBuilder.setInputConfig(dbInputConfig);
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
 //					 .setScheduleDate(date) //指定任务开始执行时间：日期
@@ -186,8 +189,7 @@ public class DB2DummyDemo {
 //		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
 //		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 		importBuilder.setPrintTaskLog(true);
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+
 
 		/**
 		 * 执行es数据导入数据库表操作

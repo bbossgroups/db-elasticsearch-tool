@@ -20,9 +20,10 @@ import org.frameworkset.elasticsearch.serial.SerialUtil;
 import org.frameworkset.tran.CommonRecord;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
+import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.context.Context;
-import org.frameworkset.tran.es.input.dummy.ES2DummyExportBuilder;
-import org.frameworkset.tran.ouput.dummy.DummyOupputConfig;
+import org.frameworkset.tran.plugin.dummy.output.DummyOutputConfig;
+import org.frameworkset.tran.plugin.es.input.ElasticsearchInputConfig;
 import org.frameworkset.tran.schedule.CallInterceptor;
 import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.schedule.TaskContext;
@@ -43,7 +44,7 @@ import java.util.Map;
  */
 public class ES2DummyDemo {
 	public static void main(String[] args){
-		ES2DummyExportBuilder importBuilder = new ES2DummyExportBuilder();
+		ImportBuilder importBuilder = new ImportBuilder();
 		importBuilder.setBatchSize(1000).setFetchSize(5000);
 
 
@@ -53,7 +54,7 @@ public class ES2DummyDemo {
 		// 需要设置setLastValueColumn信息log_id，
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 //		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
-		DummyOupputConfig dummyOupputConfig = new DummyOupputConfig();
+		DummyOutputConfig dummyOupputConfig = new DummyOutputConfig();
 		dummyOupputConfig.setRecordGenerator(new RecordGenerator() {
 			@Override
 			public void buildRecord(Context taskContext, CommonRecord record, Writer builder) throws Exception{
@@ -62,23 +63,25 @@ public class ES2DummyDemo {
 			}
 		}).setPrintRecord(false);
 
-		importBuilder.setDummyOupputConfig(dummyOupputConfig);
+		importBuilder.setOutputConfig(dummyOupputConfig);
 		/**
 		 * es相关配置
 		 */
-		importBuilder
-				.setDsl2ndSqlFile("dsl2ndSqlFile.xml")
+		ElasticsearchInputConfig elasticsearchInputConfig = new ElasticsearchInputConfig();
+		elasticsearchInputConfig
+				.setDslFile("dsl2ndSqlFile.xml")
 				.setDslName("scrollQuery")
 				.setScrollLiveTime("10m")
 //				.setSliceQuery(true)
 //				.setSliceSize(5)
-				.setQueryUrl("dbdemo/_search")
-				.addParam("fullImport",false)
+				.setQueryUrl("dbdemo/_search");
+		//添加额外变量参数，可以在查询dsl中使用
+		importBuilder.addParam("fullImport",false);
 //				//添加dsl中需要用到的参数及参数值
 //				.addParam("var1","v1")
 //				.addParam("var2","v2")
 //				.addParam("var3","v3")
-				.setIncreamentEndOffset(5);
+
 
 		//定时任务配置，
 		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
@@ -112,6 +115,7 @@ public class ES2DummyDemo {
 		importBuilder.setLastValueStorePath("es2log_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
 //		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
 		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
+		importBuilder.setIncreamentEndOffset(5);
 		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
 //		importBuilder.setLastValue(new Date());
 		//增量配置结束
@@ -207,11 +211,8 @@ public class ES2DummyDemo {
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
 		importBuilder.setAsyn(false);//true 异步方式执行，不等待所有导入作业任务结束，方法快速返回；false（默认值） 同步方式执行，等待所有导入作业任务结束，所有作业结束后方法才返回
-//		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
-//		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 		importBuilder.setPrintTaskLog(true);
-		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
-		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+
 
 		/**
 		 * 执行es数据导入数据库表操作
