@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<properties>
+    <description>
+        <![CDATA[
+	配置数据导入的http服务queryDsl
+ ]]>
+    </description>
+    <property name="queryPagineDsl">
+        <![CDATA[
+        {
+            "logTime":#[logTime],## 传递增量时间起始条件
+            "logTimeEndTime":#[logTime__endTime],## 传递增量时间截止时间条件，必须指定IncreamentEndOffset偏移时间量才能设置增量截止时间
+            "from":#[httpPagineFrom], ## 如果服务支持分页获取增量或者全量数据，设置分页起始位置
+            "size":#[httpPagineSize],  ## 如果服务支持分页获取增量或者全量数据，设置每页记录数，如果实际返回的记录数小于httpPagineSize或者为0，则表示本次分页获取数据结束，对应参数fetchSize配置的值
+            "otherParam": #[otherParam] ## 其他服务参数
+        }
+        ]]></property>
+
+    <property name="queryDsl">
+        <![CDATA[
+        {
+            "logTime":#[logTime],## 传递增量时间起始条件
+            "logTimeEndTime":#[logTime__endTime],## 传递增量时间截止时间条件，必须指定IncreamentEndOffset偏移时间量才能设置增量截止时间
+            "otherParam": #[otherParam] ## 其他服务参数
+        }
+        ]]></property>
+
+</properties>
