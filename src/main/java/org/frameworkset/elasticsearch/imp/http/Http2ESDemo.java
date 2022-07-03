@@ -71,9 +71,7 @@ public class Http2ESDemo {
 		importBuilder.addParam("otherParam","陈雨菲2:0战胜戴资颖");
 
 
-//		importBuilder.addFieldMapping("LOG_CONTENT","message");
-//		importBuilder.addIgnoreFieldMapping("remark1");
-//		importBuilder.setSql("select * from td_sm_log ");
+
 		ElasticsearchOutputConfig elasticsearchOutputConfig = new ElasticsearchOutputConfig();
 		elasticsearchOutputConfig.setTargetElasticsearch("default")
 				.setIndex("https2es")
@@ -248,7 +246,7 @@ public class Http2ESDemo {
 			}
 		});
 		/**
-		 * 执行数据库表数据导入es操作
+		 * 执行http服务数据导入es作业
 		 */
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
