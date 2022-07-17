@@ -64,7 +64,7 @@
 					<property name="QuartzTimestampImportTask" jobid="QuartzTimestampImportTask"
 							  bean-name="QuartzTimestampImportTask"
 							  method="execute"
-							  cronb_time="${quartzImportTask.crontime}" used="true"
+							  cronb_time="${quartzImportTask.crontime}" used="false"
 							  shouldRecover="false"
 					/>
 				</list>
