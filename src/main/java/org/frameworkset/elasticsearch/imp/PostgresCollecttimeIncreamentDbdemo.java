@@ -82,8 +82,8 @@ public class PostgresCollecttimeIncreamentDbdemo {
 		importBuilder.setLastValueColumn("collecttime");
 		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);
 
-		importBuilder.addParam("start_optime", TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2018-03-21 00:27:21"))
-				.addParam("end_optime",TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2019-12-30 00:27:21"));
+		importBuilder.addJobInputParam("start_optime", TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2018-03-21 00:27:21"))
+				.addJobInputParam("end_optime",TimeUtil.parserDate("yyyy-MM-dd HH:mm:ss","2019-12-30 00:27:21"));
 //		importBuilder.addFieldMapping("LOG_CONTENT","message");
 //		importBuilder.addIgnoreFieldMapping("remark1");
 //		importBuilder.setSql("select * from td_sm_log ");
