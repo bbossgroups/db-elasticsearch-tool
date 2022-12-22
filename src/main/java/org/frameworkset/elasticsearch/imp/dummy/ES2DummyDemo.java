@@ -103,7 +103,7 @@ public class ES2DummyDemo {
 			}
 
 			@Override
-			public void throwException(TaskContext taskContext, Exception e) {
+			public void throwException(TaskContext taskContext, Throwable e) {
 				System.out.println("throwException");
 			}
 		});

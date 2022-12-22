@@ -133,7 +133,7 @@ public class ES2DBSliceScrollResultCallbackDemo {
 			}
 
 			@Override
-			public void exception(TaskCommand taskCommand, Exception exception) {
+			public void exception(TaskCommand taskCommand, Throwable exception) {
 				System.out.println("exception");
 				TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
 				logger.info(SimpleStringUtil.object2json(taskMetrics));

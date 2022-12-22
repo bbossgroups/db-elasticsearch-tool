@@ -100,7 +100,7 @@ public class BigTableDemo {
 //			}
 //
 //			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
+//			public void throwException(TaskContext taskContext, Throwable e) {
 //				System.out.println("throwException");
 //			}
 //		}).addCallInterceptor(new CallInterceptor() {
@@ -115,7 +115,7 @@ public class BigTableDemo {
 //			}
 //
 //			@Override
-//			public void throwException(TaskContext taskContext, Exception e) {
+//			public void throwException(TaskContext taskContext, Throwable e) {
 //				System.out.println("throwException 1");
 //			}
 //		});
@@ -219,7 +219,7 @@ public class BigTableDemo {
 			}
 
 			@Override
-			public void exception(TaskCommand<String, String> taskCommand, Exception exception) {
+			public void exception(TaskCommand<String, String> taskCommand, Throwable exception) {
 				//任务执行抛出异常，失败处理方法
 				logger.error("",exception);
 			}

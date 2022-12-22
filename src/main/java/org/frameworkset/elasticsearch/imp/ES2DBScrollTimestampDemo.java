@@ -122,7 +122,7 @@ public class ES2DBScrollTimestampDemo {
 			}
 
 			@Override
-			public void throwException(TaskContext taskContext, Exception e) {
+			public void throwException(TaskContext taskContext, Throwable e) {
 				System.out.println("throwException");
 			}
 		}).addCallInterceptor(new CallInterceptor() {
@@ -137,7 +137,7 @@ public class ES2DBScrollTimestampDemo {
 			}
 
 			@Override
-			public void throwException(TaskContext taskContext, Exception e) {
+			public void throwException(TaskContext taskContext, Throwable e) {
 				System.out.println("throwException 1");
 			}
 		});

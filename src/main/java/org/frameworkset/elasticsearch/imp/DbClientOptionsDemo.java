@@ -250,7 +250,7 @@ public class DbClientOptionsDemo {
 			}
 
 			@Override
-			public void exception(TaskCommand<String,String> taskCommand, Exception exception) {
+			public void exception(TaskCommand<String,String> taskCommand, Throwable exception) {
 				exception.printStackTrace();
 				TaskMetrics taskMetrics = taskCommand.getTaskMetrics();
 				//logger.info(taskMetrics.toString());
