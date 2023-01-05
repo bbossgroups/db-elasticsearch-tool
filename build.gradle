@@ -71,10 +71,7 @@ configure(allprojects) { project ->
 
 	repositories {
 		mavenLocal()
-		 maven {
-	        url "https://maven.aliyun.com/nexus/content/groups/public"
-	    }
-		 
+
 		mavenCentral()
 
 	}
