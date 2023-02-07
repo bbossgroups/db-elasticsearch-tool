@@ -16,6 +16,7 @@ package org.frameworkset.elasticsearch.imp;
  */
 
 import org.frameworkset.elasticsearch.ElasticSearchHelper;
+import org.frameworkset.elasticsearch.bulk.BulkConfig;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.config.ClientOptions;
 import org.frameworkset.tran.config.ImportBuilder;
@@ -82,6 +83,7 @@ public class NewDbdemoFromSQLFile {
 
 		elasticsearchOutputConfig.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false
 		elasticsearchOutputConfig.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
+		elasticsearchOutputConfig.setFilterPath(BulkConfig.ERROR_FILTER_PATH_ONLY);//指定响应报文只返回错误信息
 
 		importBuilder.setOutputConfig(elasticsearchOutputConfig);
 
