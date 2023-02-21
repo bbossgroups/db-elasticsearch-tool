@@ -60,21 +60,15 @@ CREATE TABLE
         ipinfo VARCHAR(2000),
         PRIMARY KEY (id)
     )
-```    
+```
 # 构建部署
 ## 准备工作
-需要通过gradle构建发布版本，因此通过以下链接下面gradle：
-
-https://gradle.org/next-steps/?version=4.10.2&format=all
-
-下载gradle后解压，将gradle bin目录添加到path环境变量，将gradle安装目录设置为GRADLE_HOME环境变量
-
-gradle安装配置参考文档：
+需要通过gradle构建发布版本，gradle安装配置参考文档：
 
 https://esdoc.bbossgroups.com/#/bboss-build
 
 ## 下载源码工程-基于gradle
-<https://github.com/bbossgroups/db-elasticsearch-tool>
+https://gitee.com/bboss/db-elasticsearch-tool
 
 从上面的地址下载源码工程，然后导入idea或者eclipse，根据自己的需求，修改导入程序逻辑
 
