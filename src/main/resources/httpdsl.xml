@@ -16,12 +16,53 @@
         }
         ]]></property>
 
+    <!--
+    /**
+	 * 数据服务
+	 * @return
+	 */
+	public @ResponseBody
+	List<Map> getData(@RequestBody ApiBean apiBean){
+//		ApiBean apiBean = SimpleStringUtil.json2Object(parmas,ApiBean.class);
+
+        if(apiBean != null && apiBean.isDebugError()){
+            throw new RuntimeException("isDebugError");
+        }
+		List<Map> datas =  new ArrayList<>();
+		for(int i = 0; i < 100; i ++){
+			Map data = new LinkedHashMap();
+			data.put("name","jack-" + apiBean.getFrom());
+			data.put("logTime",new Date());
+			data.put("oldLogTimeEndTime",apiBean.getLogTimeEndTime());
+			data.put("oldLogTime",apiBean.getLogTime());
+			data.put("otherParam", apiBean.getOtherParam());
+			data.put("title","马来西亚羽毛球公开赛16进8赛果-" + apiBean.getFrom());
+			data.put("log_id", SimpleStringUtil.getUUID());
+			datas.add(data);
+		}
+		return datas;
+	}
+
+	添加封装对象
+	public class ApiBean {
+        @RequestParam(dateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        private Date logTime;
+        @RequestParam(dateformat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        private Date logTimeEndTime;
+        private int from;
+        private int size;
+        private String otherParam;
+
+        private boolean debugError;
+    }
+    -->
     <property name="queryDsl">
         <![CDATA[
         {
             "logTime":#[logTime],## 传递增量时间起始条件
             "logTimeEndTime":#[logTime__endTime],## 传递增量时间截止时间条件，必须指定IncreamentEndOffset偏移时间量才能设置增量截止时间
-            "otherParam": #[otherParam] ## 其他服务参数
+            "otherParam": #[otherParam], ## 其他服务参数
+            "debugError":false
         }
         ]]></property>
 
