@@ -15,6 +15,7 @@ package org.frameworkset.elasticsearch.imp.http;
  * limitations under the License.
  */
 
+import org.apache.http.HttpResponse;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.ExportResultHandler;
@@ -23,8 +24,8 @@ import org.frameworkset.tran.context.Context;
 import org.frameworkset.tran.metrics.TaskMetrics;
 import org.frameworkset.tran.plugin.es.output.ElasticsearchOutputConfig;
 import org.frameworkset.tran.plugin.http.input.HttpInputConfig;
+import org.frameworkset.tran.plugin.http.input.HttpRecord;
 import org.frameworkset.tran.schedule.CallInterceptor;
-import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.schedule.TaskContext;
 import org.frameworkset.tran.task.TaskCommand;
 import org.slf4j.Logger;
@@ -33,15 +34,17 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 
 /**
- * <p>Description: </p>
+ * <p>Description: http并行查询同步数据到Elasticsearch案例
+ * 并行查询不支持增量同步处理
+ * </p>
  * <p></p>
  * <p>Copyright (c) 2020</p>
  * @Date 2022/7/1
  * @author biaoping.yin
  * @version 1.0
  */
-public class Http2ESPagineDemo {
-	private static Logger logger = LoggerFactory.getLogger(Http2ESPagineDemo.class);
+public class ParrelHttp2ESDemo {
+	private static Logger logger = LoggerFactory.getLogger(ParrelHttp2ESDemo.class);
 	public static void main(String[] args){
 
 
@@ -53,9 +56,9 @@ public class Http2ESPagineDemo {
 
 
 		httpInputConfig.setDslFile("httpdsl.xml")
-				.setQueryDslName("queryPagineDsl")
-				.setQueryUrl("/httpservice/getPagineData.api")
-				.setPagine(true)
+				.setQueryDslName("parrelqueryDsl")
+				.setQueryUrl("/httpservice/getData.api")
+                .setShowDsl(true)
 				.addSourceHttpPoolName("http.poolNames","datatran")
 				.addHttpInputConfig("datatran.http.health","/health")
 				.addHttpInputConfig("datatran.http.hosts","192.168.137.1:808")
@@ -67,15 +70,20 @@ public class Http2ESPagineDemo {
 				.addHttpInputConfig("datatran.http.failAllContinue","true");
 
 		importBuilder.setInputConfig(httpInputConfig);
-
 		importBuilder.addJobInputParam("otherParam","陈雨菲2:0战胜戴资颖");
+        importBuilder.makeParamGroup();
+        importBuilder.addJobInputParam("otherParam","安塞龙1:2惜败黄智勇");
+        importBuilder.makeParamGroup();
+        importBuilder.addJobInputParam("otherParam","桃田0:2惨败昆拉武特");
+        importBuilder.makeParamGroup();
+        importBuilder.addJobInputParam("otherParam","石宇奇2:1胜黄智勇");
+        importBuilder.makeParamGroup();
+        importBuilder.addJobInputParam("otherParam","翁弘扬2:0横扫乔纳坦");
+        importBuilder.makeParamGroup();
 
-//		importBuilder.addFieldMapping("LOG_CONTENT","message");
-//		importBuilder.addIgnoreFieldMapping("remark1");
-//		importBuilder.setSql("select * from td_sm_log ");
 		ElasticsearchOutputConfig elasticsearchOutputConfig = new ElasticsearchOutputConfig();
 		elasticsearchOutputConfig.setTargetElasticsearch("default")
-				.setIndex("httppagein2es")
+				.setIndex("parrelhttps2es")
 				.setEsIdField("log_id")//设置文档主键，不设置，则自动产生文档id
 				.setDebugResponse(false)//设置是否将每次处理的reponse打印到日志文件中，默认false
 				.setDiscardBulkResponse(false);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认false
@@ -99,11 +107,7 @@ public class Http2ESPagineDemo {
 //		elasticsearchOutputConfig.setTargetElasticsearch("default,test");//同步数据到两个es集群
 
 		importBuilder.setOutputConfig(elasticsearchOutputConfig);
-		importBuilder
-//
-				.setUseJavaName(true) //可选项,将数据库字段名称转换为java驼峰规范的名称，true转换，false不转换，默认false，例如:doc_id -> docId
-				.setUseLowcase(true)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
-				.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
+		importBuilder.setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
 				;  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
 
 		//定时任务配置，
@@ -146,50 +150,7 @@ public class Http2ESPagineDemo {
 			}
 		});
 //		//设置任务执行拦截器结束，可以添加多个
-		//增量配置开始
-//		importBuilder.setStatusDbname("test");//设置增量状态数据源名称
-		importBuilder.setLastValueColumn("logTime");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
-		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
-//		setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
-		importBuilder.setStatusDbname("httppagine2es");
-		importBuilder.setLastValueStorePath("httppagine2es_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
-		importBuilder.setLastValueStoreTableName("httppagine2es");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
-		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
-		importBuilder.setIncreamentEndOffset(60*1);//单位：秒
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//		try {
-//			Date date = format.parse("2000-01-01");
-//			importBuilder.setLastValue(date);//增量起始值配置
-//		}
-//		catch (Exception e){
-//			e.printStackTrace();
-//		}
-		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
-		//增量配置结束
 
-		//映射和转换配置开始
-//		/**
-//		 * db-es mapping 表字段名称到es 文档字段的映射：比如document_id -> docId
-//		 * 可以配置mapping，也可以不配置，默认基于java 驼峰规则进行db field-es field的映射和转换
-//		 */
-//		importBuilder.addFieldMapping("document_id","docId")
-//				.addFieldMapping("docwtime","docwTime")
-//				.addIgnoreFieldMapping("channel_id");//添加忽略字段
-//
-//
-//		/**
-//		 * 为每条记录添加额外的字段和值
-//		 * 可以为基本数据类型，也可以是复杂的对象
-//		 */
-//		importBuilder.addFieldValue("testF1","f1value");
-//		importBuilder.addFieldValue("testInt",0);
-//		importBuilder.addFieldValue("testDate",new Date());
-//		importBuilder.addFieldValue("testFormateDate","yyyy-MM-dd HH",new Date());
-//		TestObject testObject = new TestObject();
-//		testObject.setId("testid");
-//		testObject.setName("jackson");
-//		importBuilder.addFieldValue("testObject",testObject);
-//
 		/**
 		 * 重新设置es数据结构
 		 */
@@ -202,7 +163,11 @@ public class Http2ESPagineDemo {
 				long oldLogTimeEndTime = context.getLongValue("oldLogTimeEndTime");
 				context.addFieldValue("oldLogTimeEndTime",new Date(oldLogTimeEndTime));
 //				Date date = context.getDateValue("LOG_OPERTIME");
-				context.addFieldValue("collecttime",new Date());
+
+				HttpRecord record = (HttpRecord) context.getCurrentRecord();
+				HttpResponse response = record.getResponse();//可以从httpresponse中获取head之类的信息
+				context.addFieldValue("collecttime",new Date());//添加采集时间
+
 			}
 		});
 		//映射和转换配置结束
@@ -243,10 +208,9 @@ public class Http2ESPagineDemo {
 			}
 		});
 		/**
-		 * 执行数据库表数据导入es操作
+		 * 执行http服务数据导入es作业
 		 */
 		DataStream dataStream = importBuilder.builder();
 		dataStream.execute();//执行导入操作
-
 	}
 }

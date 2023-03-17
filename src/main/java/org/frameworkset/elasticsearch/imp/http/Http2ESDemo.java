@@ -68,7 +68,7 @@ public class Http2ESDemo {
 				.addHttpInputConfig("datatran.http.failAllContinue","true");
 
 		importBuilder.setInputConfig(httpInputConfig);
-		importBuilder.addParam("otherParam","陈雨菲2:0战胜戴资颖");
+		importBuilder.addJobInputParam("otherParam","陈雨菲2:0战胜戴资颖");
 
 
 

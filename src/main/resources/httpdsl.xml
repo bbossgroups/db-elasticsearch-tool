@@ -66,4 +66,22 @@
         }
         ]]></property>
 
+    <property name="parrelqueryDsl">
+        <![CDATA[
+        {
+            "otherParam": #[otherParam], ## 其他服务参数
+            "debugError":false
+        }
+        ]]></property>
+
+    <property name="parrelPagineQueryDsl">
+        <![CDATA[
+        {
+             "from":#[httpPagineFrom], ## 如果服务支持分页获取增量或者全量数据，设置分页起始位置
+            "size":#[httpPagineSize],  ## 如果服务支持分页获取增量或者全量数据，设置每页记录数，如果实际返回的记录数小于httpPagineSize或者为0，则表示本次分页获取数据结束，对应参数fetchSize配置的值
+            "otherParam": #[otherParam], ## 其他服务参数
+            "debugError":false
+        }
+        ]]></property>
+
 </properties>
