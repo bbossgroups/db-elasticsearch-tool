@@ -71,6 +71,7 @@ public class ParrelHttpPagine2ESDemo {
 				.addHttpInputConfig("datatran.http.failAllContinue","true");
 
 		importBuilder.setInputConfig(httpInputConfig);
+        //添加并行查询参数组
 		importBuilder.addJobInputParam("otherParam","陈雨菲2:0战胜戴资颖");
         importBuilder.makeParamGroup();
         importBuilder.addJobInputParam("otherParam","安塞龙1:2惜败黄智勇");
