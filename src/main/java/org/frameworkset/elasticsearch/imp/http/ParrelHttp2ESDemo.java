@@ -70,6 +70,10 @@ public class ParrelHttp2ESDemo {
 				.addHttpInputConfig("datatran.http.failAllContinue","true");
 
 		importBuilder.setInputConfig(httpInputConfig);
+        //设置并行查询线程数和等待队长度、结果异步处理队列长度
+        httpInputConfig.setQueryThread(10);
+        httpInputConfig.setQueryThreadQueue(20);
+        httpInputConfig.setQueryResultQueue(20);
         //添加并行查询参数组
 		importBuilder.addJobInputParam("otherParam","陈雨菲2:0战胜戴资颖");
         importBuilder.makeParamGroup();
