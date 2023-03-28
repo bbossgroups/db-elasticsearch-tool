@@ -245,10 +245,7 @@ public class Http2ESQueryDslDemo {
 				logger.debug(taskMetrics.toString());
 			}
 
-			@Override
-			public int getMaxRetry() {
-				return 0;
-			}
+
 		});
 		/**
 		 * 执行数据库表数据导入es操作

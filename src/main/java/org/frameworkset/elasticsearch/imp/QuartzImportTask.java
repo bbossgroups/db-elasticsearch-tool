@@ -104,10 +104,7 @@ public class QuartzImportTask extends AbstractQuartzJobHandler {
 					logger.info(taskMetrics.toString());
 				}
 
-				@Override
-				public int getMaxRetry() {
-					return -1;
-				}
+
 			});
 			DBInputConfig dbInputConfig = new DBInputConfig();
 			dbInputConfig.setSql("select * from td_sm_log");

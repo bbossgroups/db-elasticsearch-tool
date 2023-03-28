@@ -240,10 +240,7 @@ public class ImportDataJob extends BaseQuartzDatasynJob {
                     logger.info(taskMetrics.toString());
                 }
 
-                @Override
-                public int getMaxRetry() {
-                    return 0;
-                }
+
             });
            return importBuilder;
         });

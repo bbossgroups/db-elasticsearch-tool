@@ -189,10 +189,7 @@ public class ParrelHttpPagine2ESDemo {
 				logger.debug(taskMetrics.toString());
 			}
 
-			@Override
-			public int getMaxRetry() {
-				return 0;
-			}
+
 		});
 		/**
 		 * 执行http服务数据导入es作业
