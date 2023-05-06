@@ -22,27 +22,25 @@ import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.context.Context;
+import org.frameworkset.tran.plugin.db.input.DBInputConfig;
 import org.frameworkset.tran.plugin.dummy.output.DummyOutputConfig;
-import org.frameworkset.tran.plugin.es.input.ElasticsearchInputConfig;
 import org.frameworkset.tran.schedule.CallInterceptor;
-import org.frameworkset.tran.schedule.ImportIncreamentConfig;
 import org.frameworkset.tran.schedule.TaskContext;
 import org.frameworkset.tran.util.RecordGenerator;
 
 import java.io.Writer;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Map;
 
 /**
- * <p>Description: </p>
+ * <p>Description: 只允许一次并自动结束的作业</p>
  * <p></p>
  * <p>Copyright (c) 2020</p>
  * @Date 2021/5/26 9:44
  * @author biaoping.yin
  * @version 1.0
  */
-public class ES2DummyDemo {
+public class DB2DummyOnceDemo {
 	public static void main(String[] args){
 		ImportBuilder importBuilder = new ImportBuilder();
 		importBuilder.setBatchSize(1000).setFetchSize(5000);
@@ -54,41 +52,21 @@ public class ES2DummyDemo {
 		// 需要设置setLastValueColumn信息log_id，
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 //		importBuilder.setSqlName("insertSQLnew"); //指定将es文档数据同步到数据库的sql语句名称，配置在dsl2ndSqlFile.xml中
-		DummyOutputConfig dummyOupputConfig = new DummyOutputConfig();
-		dummyOupputConfig.setRecordGenerator(new RecordGenerator() {
+		DummyOutputConfig dummyOutputConfig = new DummyOutputConfig();
+		dummyOutputConfig.setRecordGenerator(new RecordGenerator() {
 			@Override
 			public void buildRecord(Context taskContext, CommonRecord record, Writer builder) throws Exception{
 				SimpleStringUtil.object2json(record.getDatas(),builder);
 
 			}
-		}).setPrintRecord(false);
+		}).setPrintRecord(true);
 
-		importBuilder.setOutputConfig(dummyOupputConfig);
-		/**
-		 * es相关配置
-		 */
-		ElasticsearchInputConfig elasticsearchInputConfig = new ElasticsearchInputConfig();
-		elasticsearchInputConfig
-				.setDslFile("dsl2ndSqlFile.xml")
-				.setDslName("scrollQuery")
-				.setScrollLiveTime("10m")
-//				.setSliceQuery(true)
-//				.setSliceSize(5)
-				.setQueryUrl("dbdemo/_search");
-		//添加额外变量参数，可以在查询dsl中使用
-		importBuilder.addParam("fullImport",false);
-//				//添加dsl中需要用到的参数及参数值
-//				.addParam("var1","v1")
-//				.addParam("var2","v2")
-//				.addParam("var3","v3")
+		importBuilder.setOutputConfig(dummyOutputConfig);
 
+		DBInputConfig dbInputConfig = new DBInputConfig();
+		dbInputConfig.setSql("select * from td_sm_log");
+		importBuilder.setInputConfig(dbInputConfig);
 
-		//定时任务配置，
-		importBuilder.setFixedRate(false)//参考jdk timer task文档对fixedRate的说明
-//					 .setScheduleDate(date) //指定任务开始执行时间：日期
-				.setDeyLay(1000L) // 任务延迟执行deylay毫秒后执行
-				.setPeriod(10000L); //每隔period毫秒执行，如果不设置，只执行一次
-		//定时任务配置结束
 
 		//设置任务执行拦截器，可以添加多个
 		importBuilder.addCallInterceptor(new CallInterceptor() {
@@ -107,18 +85,6 @@ public class ES2DummyDemo {
 				System.out.println("throwException");
 			}
 		});
-//		//设置任务执行拦截器结束，可以添加多个
-		//增量配置开始
-		importBuilder.setLastValueColumn("collecttime");//手动指定日期增量查询字段变量名称
-		importBuilder.setFromFirst(true);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
-		//setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
-		importBuilder.setLastValueStorePath("es2log_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
-//		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
-		importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
-		importBuilder.setIncreamentEndOffset(5);
-		// 或者ImportIncreamentConfig.TIMESTAMP_TYPE 日期类型
-//		importBuilder.setLastValue(new Date());
-		//增量配置结束
 
 		//映射和转换配置开始
 //		/**
@@ -175,12 +141,7 @@ public class ES2DummyDemo {
 				/**
 				 * 获取ip对应的运营商和区域信息
 				 */
-				Map ipInfo = (Map)context.getValue("ipInfo");
-				if(ipInfo != null)
-					context.addFieldValue("ipinfo", SimpleStringUtil.object2json(ipInfo));
-				else{
-					context.addFieldValue("ipinfo", "");
-				}
+
 				DateFormat dateFormat = SerialUtil.getDateFormateMeta().toDateFormat();
 				Date optime = context.getDateValue("LOG_OPERTIME",dateFormat);
 				context.addFieldValue("logOpertime",optime);
@@ -210,6 +171,8 @@ public class ES2DummyDemo {
 		importBuilder.setQueue(10);//设置批量导入线程池等待队列长度
 		importBuilder.setThreadCount(50);//设置批量导入线程池工作线程数量
 		importBuilder.setContinueOnError(true);//任务出现异常，是否继续执行作业：true（默认值）继续执行 false 中断作业执行
+//		importBuilder.setDebugResponse(false);//设置是否将每次处理的reponse打印到日志文件中，默认false，不打印响应报文将大大提升性能，只有在调试需要的时候才打开，log日志级别同时要设置为INFO
+//		importBuilder.setDiscardBulkResponse(true);//设置是否需要批量处理的响应报文，不需要设置为false，true为需要，默认true，如果不需要响应报文将大大提升处理速度
 		importBuilder.setPrintTaskLog(true);
 
 
