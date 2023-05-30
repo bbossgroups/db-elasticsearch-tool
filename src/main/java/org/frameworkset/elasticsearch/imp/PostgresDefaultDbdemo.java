@@ -72,7 +72,6 @@ public class PostgresDefaultDbdemo {
 		// 但是需要设置setLastValueType告诉工具增量字段的类型
 		DBInputConfig dbInputConfig = new DBInputConfig();
 		dbInputConfig.setDbName("postgres");
-		dbInputConfig.setJdbcFetchSize(2000);
 //		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
 		dbInputConfig.setSql("select * from batchtest1 ");
 
@@ -183,6 +182,7 @@ public class PostgresDefaultDbdemo {
 //				Date date = context.getDateValue("LOG_OPERTIME");
 //				context.addFieldValue("collecttime",new Date());
 				logger.info("refactor");
+//                Date date = context.getDateValue("aaaa","yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'Z'");
 			}
 		});
 		//映射和转换配置结束
