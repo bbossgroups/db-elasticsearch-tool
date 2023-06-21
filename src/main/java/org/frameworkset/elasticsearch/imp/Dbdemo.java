@@ -195,6 +195,8 @@ public class Dbdemo {
 		importBuilder.setDataRefactor(new DataRefactor() {
 			public void refactor(Context context) throws Exception  {
 //				Date date = context.getDateValue("LOG_OPERTIME");
+                Date date = context.getDateValue("LOG_OPERTIME");
+                context.addFieldValue("logOpertime",date);
 				context.addFieldValue("collecttime",new Date());
 			}
 		});
