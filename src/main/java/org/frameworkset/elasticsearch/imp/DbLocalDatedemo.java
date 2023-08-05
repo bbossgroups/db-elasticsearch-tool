@@ -40,10 +40,10 @@ import java.util.Date;
  * @author biaoping.yin
  * @version 1.0
  */
-public class Dbdemo {
-	private static Logger logger = LoggerFactory.getLogger(Dbdemo.class);
+public class DbLocalDatedemo {
+	private static Logger logger = LoggerFactory.getLogger(DbLocalDatedemo.class);
 	public static void main(String args[]){
-		Dbdemo dbdemo = new Dbdemo();
+		DbLocalDatedemo dbdemo = new DbLocalDatedemo();
 		boolean dropIndice = true;//CommonLauncher.getBooleanAttribute("dropIndice",false);//同时指定了默认值
 //		dbdemo.fullImportData(  dropIndice);
 //		dbdemo.scheduleImportData(dropIndice);
@@ -58,6 +58,7 @@ public class Dbdemo {
 	public void scheduleTimestampImportData(boolean dropIndice){
 		ImportBuilder importBuilder = new ImportBuilder() ;
 		DBInputConfig dbInputConfig = new DBInputConfig();
+        dbInputConfig.setEnableLocalDate(true);
 		//指定导入数据的sql语句，必填项，可以设置自己的提取逻辑，
 		// 设置增量变量log_id，增量变量名称#[log_id]可以多次出现在sql语句的不同位置中，例如：
 		// select * from td_sm_log where log_id > #[log_id] and parent_id = #[log_id]
@@ -152,7 +153,7 @@ public class Dbdemo {
 		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
 //		setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
 		importBuilder.setStatusDbname("logtable");
-		importBuilder.setLastValueStorePath("logtable_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
+		importBuilder.setLastValueStorePath("logtable22_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
 		importBuilder.setLastValueStoreTableName("logstable");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
 		importBuilder.setLastValueType(ImportIncreamentConfig.NUMBER_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
 //		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -195,8 +196,8 @@ public class Dbdemo {
 		importBuilder.setDataRefactor(new DataRefactor() {
 			public void refactor(Context context) throws Exception  {
 //				Date date = context.getDateValue("LOG_OPERTIME");
-//                Date date = context.getDateValue("LOG_OPERTIME");
-//                context.addFieldValue("logOpertime",date);
+                Date date = context.getDateValue("LOG_OPERTIME");
+                context.addFieldValue("logOpertime",date);
 				context.addFieldValue("collecttime",new Date());
 			}
 		});
