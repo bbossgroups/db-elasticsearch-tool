@@ -57,7 +57,7 @@ public class ES2DummyDemo {
 		DummyOutputConfig dummyOupputConfig = new DummyOutputConfig();
 		dummyOupputConfig.setRecordGenerator(new RecordGenerator() {
 			@Override
-			public void buildRecord(Context taskContext, CommonRecord record, Writer builder) throws Exception{
+			public void buildRecord(TaskContext taskContext, CommonRecord record, Writer builder) throws Exception{
 				SimpleStringUtil.object2json(record.getDatas(),builder);
 
 			}
