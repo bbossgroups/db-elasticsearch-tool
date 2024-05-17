@@ -202,7 +202,7 @@ public class Http2ESDemo {
 				context.addFieldValue("oldLogTimeEndTime",new Date(oldLogTimeEndTime));
 //				Date date = context.getDateValue("LOG_OPERTIME");
 
-				HttpRecord record = (HttpRecord) context.getCurrentRecord();
+				HttpRecord record = (HttpRecord) context.getCurrentRecord().getRecord();
 				HttpResponse response = record.getResponse();//可以从httpresponse中获取head之类的信息
 				context.addFieldValue("collecttime",new Date());//添加采集时间
 
