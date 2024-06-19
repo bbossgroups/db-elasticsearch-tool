@@ -221,9 +221,9 @@ importBuilder.setThreadCount(workThreads);//设置批量导入线程池工作线
 
  
 
-## elasticsearch技术交流群:166471282 
+## 技术交流群:166471282 
 
-## elasticsearch微信公众号:bbossgroup   
+## 微信公众号:bbossgroup   
 ![GitHub Logo](https://static.oschina.net/uploads/space/2017/0617/094201_QhWs_94045.jpg)
 
 
