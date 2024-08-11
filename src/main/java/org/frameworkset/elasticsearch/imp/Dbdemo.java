@@ -65,8 +65,10 @@ public class Dbdemo {
 		// 通过setLastValueType方法告诉工具增量字段的类型，默认是数字类型
 
 //		importBuilder.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
-		dbInputConfig.setSql("select * from td_sm_log where log_id > #[log_id]")
+		dbInputConfig.setSql("select log_id, log_operuser, op_orgid, oper_module, log_visitorial, log_opertime, log_content, remark1, oper_type, testint " +
+                        "from td_sm_log  where log_id > #[log_id]")
 				.setDbName("test");
+        dbInputConfig.setParallelDatarefactor(true);
 		importBuilder.setInputConfig(dbInputConfig);
 
 
@@ -129,27 +131,12 @@ public class Dbdemo {
 			public void throwException(TaskContext taskContext, Throwable e) {
 				System.out.println("throwException");
 			}
-		}).addCallInterceptor(new CallInterceptor() {
-			@Override
-			public void preCall(TaskContext taskContext) {
-				System.out.println("preCall 1");
-			}
-
-			@Override
-			public void afterCall(TaskContext taskContext) {
-				System.out.println("afterCall 1");
-			}
-
-			@Override
-			public void throwException(TaskContext taskContext, Throwable e) {
-				System.out.println("throwException 1");
-			}
 		});
 //		//设置任务执行拦截器结束，可以添加多个
 		//增量配置开始
 //		importBuilder.setStatusDbname("test");//设置增量状态数据源名称
 		importBuilder.setLastValueColumn("log_id");//手动指定数字增量查询字段，默认采用上面设置的sql语句中的增量变量名称作为增量查询字段的名称，指定以后就用指定的字段
-		importBuilder.setFromFirst(false);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
+		importBuilder.setFromFirst(true);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
 //		setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
 		importBuilder.setStatusDbname("logtable");
 		importBuilder.setLastValueStorePath("logtable_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
