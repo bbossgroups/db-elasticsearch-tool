@@ -49,7 +49,7 @@ public class ImportDataJob extends BaseQuartzDatasynJob {
             DBInputConfig dbInputConfig = new DBInputConfig();
             dbInputConfig.setDbName("source")
                     .setDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
-                    .setDbUrl("jdbc:mysql://localhost:3306/bboss?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf-8&useSSL=false") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+                    .setDbUrl("jdbc:mysql://localhost:3306/bboss?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true")
                     .setDbUser("root")
                     .setDbPassword("123456")
                     .setValidateSQL("select 1")
@@ -61,7 +61,7 @@ public class ImportDataJob extends BaseQuartzDatasynJob {
             DBOutputConfig dbOutputConfig = new DBOutputConfig();
             dbOutputConfig.setDbName("target")
                     .setDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
-                    .setDbUrl("jdbc:mysql://localhost:3306/bboss?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+                    .setDbUrl("jdbc:mysql://localhost:3306/bboss?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true")
                     .setDbUser("root")
                     .setDbPassword("123456")
                     .setValidateSQL("select 1")

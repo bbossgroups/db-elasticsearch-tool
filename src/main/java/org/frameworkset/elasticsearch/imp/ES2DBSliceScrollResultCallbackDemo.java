@@ -74,7 +74,7 @@ public class ES2DBSliceScrollResultCallbackDemo {
 
 				.setDbName("test")//指定目标数据库，在application.properties文件中配置
 //				.setDbDriver("com.mysql.cj.jdbc.Driver") //数据库驱动程序，必须导入相关数据库的驱动jar包
-//				.setDbUrl("jdbc:mysql://localhost:3306/bboss?allowPublicKeyRetrieval=true&useCursorFetch=true") //通过useCursorFetch=true启用mysql的游标fetch机制，否则会有严重的性能隐患，useCursorFetch必须和jdbcFetchSize参数配合使用，否则不会生效
+//				.setDbUrl("jdbc:mysql://localhost:3306/bboss?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true")
 //				.setDbUser("root")
 //				.setDbPassword("123456")
 //				.setValidateSQL("select 1")
