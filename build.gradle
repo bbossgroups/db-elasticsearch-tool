@@ -133,6 +133,7 @@ configure(allprojects) { project ->
 			[group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4j2_version}", transitive: true],
 		)
 		api(
+                [group: 'com.bbossgroups.plugins', name: 'bboss-datatran-fileftp', version: "${bboss_es_version}", transitive: true],
 				[group: 'com.bbossgroups.plugins', name: 'bboss-datatran-jdbc', version: "${bboss_es_version}", transitive: true],
 				[group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version}", transitive: true],
 		)
