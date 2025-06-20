@@ -31,22 +31,22 @@ public class QuartzTest {
 		TaskService taskService = TaskService.getTaskService();
 		taskService.startService();
 
-		SchedulejobInfo jobinfo = new SchedulejobInfo();
-		jobinfo.setName("QuartzImportTask");
-		jobinfo.setId("QuartzImportTask");
-
-		jobinfo.setUsed(true);
-//		jobinfo.setBeanName(jobPro.getStringExtendAttribute("bean-name"));
-		QuartzImportTask quartzImportTask = new org.frameworkset.elasticsearch.imp.QuartzImportTask();
-		quartzImportTask.init();
-		jobinfo.setBean(quartzImportTask);
-		jobinfo.setMethod("execute");
-//		jobinfo.setMethodConstruction(jobPro.getConstruction());
-		jobinfo.setShouldRecover(false);
-		jobinfo.setCronb_time("*/20 * * * * ?");
-		//添加作业参数
-		jobinfo.addParameter("jobid", "xxxxxxx");
-		taskService.startExecuteJob(jobinfo);
-//		setParameters(jobPro, jobinfo);
+//		SchedulejobInfo jobinfo = new SchedulejobInfo();
+//		jobinfo.setName("QuartzImportTask");
+//		jobinfo.setId("QuartzImportTask");
+//
+//		jobinfo.setUsed(true);
+////		jobinfo.setBeanName(jobPro.getStringExtendAttribute("bean-name"));
+//		QuartzImportTask quartzImportTask = new org.frameworkset.elasticsearch.imp.QuartzImportTask();
+//		quartzImportTask.init();
+//		jobinfo.setBean(quartzImportTask);
+//		jobinfo.setMethod("execute");
+////		jobinfo.setMethodConstruction(jobPro.getConstruction());
+//		jobinfo.setShouldRecover(false);
+//		jobinfo.setCronb_time("*/20 * * * * ?");
+//		//添加作业参数
+//		jobinfo.addParameter("jobid", "xxxxxxx");
+//		taskService.startExecuteJob(jobinfo);
+////		setParameters(jobPro, jobinfo);
 	}
 }

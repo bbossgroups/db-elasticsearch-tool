@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<properties>
+    <description>
+        <![CDATA[
+	配置数据导入的sql
+ ]]>
+    </description>
+
+    <!--
+    插入数据sql
+    -->
+    <property name="insertSql">
+        <![CDATA[INSERT INTO `filelog`
+                (`id`,`message`,
+                `title`,
+                `collecttime`,
+                `author`,
+                `subtitle`,
+                `optime`,
+                `path`,
+                `hostname`,
+                `pointer`,
+                `hostip`,
+                `fileId`,
+                `tag`)
+                VALUES
+                (#[id],#[message,type=clob],
+                #[title],
+                #[collecttime],
+                #[author],
+                #[subtitle],
+                #[optime],
+                #[filePath],
+                #[hostName],
+                #[pointer],
+                #[hostIp],
+                #[fileId],
+                #[tag])
+
+]]>
+    </property>
+    <!--
+   插入数据sql
+   -->
+    <property name="updateSql">
+        <![CDATA[update batchtest1 set author=#[author],
+        content=#[content], title=#[title], optime=#[optime], oper=#[oper], subtitle=#[subtitle], collecttime=#[collecttime],ipinfo=#[ipinfo]
+                where name=#[name]
+
+]]>
+    </property>
+
+    <!--
+   删除数据sql
+   -->
+    <property name="deleteSql">
+        <![CDATA[delete from batchtest1 where name=#[name]
+]]>
+    </property>
+
+    <property name="insertCOLLECTION_MODULE">
+    <![CDATA[INSERT INTO COLLECTION_MODULE
+                (FLOW_ID, MODULE, EXT1, EXT2, EXT3, EXT4, EXT5, EXT6, EXT7, EXT8, EXT9, EXT10, EXT11, EXT12, EXT13, EXT14, EXT15, EXT16, EXT17, EXT18, EXT19, EXT20, EXT21, EXT22, EXT23, EXT24, EXT25, EXT26, EXT27, EXT28, EXT29, EXT30)
+                VALUES
+                (#[FLOW_ID],
+                #[MODULE],
+                #[EXT1],
+                #[EXT2],
+                #[EXT3],
+                #[EXT4],
+                #[EXT5],
+                #[EXT6],
+                #[EXT7],
+                #[EXT8],
+                #[EXT9],
+                #[EXT10],
+                #[EXT11],
+                #[EXT12],
+                #[EXT13],
+                #[EXT14],
+                #[EXT15],
+                #[EXT16],
+                #[EXT17],
+                #[EXT18],
+                #[EXT19],
+                #[EXT20],
+                #[EXT21],
+                #[EXT22],
+                #[EXT23],
+                #[EXT24],
+                #[EXT25],
+                #[EXT26],
+                #[EXT27],
+                #[EXT28],
+                #[EXT29],
+                #[EXT30]
+                )
+         ]]>
+
+    </property>
+
+    <!--
+ 案例对应的表结构
+CREATE TABLE
+    FTP_LOG
+    (
+        chanId VARCHAR(100),
+        phoneNumber VARCHAR(100),
+        eparchyName VARCHAR(100),
+        returnCode VARCHAR(100),
+        loginTime VARCHAR(100),
+        loginStatus VARCHAR(100)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    -->
+    <property name="insertFTP_LOG">
+        <![CDATA[INSERT INTO FTP_LOG
+                (chanId, phoneNumber, eparchyName, returnCode,loginTime,loginStatus)
+                VALUES
+                (#[chanId],
+                #[phoneNumber],
+                #[eparchyName],
+                #[returnCode],
+                #[loginTime],
+                #[loginStatus]
+                )
+         ]]>
+
+    </property>
+
+    <property name="insertcityperson">
+        <![CDATA[
+        INSERT INTO cityperson
+            (rowNo,
+            shebao_org,
+            person_no,
+            name,
+            cert_type,
+            cert_no,
+            zhs_item,
+            zhs_class,
+            zhs_sub_class,
+            zhs_year,
+            zhs_level)
+            VALUES
+            (#[rowNo],
+            #[shebao_org],
+            #[person_no],
+            #[name],
+            #[cert_type],
+            #[cert_no],
+            #[zhs_item],
+            #[zhs_class],
+            #[zhs_sub_class],
+            #[zhs_year],
+            #[zhs_level])
+         ]]>
+    </property>
+
+
+    <property name="insertcitypersonpostgresql">
+        <![CDATA[
+        INSERT INTO cityperson
+            (rowNo,
+            shebao_org,
+            person_no,
+            name,
+            cert_type,
+            cert_no,
+            zhs_item,
+            zhs_class,
+            zhs_sub_class,
+            zhs_year,
+            zhs_level)
+            VALUES
+            (#[rowNo],
+            #[shebao_org],
+            #[person_no],
+            #[name],
+            #[cert_type],
+            #[cert_no],
+            #[zhs_item],
+            #[zhs_class],
+            #[zhs_sub_class],
+            #[zhs_year],
+            #[zhs_level])
+         ]]>
+    </property>
+
+    <property name="insertnewmanrequests">
+        <![CDATA[
+        INSERT INTO `newmanrequests`
+            (`rowNo`,
+            `shebao_org`,
+            `person_no`,
+            `name`,
+            `cert_type`,
+            `cert_no`,
+            `zhs_item`,
+            `zhs_class`,
+            `zhs_sub_class`,
+            `zhs_year`,
+            `zhs_level`)
+            VALUES
+            (#[rowNo],
+            #[shebao_org],
+            #[person_no],
+            #[name],
+            #[cert_type],
+            #[cert_no],
+            #[zhs_item],
+            #[zhs_class],
+            #[zhs_sub_class],
+            #[zhs_year],
+            #[zhs_level])
+         ]]>
+    </property>
+
+
+
+
+</properties>

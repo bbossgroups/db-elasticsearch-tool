@@ -67,6 +67,12 @@
 							  cronb_time="${quartzImportTask.crontime}" used="false"
 							  shouldRecover="false"
 					/>
+                    <property name="QuartzJobFlowHandlerDemo" jobid="QuartzJobFlowHandlerDemo"
+                              bean-name="QuartzJobFlowHandlerDemo"
+                              method="execute"
+                              cronb_time="${quartzImportTask.crontime}" used="true"
+                              shouldRecover="false"
+                    />
 				</list>
 			</property>
 		</list>
@@ -85,5 +91,8 @@
 			  init-method="init"
 	/>
 
-
+    <property name="QuartzJobFlowHandlerDemo" class="org.frameworkset.elasticsearch.imp.quartz.QuartzJobFlowHandlerDemo"
+              destroy-method="destroy"
+              init-method="init"
+    />
 </properties>
