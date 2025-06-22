@@ -194,12 +194,7 @@ public class QuartzJobFlowHandlerDemo extends AbstractQuartzJobFlowHandler {
                 /**
                  * 作为测试用例，所有的作业工作流流程节点共用一个作业定义
                  */
-//        ImportBuilder importBuilder = build();
-                /**
-                 * 1.构建第一个任务节点：单任务节点
-                 */
-                SimpleJobFlowNodeBuilder jobFlowNodeBuilder = new SimpleJobFlowNodeBuilder();
-                jobFlowNodeBuilder.setNodeName("SimpleJobFlowNode").setNodeId("1");
+                DatatranJobFlowNodeBuilder jobFlowNodeBuilder = new DatatranJobFlowNodeBuilder("1","DatatranJobFlowNode");
                 NodeTrigger nodeTrigger = new NodeTrigger();
                 /**
                  * boolean evalTriggerScript(JobFlow jobFlow, JobFlowNode jobFlowNode, JobFlowExecuteContext jobFlowExecuteContext) throws Exception
@@ -234,18 +229,7 @@ public class QuartzJobFlowHandlerDemo extends AbstractQuartzJobFlowHandler {
                 /**
                  * 1.1 为第一个任务节点添加一个带触发器的作业
                  */
-                jobFlowNodeBuilder.buildImportBuilder(new ImportBuilderCreate() {
-                    @Override
-                    public ImportBuilder createImportBuilder(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return buildFile2DB();
-                    }
-                }, new NodeTriggerCreate() {
-                    @Override
-                    public NodeTrigger createNodeTrigger(JobFlowNodeBuilder jobFlowNodeBuilder) {
-
-                        return nodeTrigger;
-                    }
-                });
+                jobFlowNodeBuilder.setImportBuilder(buildFile2DB()).setNodeTrigger(nodeTrigger);
                 /**
                  * 1.2 将第一个节点添加到工作流构建器
                  */
@@ -254,53 +238,42 @@ public class QuartzJobFlowHandlerDemo extends AbstractQuartzJobFlowHandler {
                 /**
                  * 2.构建第二个任务节点：并行任务节点
                  */
-                ParrelJobFlowNodeBuilder parrelJobFlowNodeBuilder = new ParrelJobFlowNodeBuilder();
-                parrelJobFlowNodeBuilder.setNodeName("ParrelJobFlowNode").setNodeId("2");
+                ParrelJobFlowNodeBuilder parrelJobFlowNodeBuilder = new ParrelJobFlowNodeBuilder("2","ParrelJobFlowNode");
                 NodeTrigger parrelnewNodeTrigger = new NodeTrigger();
                 parrelnewNodeTrigger.setTriggerScriptAPI(new TriggerScriptAPI() {
                     @Override
                     public boolean needTrigger(NodeTriggerContext nodeTriggerContext) throws Exception {
-                        return false;
+                        return true;
                     }
                 });
                 parrelJobFlowNodeBuilder.setNodeTrigger(parrelnewNodeTrigger);
                 /**
                  * 2.1 为第二个并行任务节点添加第一个带触发器的作业任务
                  */
-                parrelJobFlowNodeBuilder.addImportBuilder("ParrelJobFlowNode-SimpleJobFlowNode-2","ParrelJobFlowNode-SimpleJobFlowNode-2-1",new ImportBuilderCreate() {
-                    @Override
-                    public ImportBuilder createImportBuilder(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return buildDB2Custom(1);
-                    }
-                }, new NodeTriggerCreate() {
-                    @Override
-                    public NodeTrigger createNodeTrigger(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return nodeTrigger;
-                    }
-                });
+                parrelJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("ParrelJobFlowNode-DatatranJobFlowNode-2","ParrelJobFlowNode-DatatranJobFlowNode-2-1")
+                        .setImportBuilder(buildDB2Custom(1))
+                        .setNodeTrigger(nodeTrigger));
                 /**
                  * 2.2 为第二个并行任务节点添加第二个不带触发器的作业任务
                  */
-                parrelJobFlowNodeBuilder.addImportBuilder("ParrelJobFlowNode-SimpleJobFlowNode-2","ParrelJobFlowNode-SimpleJobFlowNode-2-2",new ImportBuilderCreate() {
-                    @Override
-                    public ImportBuilder createImportBuilder(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return buildDB2Custom(2);
-                    }
-                });
+                parrelJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("ParrelJobFlowNode-DatatranJobFlowNode-2","ParrelJobFlowNode-DatatranJobFlowNode-2-2")
+                        .setImportBuilder(buildDB2Custom(2)));
                 /**
                  * 2.3 为第二个并行任务节点添加第三个串行复杂流程子任务
                  */
-                SequenceJobFlowNodeBuilder comJobFlowNodeBuilder = new SequenceJobFlowNodeBuilder();
-                comJobFlowNodeBuilder.setNodeName("SequenceJobFlowNode").setNodeId("ParrelJobFlowNode-2-3");
-                comJobFlowNodeBuilder.addImportBuilder("SequenceJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-3-1",buildDB2Custom(3));
-                comJobFlowNodeBuilder.addImportBuilder("SequenceJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-3-2",buildDB2Custom(4));
+                SequenceJobFlowNodeBuilder comJobFlowNodeBuilder = new SequenceJobFlowNodeBuilder("ParrelJobFlowNode-2-3","SequenceJobFlowNode");
+                comJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("SequenceJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-3-1")
+                        .setImportBuilder(buildDB2Custom(3)));
+                comJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("SequenceJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-3-2")
+                        .setImportBuilder(buildDB2Custom(4)));
 
                 parrelJobFlowNodeBuilder.addJobFlowNodeBuilder(comJobFlowNodeBuilder);
 
-                ParrelJobFlowNodeBuilder subParrelJobFlowNodeBuilder = new ParrelJobFlowNodeBuilder();
-                subParrelJobFlowNodeBuilder.setNodeName("ParrelJobFlowNode").setNodeId("ParrelJobFlowNode-2-4");
-                subParrelJobFlowNodeBuilder.addImportBuilder("ParrelJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-4-1",buildDB2Custom(5));
-                subParrelJobFlowNodeBuilder.addImportBuilder("ParrelJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-4-2",buildDB2Custom(6));
+                ParrelJobFlowNodeBuilder subParrelJobFlowNodeBuilder = new ParrelJobFlowNodeBuilder("ParrelJobFlowNode-2-4","ParrelJobFlowNode");
+                subParrelJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("ParrelJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-4-1")
+                        .setImportBuilder(buildDB2Custom(5)));
+                subParrelJobFlowNodeBuilder.addJobFlowNodeBuilder(new DatatranJobFlowNodeBuilder("ParrelJobFlowNode-SequenceJobFlowNode","ParrelJobFlowNode-2-4-2")
+                        .setImportBuilder(buildDB2Custom(6)));
                 /**
                  * 2.4 为第二个并行任务节点添加第三个并行行复杂流程子任务
                  */
@@ -314,22 +287,12 @@ public class QuartzJobFlowHandlerDemo extends AbstractQuartzJobFlowHandler {
                 /**
                  * 3.构建第三个任务节点：单任务节点
                  */
-                jobFlowNodeBuilder = new SimpleJobFlowNodeBuilder();
-                jobFlowNodeBuilder.setNodeName("SimpleJobFlowNode").setNodeId("3");
+                jobFlowNodeBuilder = new DatatranJobFlowNodeBuilder("3","DatatranJobFlowNode");
                 /**
                  * 1.1 为第一个任务节点添加一个带触发器的作业
                  */
-                jobFlowNodeBuilder.buildImportBuilder(new ImportBuilderCreate() {
-                    @Override
-                    public ImportBuilder createImportBuilder(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return buildDB2Custom(7);
-                    }
-                }, new NodeTriggerCreate() {
-                    @Override
-                    public NodeTrigger createNodeTrigger(JobFlowNodeBuilder jobFlowNodeBuilder) {
-                        return nodeTrigger;
-                    }
-                });
+                jobFlowNodeBuilder.setImportBuilder(buildDB2Custom(7)).setNodeTrigger(nodeTrigger);
+
                 /**
                  * 1.2 将第三个节点添加到工作流构建器
                  */
