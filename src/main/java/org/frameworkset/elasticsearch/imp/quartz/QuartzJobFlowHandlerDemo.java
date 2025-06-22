@@ -200,19 +200,18 @@ public class QuartzJobFlowHandlerDemo extends AbstractQuartzJobFlowHandler {
                  * boolean evalTriggerScript(JobFlow jobFlow, JobFlowNode jobFlowNode, JobFlowExecuteContext jobFlowExecuteContext) throws Exception
                  */
 //        nodeTrigger.setTriggerScript("return 0 < 1;");
-                String script = """                
-                [import]
-                 //导入脚本中需要引用的java类
-                 import org.frameworkset.tran.jobflow.context.StaticContext; 
-                [/import]
-                StaticContext staticContext = nodeTriggerContext.getPreJobFlowStaticContext();
-                //前序节点执行异常结束，则忽略当前节点执行
-                if(staticContext != null && staticContext.getExecuteException() != null)
-                    return false;
-                else{
-                    return true;
-                }
-                """;
+                String script = new StringBuilder()
+                        .append("[import]")
+                        .append("//导入脚本中需要引用的java类\r\n")
+                        .append(" import org.frameworkset.tran.jobflow.context.StaticContext; ")
+                        .append("[/import]")
+                        .append("StaticContext staticContext = nodeTriggerContext.getPreJobFlowStaticContext();")
+                        .append("//前序节点执行异常结束，则忽略当前节点执行\r\n")
+                        .append("if(staticContext != null && staticContext.getExecuteException() != null)")
+                        .append("    return false;")
+                        .append("else{")
+                        .append("    return true;")
+                        .append("}").toString();
                 nodeTrigger.setTriggerScript(script);
 //        
 //        nodeTrigger.setTriggerScriptAPI(new TriggerScriptAPI() {
