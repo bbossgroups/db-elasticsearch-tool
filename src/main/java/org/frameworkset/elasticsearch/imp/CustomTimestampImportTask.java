@@ -15,6 +15,8 @@ package org.frameworkset.elasticsearch.imp;
  * limitations under the License.
  */
 
+import org.frameworkset.tran.config.DynamicParam;
+import org.frameworkset.tran.config.DynamicParamContext;
 import org.frameworkset.tran.config.ImportBuilder;
 import org.frameworkset.tran.plugin.db.input.DBInputConfig;
 import org.frameworkset.tran.plugin.es.output.ElasticsearchOutputConfig;
@@ -59,7 +61,7 @@ import java.util.Date;
  * @author biaoping.yin
  * @version 1.0
  */
-public class QuartzTimestampImportTask extends AbstractQuartzJobHandlerV2 {
+public class CustomTimestampImportTask extends AbstractQuartzJobHandlerV2 {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected  DataStreamBuilder buildDataStreamBuilder(){
@@ -73,7 +75,14 @@ public class QuartzTimestampImportTask extends AbstractQuartzJobHandlerV2 {
             // log_id和数据库对应的字段一致,就不需要设置setLastValueColumn信息，
             // 但是需要设置setLastValueType告诉工具增量字段的类型
             DBInputConfig dbInputConfig = new DBInputConfig();
-            dbInputConfig.setSql("select * from td_sm_log where LOG_OPERTIME > #[LOG_OPERTIME]");
+            dbInputConfig.setSql("select * from td_sm_log where LOG_OPERTIME < #[date]");
+            importBuilder.addJobDynamicInputParam("date", new DynamicParam() {
+                @Override
+                public Object getValue(String paramName, DynamicParamContext dynamicParamContext) {
+                    return new Date();
+                }
+            });
+            importBuilder.setIncreamentImport(false);
             importBuilder.setInputConfig(dbInputConfig);
 //		importBuilder.addIgnoreFieldMapping("remark1");
             /**
@@ -94,20 +103,7 @@ public class QuartzTimestampImportTask extends AbstractQuartzJobHandlerV2 {
                     .setUseLowcase(false)  //可选项，true 列名称转小写，false列名称不转换小写，默认false，只要在UseJavaName为false的情况下，配置才起作用
                     .setPrintTaskLog(true) //可选项，true 打印任务执行日志（耗时，处理记录数） false 不打印，默认值false
                     .setBatchSize(10);  //可选项,批量导入es的记录数，默认为-1，逐条处理，> 0时批量处理
-
-            importBuilder.setFromFirst(true);//setFromfirst(false)，如果作业停了，作业重启后从上次截止位置开始采集数据，
-            //setFromfirst(true) 如果作业停了，作业重启后，重新开始采集数据
-            importBuilder.setLastValueStorePath("quartzlogtable_import");//记录上次采集的增量字段值的文件路径，作为下次增量（或者重启后）采集数据的起点，不同的任务这个路径要不一样
-//		importBuilder.setLastValueStoreTableName("logs");//记录上次采集的增量字段值的表，可以不指定，采用默认表名increament_tab
-            importBuilder.setLastValueType(ImportIncreamentConfig.TIMESTAMP_TYPE);//如果没有指定增量查询字段名称，则需要指定字段类型：ImportIncreamentConfig.NUMBER_TYPE 数字类型
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date date = format.parse("2000-01-01");
-                importBuilder.setLastValue(date);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-      
+ 
             //映射和转换配置结束
 
             /**
@@ -125,6 +121,16 @@ public class QuartzTimestampImportTask extends AbstractQuartzJobHandlerV2 {
     }
     
     public static void main(String[] args){
-        
+        CustomTimestampImportTask customTimestampImportTask = new CustomTimestampImportTask();
+        customTimestampImportTask.init();
+        Date lastValue = null;
+        while(true){
+            customTimestampImportTask.execute();
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
