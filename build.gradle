@@ -28,8 +28,8 @@ configure(allprojects) { project ->
 	}
 
 	tasks.withType(Javadoc) {
-		sourceCompatibility = JAVADOC_SOURCE_LEVEL
-		targetCompatibility = JAVADOC_COMPILER_LEVEL
+//		
+//		
 		options.encoding = 'UTF-8'
 		// disable the crazy super-strict doclint tool in Java 8
         // noinspection SpellCheckingInspection
@@ -37,18 +37,19 @@ configure(allprojects) { project ->
 			options.addStringOption('Xdoclint:none', '-quiet')
 		}
 	}
-	task sourcesJar(type: Jar) {
-		archiveClassifier = "sources"
-		from sourceSets.main.allJava
-		duplicatesStrategy = DuplicatesStrategy.INCLUDE
-	}
+    tasks.register('sourcesJar', Jar) {
+        archiveClassifier = "sources"
+        from sourceSets.main.allJava
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
 	processResources {
 		duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	}
-	task javaDocJar(type: Jar, dependsOn: javadoc) {
-		archiveClassifier = "javadoc"
-		from javadoc.destinationDir
-	}
+    tasks.register('javaDocJar', Jar) {
+        dependsOn javadoc
+        archiveClassifier = "javadoc"
+        from javadoc.destinationDir
+    }
 	artifacts {
 		archives sourcesJar, javaDocJar
 	}
@@ -163,58 +164,72 @@ configure(allprojects) { project ->
         }
 	}
 
+// 创建可解析的配置
+    configurations {
+        apiResolvable {
+            canBeResolved = true
+            extendsFrom api
+        }
+        compileOnlyResolvable {
+            canBeResolved = true
+            extendsFrom compileOnly
+        }
+
+        runtimeOnlyResolvable {
+            canBeResolved = true
+            extendsFrom runtimeOnly
+        }
+    }
+    tasks.register('copyJarFiles', Sync) {
+        dependsOn 'jar'
+        from configurations.apiResolvable {
+
+        }
+        from jar.outputs
+        exclude { details -> details.file.name.startsWith('bboss-rt') }
+        into 'build/dist/lib'
+
+    }
+
+    tasks.register('copyRTJarFiles', Copy) {
+        dependsOn 'copyJarFiles'
+
+        from configurations.apiResolvable {
+
+        }
+        include { details -> details.file.name.startsWith('bboss-rt') }
+        into 'build/dist'
+        rename("bboss-rt-${bboss_version}.jar", "${project.name}-${bboss_version}.jar")
+    }
+    tasks.register('copyToolFiles', Copy) {
+        dependsOn 'copyRTJarFiles'
+
+        from('runfiles')
+                {
+                    expand(
+                            bboss_version: "${bboss_version}",
+                            project: "${project.name}"
+                    )
+
+                }
+        filteringCharset = 'UTF-8'
+        into 'build/dist/'
 
 
-	task copyJarFiles(type: Sync,dependsOn:'jar'){		
-		from configurations.api{
-			canBeResolved=true
+    }
+    tasks.register('copyResourcesfiles', Sync) {
+        from fileTree(dir: 'src/main/resources')
+        filteringCharset = 'UTF-8'
+        into 'build/dist/resources'
+    }
+    tasks.register('releaseVersion',Zip) {
+        dependsOn 'copyToolFiles','copyResourcesfiles'
 
-		}
-		from jar.outputs
-		exclude { details -> details.file.name.startsWith('bboss-rt')  }
-		into 'build/dist/lib'
+        //appendix = 'wrapper'
+        archiveClassifier = 'released'
+        from 'build/dist/'
 
-	}
-
-	task copyRTJarFiles(type: Copy,dependsOn:'copyJarFiles'){
-
-		from configurations.api{
-			canBeResolved=true
-
-		}
-		include { details -> details.file.name.startsWith('bboss-rt')  }
-		 into 'build/dist'
-	     rename ("bboss-rt-${bboss_version}.jar", "${project.name}-${bboss_version}.jar")
-	}
-	task copyToolFiles(type: Copy ,dependsOn:'copyRTJarFiles')  {
-		
-		from ('runfiles')
-			{
-				expand(
-						bboss_version:"${bboss_version}",
-                        project:"${project.name}"
-						)
-
-			}		
-		filteringCharset = 'UTF-8'
-		into 'build/dist/'
-
-
-
-	}
-	task copyResourcesfiles(type: Sync )  {
-		from fileTree(dir: 'src/main/resources')
-		filteringCharset = 'UTF-8'
-		into 'build/dist/resources'
-	}
-
-	task releaseVersion(type: Zip,dependsOn:['copyToolFiles','copyResourcesfiles']) {
-
-		//appendix = 'wrapper'
-		archiveClassifier = 'released'
-		from 'build/dist/'
-
-	}
+    }
 
 }
 
