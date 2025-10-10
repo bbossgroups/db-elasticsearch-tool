@@ -129,8 +129,8 @@ configure(allprojects) { project ->
 		//采用log4j2记录日志
  
 		api(
-                [group: 'com.bbossgroups.plugins', name: 'bboss-datatran-fileftp', version: "${bboss_es_version}", transitive: true],
-				[group: 'com.bbossgroups.plugins', name: 'bboss-datatran-jdbc', version: "${bboss_es_version}", transitive: true],
+                [group: 'com.bbossgroups.plugins', name: 'bboss-datatran-fileftp', version: bboss_es_version, transitive: true],
+				[group: 'com.bbossgroups.plugins', name: 'bboss-datatran-jdbc', version: bboss_es_version, transitive: true],
 				[group: 'com.bbossgroups', name: 'bboss-schedule', version: "${bboss_version}", transitive: true],
 		)
 		api 'org.postgresql:postgresql:42.3.3'
