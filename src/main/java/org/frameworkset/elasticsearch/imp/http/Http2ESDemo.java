@@ -15,7 +15,7 @@ package org.frameworkset.elasticsearch.imp.http;
  * limitations under the License.
  */
 
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.HttpResponse;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
 import org.frameworkset.tran.ExportResultHandler;

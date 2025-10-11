@@ -15,6 +15,7 @@ package org.frameworkset.elasticsearch.imp.http;
  * limitations under the License.
  */
 
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.http.HttpResponse;
 import org.frameworkset.tran.DataRefactor;
 import org.frameworkset.tran.DataStream;
@@ -170,7 +171,7 @@ public class ParrelHttp2ESDemo {
 //				Date date = context.getDateValue("LOG_OPERTIME");
 
 				HttpRecord record = (HttpRecord) context.getCurrentRecord().getRecord();
-				HttpResponse response = record.getResponse();//可以从httpresponse中获取head之类的信息
+                ClassicHttpResponse response = record.getResponse();//可以从httpresponse中获取head之类的信息
 				context.addFieldValue("collecttime",new Date());//添加采集时间
 
 			}
