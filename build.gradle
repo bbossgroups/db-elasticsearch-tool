@@ -135,7 +135,7 @@ configure(allprojects) { project ->
 		)
 		api 'org.postgresql:postgresql:42.3.3'
 //		api 'org.apache-extras.beanshell:bsh:2.0b6'
-		api 'org.xerial:sqlite-jdbc:3.45.1.0'
+		api 'org.xerial:sqlite-jdbc:3.50.3.0'
 		//mysql 8.0依赖
 		//api group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
 		//mysql 5.x依赖
