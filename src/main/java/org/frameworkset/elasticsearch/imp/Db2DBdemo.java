@@ -167,12 +167,13 @@ public class Db2DBdemo {
 //		importBuilder.addFieldValue("testObject",testObject);
 //
 		final AtomicInteger s = new AtomicInteger(0);
-		importBuilder.setGeoipDatabase("d:/geolite2/GeoLite2-City.mmdb");
-		importBuilder.setGeoipAsnDatabase("d:/geolite2/GeoLite2-ASN.mmdb");
-		importBuilder.setGeoip2regionDatabase("d:/geolite2/ip2region.db");
-		/**
-		 * 重新设置数据结构
-		 */
+        importBuilder.setGeoipDatabase("C:/workdir/geolite2/GeoLite2-City.mmdb");
+        importBuilder.setGeoipAsnDatabase("C:/workdir/geolite2/GeoLite2-ASN.mmdb");
+        importBuilder.setGeoip2regionDatabase("C:/workdir/geolite2/ip2region_v4.xdb;C:/workdir/geolite2/ip2region_v6.xdb");
+
+        /**
+         * 重新设置数据结构
+         */
 		importBuilder.setDataRefactor(new DataRefactor() {
 			public void refactor(Context context) throws Exception  {
 				//可以根据条件定义是否丢弃当前记录
